@@ -204,16 +204,7 @@ const TaskCatalogManager = ({ catalog, onBack, onAdd, onEdit, onDelete, onMove, 
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F5F0] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex justify-center items-center p-4 sm:p-8">
-      <div className="w-full max-w-[430px] h-[932px] max-h-full bg-[#FAFAF8] rounded-[3rem] shadow-2xl overflow-hidden flex flex-col relative border-8 border-slate-900">
-        <div className="h-12 w-full flex justify-between items-center px-6 text-sm font-medium pt-2 pb-1 text-slate-900 z-50 bg-[#FAFAF8]">
-          <span>9:41</span>
-          <div className="flex gap-2 items-center">
-            <div className="w-4 h-4 rounded-full border border-slate-900 flex justify-center items-center">
-              <div className="w-2 h-2 rounded-full bg-slate-900"></div>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen w-full max-w-[480px] mx-auto bg-[#FAFAF8] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex flex-col relative">
 
         <div className="flex-1 overflow-y-auto pb-32 no-scrollbar relative">
           <header className="px-6 pt-4 pb-6 flex items-center justify-between sticky top-0 bg-[#FAFAF8]/90 backdrop-blur-md z-40">
@@ -306,7 +297,6 @@ const TaskCatalogManager = ({ catalog, onBack, onAdd, onEdit, onDelete, onMove, 
             )}
           </main>
         </div>
-      </div>
     </div>
   );
 };

@@ -213,16 +213,7 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
   const hasData = sessions.length > 0;
 
   return (
-    <div className="min-h-screen bg-[#F5F5F0] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex justify-center items-center p-4 sm:p-8">
-      <div className="w-full max-w-[430px] h-[932px] max-h-full bg-[#FAFAF8] rounded-[3rem] shadow-2xl overflow-hidden flex flex-col relative border-8 border-slate-900">
-        <div className="h-12 w-full flex justify-between items-center px-6 text-sm font-medium pt-2 pb-1 text-slate-900 z-50 bg-[#FAFAF8]">
-          <span>1:36</span>
-          <div className="flex gap-2 items-center">
-            <div className="w-4 h-4 rounded-full border border-slate-900 flex justify-center items-center">
-              <div className="w-2 h-2 rounded-full bg-slate-900"></div>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen w-full max-w-[480px] mx-auto bg-[#FAFAF8] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex flex-col relative">
 
         <header className="px-6 pt-4 pb-6 flex flex-col justify-center items-center bg-[#FAFAF8] z-40">
           <h1 className="text-3xl font-black tracking-tight text-[#1C2C45]">Dashboard</h1>
@@ -430,7 +421,10 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
           </section>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 bg-[#FAFAF8]/95 backdrop-blur-md border-t border-slate-200 px-6 pt-4 pb-8 z-30">
+        <div
+          className="absolute bottom-0 left-0 right-0 bg-[#FAFAF8]/95 backdrop-blur-md border-t border-slate-200 px-6 pt-4 z-30"
+          style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
+        >
           <div className="flex justify-around items-center">
             <button
               disabled
@@ -456,10 +450,7 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
               <SettingsIcon size={28} />
             </button>
           </div>
-
-          <div className="w-1/3 h-1.5 bg-slate-900 rounded-full mx-auto mt-6"></div>
         </div>
-      </div>
     </div>
   );
 };
