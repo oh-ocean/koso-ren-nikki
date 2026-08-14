@@ -27,6 +27,7 @@ import type { SessionRecord, TaskDraft } from '../types';
 import { isoDate } from '../lib/date';
 import { STOKE_SOLID } from '../lib/scoreColor';
 import { buildTaskColorMap, resolveTaskColor } from '../lib/taskColors';
+import { resolveTagStyle } from '../lib/tagColors';
 
 const COLORS = ['#1C2C45', '#3A5075', '#5C749E', '#829BC8', '#A9BEDD'];
 
@@ -195,6 +196,21 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
     );
   };
 
+  const tags = useMemo(
+    () => Array.from(new Set(taskCatalog.map(t => t.tag).filter((t): t is string => !!t))),
+    [taskCatalog]
+  );
+
+  const taskNamesForTag = (tag: string) =>
+    taskCatalog
+      .filter(t => t.tag === tag)
+      .map(t => t.title)
+      .filter(name => taskNamesByFrequency.includes(name));
+
+  const applyTagFilter = (tag: string) => {
+    setSelectedTaskNames(taskNamesForTag(tag));
+  };
+
   const trendData = useMemo(() => {
     const relevant = chronological.filter(s => s.tasks.some(t => activeTaskNames.includes(t.name)));
     return relevant.slice(-10).map(s => {
@@ -258,6 +274,33 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
                   {activeTab === 'trend' && 'Score history per task, your call which to compare'}
                 </p>
               </div>
+
+              {hasData && activeTab === 'trend' && tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {tags.map(tag => {
+                    const names = taskNamesForTag(tag);
+                    if (names.length === 0) return null;
+                    const style = resolveTagStyle(tag);
+                    const isActive =
+                      names.length === activeTaskNames.length && names.every(n => activeTaskNames.includes(n));
+                    return (
+                      <button
+                        key={tag}
+                        onClick={() => applyTagFilter(tag)}
+                        aria-pressed={isActive}
+                        className="px-3 py-1.5 rounded-full text-xs font-bold transition-colors"
+                        style={
+                          isActive
+                            ? { backgroundColor: style.text, color: 'white' }
+                            : { backgroundColor: style.bg, color: style.text }
+                        }
+                      >
+                        #{tag}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
 
               {hasData && activeTab === 'trend' && taskNamesByFrequency.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-5">

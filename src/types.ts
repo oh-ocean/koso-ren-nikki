@@ -9,6 +9,7 @@ export interface TaskDraft {
   title: string;
   description: string;
   color?: string;
+  tag?: string;
 }
 
 export interface TaskResult {

@@ -11,6 +11,7 @@ import {
 import type { BoardDraft, Condition, Goal, TaskDraft, TaskResult, SessionDraft } from '../types';
 import { waveOptions, windOptions, WaveSizeIcon } from '../lib/conditionOptions';
 import { todayISODate, formatDateLong } from '../lib/date';
+import { resolveTagStyle } from '../lib/tagColors';
 
 interface TodaySessionProps {
   onStart: (draft: SessionDraft) => void;
@@ -322,9 +323,23 @@ const TodaySession = ({
                           {isSelected && <CheckCircle2 size={24} className="text-[#1C2C45]" />}
                         </div>
                         <div>
-                          <h3 className={`text-lg font-bold mb-1 ${isSelected ? 'text-white' : 'text-slate-900'}`}>
-                            {task.title}
-                          </h3>
+                          <div className="flex items-center gap-2 mb-1 flex-wrap">
+                            <h3 className={`text-lg font-bold ${isSelected ? 'text-white' : 'text-slate-900'}`}>
+                              {task.title}
+                            </h3>
+                            {task.tag && (
+                              <span
+                                className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold"
+                                style={
+                                  isSelected
+                                    ? { backgroundColor: 'rgba(255,255,255,0.2)', color: 'white' }
+                                    : { backgroundColor: resolveTagStyle(task.tag).bg, color: resolveTagStyle(task.tag).text }
+                                }
+                              >
+                                #{task.tag}
+                              </span>
+                            )}
+                          </div>
                           {task.description && (
                             <p className={`text-base leading-relaxed ${isSelected ? 'text-[#E0E5EC]' : 'text-slate-500'}`}>
                               {task.description}

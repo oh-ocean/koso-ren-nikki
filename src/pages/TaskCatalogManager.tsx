@@ -2,16 +2,29 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronDown, ChevronRight, ChevronUp, Check, Pencil, PlusCircle, Trash2 } from 'lucide-react';
 import type { TaskDraft } from '../types';
 import { TASK_COLOR_PALETTE } from '../lib/taskColors';
+import { resolveTagStyle } from '../lib/tagColors';
 
 interface TaskCatalogManagerProps {
   catalog: TaskDraft[];
   onBack: () => void;
-  onAdd: (title: string, description: string, color: string) => void;
-  onEdit: (id: string, title: string, description: string, color: string) => void;
+  onAdd: (title: string, description: string, color: string, tag: string) => void;
+  onEdit: (id: string, title: string, description: string, color: string, tag: string) => void;
   onDelete: (id: string) => void;
   onMove: (id: string, direction: 'up' | 'down') => void;
   onViewHistory: (task: TaskDraft) => void;
 }
+
+const TagPill = ({ tag }: { tag: string }) => {
+  const style = resolveTagStyle(tag);
+  return (
+    <span
+      className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold"
+      style={{ backgroundColor: style.bg, color: style.text }}
+    >
+      #{tag}
+    </span>
+  );
+};
 
 const ColorSwatchPicker = ({
   value,
@@ -41,7 +54,7 @@ interface TaskRowProps {
   task: TaskDraft;
   index: number;
   count: number;
-  onEdit: (id: string, title: string, description: string, color: string) => void;
+  onEdit: (id: string, title: string, description: string, color: string, tag: string) => void;
   onDelete: (id: string) => void;
   onMove: (id: string, direction: 'up' | 'down') => void;
   onViewHistory: (task: TaskDraft) => void;
@@ -52,19 +65,21 @@ const TaskRow = ({ task, index, count, onEdit, onDelete, onMove, onViewHistory }
   const [editTitle, setEditTitle] = useState(task.title);
   const [editDescription, setEditDescription] = useState(task.description);
   const [editColor, setEditColor] = useState(task.color ?? TASK_COLOR_PALETTE[0]);
+  const [editTag, setEditTag] = useState(task.tag ?? '');
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
 
   const startEdit = () => {
     setEditTitle(task.title);
     setEditDescription(task.description);
     setEditColor(task.color ?? TASK_COLOR_PALETTE[0]);
+    setEditTag(task.tag ?? '');
     setIsEditing(true);
   };
 
   const saveEdit = () => {
     const trimmed = editTitle.trim();
     if (!trimmed) return;
-    onEdit(task.id, trimmed, editDescription.trim(), editColor);
+    onEdit(task.id, trimmed, editDescription.trim(), editColor, editTag.trim());
     setIsEditing(false);
   };
 
@@ -86,6 +101,14 @@ const TaskRow = ({ task, index, count, onEdit, onDelete, onMove, onViewHistory }
           onChange={e => setEditDescription(e.target.value)}
           placeholder="メモ（任意）"
           aria-label="説明を編集"
+          className="w-full rounded-xl border border-slate-200 px-4 py-3 text-base text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#1C2C45]/10 focus:border-[#1C2C45]/30"
+        />
+        <input
+          type="text"
+          value={editTag}
+          onChange={e => setEditTag(e.target.value)}
+          placeholder="タグ（例：ターン系）任意"
+          aria-label="タグを編集"
           className="w-full rounded-xl border border-slate-200 px-4 py-3 text-base text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#1C2C45]/10 focus:border-[#1C2C45]/30"
         />
         <div>
@@ -161,7 +184,10 @@ const TaskRow = ({ task, index, count, onEdit, onDelete, onMove, onViewHistory }
       />
 
       <button onClick={() => onViewHistory(task)} className="flex-1 min-w-0 text-left group">
-        <h3 className="text-lg font-bold text-slate-900 mb-1 group-hover:underline">{task.title}</h3>
+        <div className="flex items-center gap-2 mb-1 flex-wrap">
+          <h3 className="text-lg font-bold text-slate-900 group-hover:underline">{task.title}</h3>
+          {task.tag && <TagPill tag={task.tag} />}
+        </div>
         {task.description && <p className="text-base text-slate-500 leading-relaxed">{task.description}</p>}
       </button>
 
@@ -192,14 +218,16 @@ const TaskCatalogManager = ({ catalog, onBack, onAdd, onEdit, onDelete, onMove, 
   const [newTitle, setNewTitle] = useState('');
   const [newDescription, setNewDescription] = useState('');
   const [newColor, setNewColor] = useState(TASK_COLOR_PALETTE[0]);
+  const [newTag, setNewTag] = useState('');
 
   const confirmAdd = () => {
     const trimmed = newTitle.trim();
     if (!trimmed) return;
-    onAdd(trimmed, newDescription.trim(), newColor);
+    onAdd(trimmed, newDescription.trim(), newColor, newTag.trim());
     setNewTitle('');
     setNewDescription('');
     setNewColor(TASK_COLOR_PALETTE[0]);
+    setNewTag('');
     setIsAdding(false);
   };
 
@@ -261,6 +289,14 @@ const TaskCatalogManager = ({ catalog, onBack, onAdd, onEdit, onDelete, onMove, 
                   aria-label="課題の説明"
                   className="w-full rounded-xl border border-slate-200 px-4 py-3 text-base text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#1C2C45]/10 focus:border-[#1C2C45]/30"
                 />
+                <input
+                  type="text"
+                  value={newTag}
+                  onChange={e => setNewTag(e.target.value)}
+                  placeholder="タグ（例：ターン系）任意"
+                  aria-label="新しい課題のタグ"
+                  className="w-full rounded-xl border border-slate-200 px-4 py-3 text-base text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#1C2C45]/10 focus:border-[#1C2C45]/30"
+                />
                 <div>
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">グラフでの色</p>
                   <ColorSwatchPicker value={newColor} onChange={setNewColor} />
@@ -272,6 +308,7 @@ const TaskCatalogManager = ({ catalog, onBack, onAdd, onEdit, onDelete, onMove, 
                       setNewTitle('');
                       setNewDescription('');
                       setNewColor(TASK_COLOR_PALETTE[0]);
+                      setNewTag('');
                     }}
                     className="flex-1 py-3 rounded-xl border-2 border-slate-200 text-slate-500 font-bold hover:bg-slate-50 transition-colors"
                   >

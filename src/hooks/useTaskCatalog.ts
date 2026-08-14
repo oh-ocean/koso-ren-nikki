@@ -5,10 +5,10 @@ import { TASK_COLOR_PALETTE } from '../lib/taskColors';
 const STORAGE_KEY = 'kosoren.taskCatalog';
 
 const DEFAULT_CATALOG: TaskDraft[] = [
-  { id: 't1', title: 'テイクオフの速さ', description: '手をついたらすぐに立ち上がる', color: TASK_COLOR_PALETTE[0] },
-  { id: 't2', title: 'ボトムターン', description: '膝を深く曲げてタメを作る', color: TASK_COLOR_PALETTE[1] },
-  { id: 't3', title: 'バックサイド', description: '左腕のリードを意識する', color: TASK_COLOR_PALETTE[2] },
-  { id: 't4', title: 'パドリング', description: '胸を張って、遠くの水をかく', color: TASK_COLOR_PALETTE[3] },
+  { id: 't1', title: 'テイクオフの速さ', description: '手をついたらすぐに立ち上がる', color: TASK_COLOR_PALETTE[0], tag: 'テイクオフ' },
+  { id: 't2', title: 'ボトムターン', description: '膝を深く曲げてタメを作る', color: TASK_COLOR_PALETTE[1], tag: 'ターン' },
+  { id: 't3', title: 'バックサイド', description: '左腕のリードを意識する', color: TASK_COLOR_PALETTE[2], tag: 'ターン' },
+  { id: 't4', title: 'パドリング', description: '胸を張って、遠くの水をかく', color: TASK_COLOR_PALETTE[3], tag: 'パドリング' },
 ];
 
 function loadCatalog(): TaskDraft[] {
@@ -29,12 +29,17 @@ export function useTaskCatalog() {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(catalog));
   }, [catalog]);
 
-  const addTask = useCallback((title: string, description: string, color: string) => {
-    setCatalog(prev => [...prev, { id: `custom-${Date.now()}`, title, description, color }]);
+  const addTask = useCallback((title: string, description: string, color: string, tag: string) => {
+    setCatalog(prev => [
+      ...prev,
+      { id: `custom-${Date.now()}`, title, description, color, tag: tag || undefined },
+    ]);
   }, []);
 
-  const updateTask = useCallback((id: string, title: string, description: string, color: string) => {
-    setCatalog(prev => prev.map(t => (t.id === id ? { ...t, title, description, color } : t)));
+  const updateTask = useCallback((id: string, title: string, description: string, color: string, tag: string) => {
+    setCatalog(prev =>
+      prev.map(t => (t.id === id ? { ...t, title, description, color, tag: tag || undefined } : t))
+    );
   }, []);
 
   const deleteTask = useCallback((id: string) => {
