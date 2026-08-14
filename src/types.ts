@@ -46,3 +46,10 @@ export interface Goal {
   isAchieved: boolean;
   createdAt: string; // YYYY-MM-DD
 }
+
+export interface BoardDraft {
+  id: string;
+  name: string;
+  description: string;
+  isFavorite: boolean;
+}

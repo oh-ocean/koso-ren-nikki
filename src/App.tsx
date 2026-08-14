@@ -6,13 +6,24 @@ import SessionDetail from './pages/SessionDetail';
 import GoalManager from './pages/GoalManager';
 import TaskCatalogManager from './pages/TaskCatalogManager';
 import TaskHistory from './pages/TaskHistory';
+import BoardManager from './pages/BoardManager';
 import Settings from './pages/Settings';
 import { useSessions } from './hooks/useSessions';
 import { useGoals } from './hooks/useGoals';
 import { useTaskCatalog } from './hooks/useTaskCatalog';
+import { useBoardCatalog } from './hooks/useBoardCatalog';
 import type { SessionDraft, SessionRecord, TaskDraft } from './types';
 
-type Screen = 'today' | 'review' | 'dashboard' | 'detail' | 'goals' | 'taskManager' | 'settings' | 'taskHistory';
+type Screen =
+  | 'today'
+  | 'review'
+  | 'dashboard'
+  | 'detail'
+  | 'goals'
+  | 'taskManager'
+  | 'settings'
+  | 'taskHistory'
+  | 'boardManager';
 
 function App() {
   const [screen, setScreen] = useState<Screen>('today');
@@ -25,6 +36,15 @@ function App() {
   const { sessions, addSession, updateSession, deleteSession } = useSessions();
   const { goals, pinnedGoal, addGoal, updateGoalTitle, togglePin, toggleAchieved, deleteGoal } = useGoals();
   const { catalog, addTask, updateTask, deleteTask, moveTask } = useTaskCatalog();
+  const {
+    catalog: boardCatalog,
+    addBoard,
+    updateBoard,
+    deleteBoard,
+    moveBoard,
+    toggleFavorite,
+    maxFavorites,
+  } = useBoardCatalog();
 
   const goToTodayFresh = () => {
     setPresetDate(null);
@@ -62,6 +82,11 @@ function App() {
   const openTaskManager = () => {
     setSubScreenReturnTo('today');
     setScreen('taskManager');
+  };
+
+  const openBoardManager = () => {
+    setSubScreenReturnTo('today');
+    setScreen('boardManager');
   };
 
   const handleExport = () => {
@@ -120,6 +145,7 @@ function App() {
       <SessionDetail
         date={detailDate}
         sessions={sessions.filter(s => s.date === detailDate)}
+        boardCatalog={boardCatalog}
         onBack={() => setScreen('dashboard')}
         onLogAnother={() => {
           setPresetDate(detailDate);
@@ -155,6 +181,10 @@ function App() {
         onOpenTaskManager={() => {
           setSubScreenReturnTo('settings');
           setScreen('taskManager');
+        }}
+        onOpenBoardManager={() => {
+          setSubScreenReturnTo('settings');
+          setScreen('boardManager');
         }}
         onExport={handleExport}
       />
@@ -202,6 +232,21 @@ function App() {
     );
   }
 
+  if (screen === 'boardManager') {
+    return (
+      <BoardManager
+        catalog={boardCatalog}
+        maxFavorites={maxFavorites}
+        onBack={() => setScreen(subScreenReturnTo)}
+        onAdd={addBoard}
+        onEdit={updateBoard}
+        onDelete={deleteBoard}
+        onMove={moveBoard}
+        onToggleFavorite={toggleFavorite}
+      />
+    );
+  }
+
   return (
     <TodaySession
       initialDate={presetDate ?? undefined}
@@ -211,6 +256,7 @@ function App() {
       isEditing={!!editingSession}
       pinnedGoal={pinnedGoal}
       taskCatalog={catalog}
+      boardCatalog={boardCatalog}
       onStart={sessionDraft => {
         setDraft(sessionDraft);
         setScreen('review');
@@ -222,6 +268,7 @@ function App() {
       }}
       onOpenGoals={openGoals}
       onOpenTaskManager={openTaskManager}
+      onOpenBoardManager={openBoardManager}
     />
   );
 }

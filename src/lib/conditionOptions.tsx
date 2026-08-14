@@ -68,55 +68,6 @@ export const windOptions: ConditionOption[] = [
   { id: 'offshore', icon: <Wind size={24} className="rotate-180" />, label: 'Offshore' },
 ];
 
-const BoardShape = ({ d, rect, width = 16 }: { d?: string; rect?: boolean; width?: number }) => (
-  <svg
-    width={width}
-    height={width * 2}
-    viewBox="0 0 24 48"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    {rect ? <rect x="3" y="15" width="18" height="18" rx="4" /> : <path d={d} />}
-  </svg>
-);
-
-export const boardOptions: ConditionOption[] = [
-  { id: 'bodyboard', icon: <BoardShape rect width={15} />, label: 'Body' },
-  {
-    id: 'shortboard',
-    icon: (
-      <BoardShape
-        width={13}
-        d="M12 7 C14.5 7 16 11 16 15 L16 35 C16 38.5 14.5 40.5 12 41 C9.5 40.5 8 38.5 8 35 L8 15 C8 11 9.5 7 12 7 Z"
-      />
-    ),
-    label: 'Short',
-  },
-  {
-    id: 'midlength',
-    icon: (
-      <BoardShape
-        width={15}
-        d="M12 4 C15 4 17.5 8 17.5 12 L17.5 37 C17.5 41 15 43.5 12 44 C9 43.5 6.5 41 6.5 37 L6.5 12 C6.5 8 9 4 12 4 Z"
-      />
-    ),
-    label: 'Mid',
-  },
-  {
-    id: 'longboard',
-    icon: (
-      <BoardShape
-        width={16}
-        d="M12 1 C16 1 19 5 19 10 L19 39 C19 43.5 16 46.5 12 47 C8 46.5 5 43.5 5 39 L5 10 C5 5 8 1 12 1 Z"
-      />
-    ),
-    label: 'Long',
-  },
-];
-
 export function findOption(options: ConditionOption[], id: string): ConditionOption | undefined {
   return options.find(option => option.id === id);
 }

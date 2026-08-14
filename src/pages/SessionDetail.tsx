@@ -1,37 +1,39 @@
 import { useState } from 'react';
 import { ChevronLeft, Edit3, MapPin, Pencil, PlusCircle, Sun, Trash2 } from 'lucide-react';
-import type { SessionRecord } from '../types';
-import { waveOptions, windOptions, boardOptions, findOption } from '../lib/conditionOptions';
+import type { BoardDraft, SessionRecord } from '../types';
+import { waveOptions, windOptions, findOption } from '../lib/conditionOptions';
 import { formatDateLong } from '../lib/date';
 import { taskScoreColor, stokeScoreColor } from '../lib/scoreColor';
 
 interface SessionDetailProps {
   date: string;
   sessions: SessionRecord[];
+  boardCatalog: BoardDraft[];
   onBack: () => void;
   onLogAnother: () => void;
   onEdit: (session: SessionRecord) => void;
   onDelete: (sessionId: string) => void;
 }
 
-const ConditionPill = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
-  <div className="flex-1 bg-slate-50 rounded-2xl p-4 flex flex-col items-center gap-2 border border-slate-100">
-    <div className="text-[#1C2C45]">{icon}</div>
-    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{label}</span>
+const ConditionPill = ({ icon, label }: { icon?: React.ReactNode; label: string }) => (
+  <div className="flex-1 bg-slate-50 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 border border-slate-100 min-h-[84px]">
+    {icon && <div className="text-[#1C2C45]">{icon}</div>}
+    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider text-center break-words">{label}</span>
   </div>
 );
 
 interface SessionCardProps {
   session: SessionRecord;
+  boardCatalog: BoardDraft[];
   onEdit: (session: SessionRecord) => void;
   onDelete: (sessionId: string) => void;
 }
 
-const SessionCard = ({ session, onEdit, onDelete }: SessionCardProps) => {
+const SessionCard = ({ session, boardCatalog, onEdit, onDelete }: SessionCardProps) => {
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const wave = findOption(waveOptions, session.condition.wave);
   const wind = findOption(windOptions, session.condition.wind);
-  const board = findOption(boardOptions, session.condition.board);
+  const board = boardCatalog.find(b => b.id === session.condition.board);
 
   return (
     <div className="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100 space-y-6">
@@ -88,7 +90,7 @@ const SessionCard = ({ session, onEdit, onDelete }: SessionCardProps) => {
       <div className="flex gap-3">
         <ConditionPill icon={wave?.icon} label={wave?.label ?? session.condition.wave} />
         <ConditionPill icon={wind?.icon} label={wind?.label ?? session.condition.wind} />
-        <ConditionPill icon={board?.icon} label={board?.label ?? session.condition.board} />
+        <ConditionPill label={board?.name ?? session.condition.board} />
       </div>
 
       <div className="flex items-center justify-center gap-3 py-4 px-4 rounded-2xl bg-gradient-to-br from-[#FFF8EB] to-[#FDECC8] border border-[#F5D896]">
@@ -141,7 +143,7 @@ const SessionCard = ({ session, onEdit, onDelete }: SessionCardProps) => {
   );
 };
 
-const SessionDetail = ({ date, sessions, onBack, onLogAnother, onEdit, onDelete }: SessionDetailProps) => {
+const SessionDetail = ({ date, sessions, boardCatalog, onBack, onLogAnother, onEdit, onDelete }: SessionDetailProps) => {
   return (
     <div className="min-h-screen w-full max-w-[480px] mx-auto bg-[#FAFAF8] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex flex-col relative">
 
@@ -175,7 +177,13 @@ const SessionDetail = ({ date, sessions, onBack, onLogAnother, onEdit, onDelete 
               </div>
             ) : (
               sessions.map(session => (
-                <SessionCard key={session.id} session={session} onEdit={onEdit} onDelete={onDelete} />
+                <SessionCard
+                  key={session.id}
+                  session={session}
+                  boardCatalog={boardCatalog}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
               ))
             )}
 

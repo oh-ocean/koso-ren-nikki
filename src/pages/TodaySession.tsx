@@ -8,8 +8,8 @@ import {
   Pencil,
   Target,
 } from 'lucide-react';
-import type { Condition, Goal, TaskDraft, TaskResult, SessionDraft } from '../types';
-import { waveOptions, windOptions, boardOptions } from '../lib/conditionOptions';
+import type { BoardDraft, Condition, Goal, TaskDraft, TaskResult, SessionDraft } from '../types';
+import { waveOptions, windOptions } from '../lib/conditionOptions';
 import { todayISODate, formatDateLong } from '../lib/date';
 
 interface TodaySessionProps {
@@ -17,8 +17,10 @@ interface TodaySessionProps {
   onOpenDashboard: () => void;
   onOpenGoals: () => void;
   onOpenTaskManager: () => void;
+  onOpenBoardManager: () => void;
   pinnedGoal: Goal | null;
   taskCatalog: TaskDraft[];
+  boardCatalog: BoardDraft[];
   initialDate?: string;
   initialLocation?: string;
   initialCondition?: Condition;
@@ -31,8 +33,10 @@ const TodaySession = ({
   onOpenDashboard,
   onOpenGoals,
   onOpenTaskManager,
+  onOpenBoardManager,
   pinnedGoal,
   taskCatalog,
+  boardCatalog,
   initialDate,
   initialLocation,
   initialCondition,
@@ -48,7 +52,13 @@ const TodaySession = ({
 
   const [waveSize, setWaveSize] = useState(initialCondition?.wave ?? 'waist');
   const [windDirection, setWindDirection] = useState(initialCondition?.wind ?? 'offshore');
-  const [boardType, setBoardType] = useState(initialCondition?.board ?? 'shortboard');
+  const [boardOptions] = useState<BoardDraft[]>(() => {
+    const favorites = boardCatalog.filter(b => b.isFavorite);
+    if (!initialCondition?.board || favorites.some(b => b.id === initialCondition.board)) return favorites;
+    const matched = boardCatalog.find(b => b.id === initialCondition.board);
+    return matched ? [...favorites, matched] : favorites;
+  });
+  const [boardType, setBoardType] = useState(initialCondition?.board ?? boardOptions[0]?.id ?? '');
   const [taskOptions] = useState<TaskDraft[]>(() => {
     if (!initialTasks || initialTasks.length === 0) return taskCatalog;
     const merged = [...taskCatalog];
@@ -98,8 +108,8 @@ const TodaySession = ({
                   </span>
                 )}
                 {isEditingLocation ? (
-                  <div className="flex items-center">
-                    <MapPin size={18} className="mr-1.5 flex-shrink-0 text-[#E0E5EC]" />
+                  <div className="flex items-center bg-white/15 border border-white/30 rounded-full pl-3 pr-2.5 py-1.5">
+                    <MapPin size={16} className="mr-1.5 flex-shrink-0 text-white" />
                     <input
                       autoFocus
                       type="text"
@@ -115,18 +125,18 @@ const TodaySession = ({
                       }}
                       placeholder="ロケーションを入力"
                       aria-label="ロケーションを入力"
-                      className="min-w-0 flex-1 bg-white/10 border border-white/30 rounded-lg px-2 py-1 text-white placeholder:text-white/50 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-white/40"
+                      className="min-w-0 flex-1 bg-transparent text-white placeholder:text-white/50 text-base font-bold focus:outline-none"
                     />
                   </div>
                 ) : (
                   <button
                     onClick={startEditLocation}
                     aria-label="ロケーションを編集"
-                    className="flex items-center text-[#E0E5EC] font-medium text-lg hover:text-white transition-colors max-w-full"
+                    className="inline-flex items-center bg-white/15 border border-white/25 rounded-full pl-3 pr-2.5 py-1.5 text-white font-bold text-base hover:bg-white/25 transition-colors max-w-full"
                   >
-                    <MapPin size={18} className="mr-1.5 flex-shrink-0" />
+                    <MapPin size={16} className="mr-1.5 flex-shrink-0" />
                     <span className="truncate">{location}</span>
-                    <Pencil size={14} className="ml-2 opacity-60 flex-shrink-0" />
+                    <Pencil size={13} className="ml-1.5 opacity-70 flex-shrink-0" />
                   </button>
                 )}
               </div>
@@ -209,24 +219,45 @@ const TodaySession = ({
                 </div>
 
                 <div>
-                  <p className="text-sm font-bold text-slate-500 mb-3 ml-1 uppercase tracking-wider">Board</p>
-                  <div className="flex bg-white rounded-2xl p-1.5 shadow-sm border border-slate-100">
-                    {boardOptions.map(option => (
-                      <button
-                        key={option.id}
-                        onClick={() => setBoardType(option.id)}
-                        aria-label={option.label}
-                        aria-pressed={boardType === option.id}
-                        className={`flex-1 h-20 rounded-xl flex justify-center items-center transition-all duration-300 ${
-                          boardType === option.id
-                            ? 'bg-[#1C2C45] text-white shadow-md transform scale-[1.02]'
-                            : 'text-slate-400 hover:bg-slate-50'
-                        }`}
-                      >
-                        {option.icon}
-                      </button>
-                    ))}
+                  <div className="flex justify-between items-center mb-3 ml-1">
+                    <p className="text-sm font-bold text-slate-500 uppercase tracking-wider">Board</p>
+                    <button
+                      onClick={onOpenBoardManager}
+                      aria-label="ボードを管理"
+                      className="w-7 h-7 rounded-full flex justify-center items-center bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors"
+                    >
+                      <ListChecks size={13} />
+                    </button>
                   </div>
+                  {boardOptions.length === 0 ? (
+                    <div className="p-6 rounded-2xl border-2 border-dashed border-slate-300 text-center">
+                      <p className="text-slate-500 font-medium mb-3">ボードが登録されていません。</p>
+                      <button
+                        onClick={onOpenBoardManager}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1C2C45] text-white font-bold text-sm hover:bg-[#2A4062] transition-colors"
+                      >
+                        <ListChecks size={16} />
+                        ボードを追加する
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex bg-white rounded-2xl p-1.5 shadow-sm border border-slate-100 gap-1">
+                      {boardOptions.map(board => (
+                        <button
+                          key={board.id}
+                          onClick={() => setBoardType(board.id)}
+                          aria-pressed={boardType === board.id}
+                          className={`flex-1 h-16 rounded-xl flex justify-center items-center px-2 text-sm font-bold text-center transition-all duration-300 ${
+                            boardType === board.id
+                              ? 'bg-[#1C2C45] text-white shadow-md transform scale-[1.02]'
+                              : 'text-slate-500 hover:bg-slate-50'
+                          }`}
+                        >
+                          <span className="truncate">{board.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </section>

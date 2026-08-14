@@ -1,9 +1,10 @@
-import { ChevronLeft, ChevronRight, Download, ListChecks, Target } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, ListChecks, Target, Waves } from 'lucide-react';
 
 interface SettingsProps {
   onBack: () => void;
   onOpenGoals: () => void;
   onOpenTaskManager: () => void;
+  onOpenBoardManager: () => void;
   onExport: () => void;
 }
 
@@ -33,7 +34,7 @@ const SettingsRow = ({
   </button>
 );
 
-const Settings = ({ onBack, onOpenGoals, onOpenTaskManager, onExport }: SettingsProps) => {
+const Settings = ({ onBack, onOpenGoals, onOpenTaskManager, onOpenBoardManager, onExport }: SettingsProps) => {
   return (
     <div className="min-h-screen w-full max-w-[480px] mx-auto bg-[#FAFAF8] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex flex-col relative">
 
@@ -65,6 +66,12 @@ const Settings = ({ onBack, onOpenGoals, onOpenTaskManager, onExport }: Settings
               label="Focus Tasksを管理"
               description="課題の追加・削除・並び替え"
               onClick={onOpenTaskManager}
+            />
+            <SettingsRow
+              icon={<Waves size={22} />}
+              label="ボードを管理"
+              description="マイボードの追加・編集・並び替え"
+              onClick={onOpenBoardManager}
             />
             <SettingsRow
               icon={<Download size={22} />}
