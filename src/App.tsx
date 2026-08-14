@@ -146,6 +146,7 @@ function App() {
         date={detailDate}
         sessions={sessions.filter(s => s.date === detailDate)}
         boardCatalog={boardCatalog}
+        taskCatalog={catalog}
         onBack={() => setScreen('dashboard')}
         onLogAnother={() => {
           setPresetDate(detailDate);

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronLeft, Edit3, MapPin, Pencil, PlusCircle, Sun, Trash2 } from 'lucide-react';
-import type { BoardDraft, SessionRecord } from '../types';
+import type { BoardDraft, SessionRecord, TaskDraft } from '../types';
 import { waveOptions, windOptions, findOption } from '../lib/conditionOptions';
 import { formatDateLong } from '../lib/date';
 import { taskScoreColor, stokeScoreColor } from '../lib/scoreColor';
@@ -9,6 +9,7 @@ interface SessionDetailProps {
   date: string;
   sessions: SessionRecord[];
   boardCatalog: BoardDraft[];
+  taskCatalog: TaskDraft[];
   onBack: () => void;
   onLogAnother: () => void;
   onEdit: (session: SessionRecord) => void;
@@ -25,11 +26,12 @@ const ConditionPill = ({ icon, label }: { icon?: React.ReactNode; label: string 
 interface SessionCardProps {
   session: SessionRecord;
   boardCatalog: BoardDraft[];
+  taskCatalog: TaskDraft[];
   onEdit: (session: SessionRecord) => void;
   onDelete: (sessionId: string) => void;
 }
 
-const SessionCard = ({ session, boardCatalog, onEdit, onDelete }: SessionCardProps) => {
+const SessionCard = ({ session, boardCatalog, taskCatalog, onEdit, onDelete }: SessionCardProps) => {
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const wave = findOption(waveOptions, session.condition.wave);
   const wind = findOption(windOptions, session.condition.wind);
@@ -111,7 +113,9 @@ const SessionCard = ({ session, boardCatalog, onEdit, onDelete }: SessionCardPro
           {session.tasks.map(task => (
             <div key={task.id} className="space-y-1.5">
               <div className="flex items-center justify-between gap-3">
-                <span className="text-base font-bold text-slate-900">{task.name}</span>
+                <span className="text-base font-bold text-slate-900">
+                  {taskCatalog.find(t => t.id === task.id)?.title ?? task.name}
+                </span>
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <div className="w-24 h-2 rounded-full bg-slate-100 overflow-hidden">
                     <div
@@ -143,7 +147,16 @@ const SessionCard = ({ session, boardCatalog, onEdit, onDelete }: SessionCardPro
   );
 };
 
-const SessionDetail = ({ date, sessions, boardCatalog, onBack, onLogAnother, onEdit, onDelete }: SessionDetailProps) => {
+const SessionDetail = ({
+  date,
+  sessions,
+  boardCatalog,
+  taskCatalog,
+  onBack,
+  onLogAnother,
+  onEdit,
+  onDelete,
+}: SessionDetailProps) => {
   return (
     <div className="min-h-screen w-full max-w-[480px] mx-auto bg-[#FAFAF8] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex flex-col relative">
 
@@ -181,6 +194,7 @@ const SessionDetail = ({ date, sessions, boardCatalog, onBack, onLogAnother, onE
                   key={session.id}
                   session={session}
                   boardCatalog={boardCatalog}
+                  taskCatalog={taskCatalog}
                   onEdit={onEdit}
                   onDelete={onDelete}
                 />

@@ -143,7 +143,7 @@ interface DashboardProps {
 
 const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, onOpenSettings }: DashboardProps) => {
   const [activeTab, setActiveTab] = useState<'stoke' | 'focus' | 'trend'>('stoke');
-  const [selectedTaskNames, setSelectedTaskNames] = useState<string[] | null>(null);
+  const [selectedTaskIds, setSelectedTaskIds] = useState<string[] | null>(null);
 
   const tabs = [
     { id: 'stoke' as const, label: 'Stoke', icon: <Sun size={24} /> },
@@ -151,7 +151,20 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
     { id: 'trend' as const, label: 'Trend', icon: <TrendingUp size={24} /> },
   ];
 
-  const colorByName = useMemo(() => buildTaskColorMap(taskCatalog), [taskCatalog]);
+  const colorById = useMemo(() => buildTaskColorMap(taskCatalog), [taskCatalog]);
+
+  // Task display names live in the catalog, keyed by id; a task's title can
+  // change (typo fixes, rewording) without losing continuity with past
+  // records, which only ever store the id. Deleted tasks fall back to the
+  // name last recorded for them.
+  const nameById = useMemo(() => {
+    const map = new Map<string, string>();
+    sessions.forEach(s => s.tasks.forEach(t => {
+      if (!map.has(t.id)) map.set(t.id, t.name);
+    }));
+    taskCatalog.forEach(t => map.set(t.id, t.title));
+    return map;
+  }, [sessions, taskCatalog]);
 
   const chronological = useMemo(
     () => [...sessions].sort((a, b) => a.date.localeCompare(b.date)),
@@ -171,29 +184,31 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
     const counts = new Map<string, number>();
     sessions.forEach(s => {
       s.tasks.forEach(t => {
-        counts.set(t.name, (counts.get(t.name) ?? 0) + 1);
+        counts.set(t.id, (counts.get(t.id) ?? 0) + 1);
       });
     });
-    return Array.from(counts.entries()).map(([name, value]) => ({ name, value }));
-  }, [sessions]);
+    return Array.from(counts.entries()).map(([id, value]) => ({
+      id,
+      name: nameById.get(id) ?? id,
+      value,
+    }));
+  }, [sessions, nameById]);
 
-  const taskNamesByFrequency = useMemo(() => {
+  const taskIdsByFrequency = useMemo(() => {
     const counts = new Map<string, number>();
     chronological.forEach(s => {
-      s.tasks.forEach(t => counts.set(t.name, (counts.get(t.name) ?? 0) + 1));
+      s.tasks.forEach(t => counts.set(t.id, (counts.get(t.id) ?? 0) + 1));
     });
     return Array.from(counts.entries())
       .sort((a, b) => b[1] - a[1])
-      .map(([name]) => name);
+      .map(([id]) => id);
   }, [chronological]);
 
-  const activeTaskNames = selectedTaskNames ?? taskNamesByFrequency.slice(0, 3);
+  const activeTaskIds = selectedTaskIds ?? taskIdsByFrequency.slice(0, 3);
 
-  const toggleTaskName = (name: string) => {
-    const base = selectedTaskNames ?? taskNamesByFrequency.slice(0, 3);
-    setSelectedTaskNames(
-      base.includes(name) ? base.filter(n => n !== name) : [...base, name]
-    );
+  const toggleTaskId = (id: string) => {
+    const base = selectedTaskIds ?? taskIdsByFrequency.slice(0, 3);
+    setSelectedTaskIds(base.includes(id) ? base.filter(i => i !== id) : [...base, id]);
   };
 
   const tags = useMemo(
@@ -201,30 +216,30 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
     [taskCatalog]
   );
 
-  const taskNamesForTag = (tag: string) =>
+  const taskIdsForTag = (tag: string) =>
     taskCatalog
       .filter(t => t.tag === tag)
-      .map(t => t.title)
-      .filter(name => taskNamesByFrequency.includes(name));
+      .map(t => t.id)
+      .filter(id => taskIdsByFrequency.includes(id));
 
   const applyTagFilter = (tag: string) => {
-    setSelectedTaskNames(taskNamesForTag(tag));
+    setSelectedTaskIds(taskIdsForTag(tag));
   };
 
   const trendData = useMemo(() => {
-    const relevant = chronological.filter(s => s.tasks.some(t => activeTaskNames.includes(t.name)));
+    const relevant = chronological.filter(s => s.tasks.some(t => activeTaskIds.includes(t.id)));
     return relevant.slice(-10).map(s => {
       const point: Record<string, string | number> = {
         name: `${s.date.slice(5, 7)}/${s.date.slice(8, 10)}`,
       };
-      activeTaskNames.forEach(taskName => {
-        const match = s.tasks.find(t => t.name === taskName);
-        if (match) point[taskName] = match.score;
+      activeTaskIds.forEach(id => {
+        const match = s.tasks.find(t => t.id === id);
+        if (match) point[id] = match.score;
       });
       return point;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chronological, activeTaskNames.join('|')]);
+  }, [chronological, activeTaskIds.join('|')]);
 
   const hasData = sessions.length > 0;
 
@@ -278,11 +293,11 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
               {hasData && activeTab === 'trend' && tags.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-3">
                   {tags.map(tag => {
-                    const names = taskNamesForTag(tag);
-                    if (names.length === 0) return null;
+                    const ids = taskIdsForTag(tag);
+                    if (ids.length === 0) return null;
                     const style = resolveTagStyle(tag);
                     const isActive =
-                      names.length === activeTaskNames.length && names.every(n => activeTaskNames.includes(n));
+                      ids.length === activeTaskIds.length && ids.every(id => activeTaskIds.includes(id));
                     return (
                       <button
                         key={tag}
@@ -302,15 +317,15 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
                 </div>
               )}
 
-              {hasData && activeTab === 'trend' && taskNamesByFrequency.length > 0 && (
+              {hasData && activeTab === 'trend' && taskIdsByFrequency.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-5">
-                  {taskNamesByFrequency.map((name, index) => {
-                    const isSelected = activeTaskNames.includes(name);
-                    const color = resolveTaskColor(name, colorByName, index);
+                  {taskIdsByFrequency.map((id, index) => {
+                    const isSelected = activeTaskIds.includes(id);
+                    const color = resolveTaskColor(id, colorById, index);
                     return (
                       <button
-                        key={name}
-                        onClick={() => toggleTaskName(name)}
+                        key={id}
+                        onClick={() => toggleTaskId(id)}
                         aria-pressed={isSelected}
                         className={`px-3 py-1.5 rounded-full text-sm font-bold border-2 transition-colors flex items-center gap-1.5 ${
                           isSelected
@@ -319,7 +334,7 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
                         }`}
                         style={isSelected ? { backgroundColor: color } : undefined}
                       >
-                        {name}
+                        {nameById.get(id) ?? id}
                       </button>
                     );
                   })}
@@ -378,7 +393,7 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
                         stroke="none"
                       >
                         {pieChartData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={resolveTaskColor(entry.name, colorByName, index)} />
+                          <Cell key={entry.id} fill={resolveTaskColor(entry.id, colorById, index)} />
                         ))}
                       </Pie>
                       <Tooltip
@@ -393,19 +408,19 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
                   </ResponsiveContainer>
                 )}
 
-                {hasData && activeTab === 'trend' && taskNamesByFrequency.length === 0 && (
+                {hasData && activeTab === 'trend' && taskIdsByFrequency.length === 0 && (
                   <div className="w-full h-full flex justify-center items-center text-center text-slate-400 font-medium px-8">
                     まだ課題のスコアがありません。
                   </div>
                 )}
 
-                {hasData && activeTab === 'trend' && taskNamesByFrequency.length > 0 && activeTaskNames.length === 0 && (
+                {hasData && activeTab === 'trend' && taskIdsByFrequency.length > 0 && activeTaskIds.length === 0 && (
                   <div className="w-full h-full flex justify-center items-center text-center text-slate-400 font-medium px-8">
                     上のチップから比較したい課題を選んでください。
                   </div>
                 )}
 
-                {hasData && activeTab === 'trend' && activeTaskNames.length > 0 && (
+                {hasData && activeTab === 'trend' && activeTaskIds.length > 0 && (
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={trendData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
@@ -430,12 +445,13 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
                           fontWeight: 'bold',
                         }}
                       />
-                      {activeTaskNames.map((name, index) => (
+                      {activeTaskIds.map((id, index) => (
                         <Line
-                          key={name}
+                          key={id}
                           type="monotone"
-                          dataKey={name}
-                          stroke={resolveTaskColor(name, colorByName, taskNamesByFrequency.indexOf(name))}
+                          dataKey={id}
+                          name={nameById.get(id) ?? id}
+                          stroke={resolveTaskColor(id, colorById, taskIdsByFrequency.indexOf(id))}
                           strokeWidth={2}
                           dot={{ r: 3 }}
                           connectNulls
@@ -450,10 +466,10 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
               {hasData && activeTab === 'focus' && (
                 <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
                   {pieChartData.map((entry, index) => (
-                    <div key={index} className="flex items-center gap-2">
+                    <div key={entry.id} className="flex items-center gap-2">
                       <div
                         className="w-3 h-3 rounded-full"
-                        style={{ backgroundColor: resolveTaskColor(entry.name, colorByName, index) }}
+                        style={{ backgroundColor: resolveTaskColor(entry.id, colorById, index) }}
                       ></div>
                       <span className="text-sm font-bold text-slate-600">{entry.name}</span>
                     </div>

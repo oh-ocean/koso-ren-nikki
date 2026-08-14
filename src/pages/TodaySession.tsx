@@ -65,9 +65,9 @@ const TodaySession = ({
     if (!initialTasks || initialTasks.length === 0) return taskCatalog;
     const merged = [...taskCatalog];
     initialTasks.forEach(task => {
-      const idx = merged.findIndex(t => t.id === task.id);
-      if (idx >= 0) merged[idx] = { ...merged[idx], title: task.name };
-      else merged.push({ id: task.id, title: task.name, description: '' });
+      if (!merged.some(t => t.id === task.id)) {
+        merged.push({ id: task.id, title: task.name, description: '' });
+      }
     });
     return merged;
   });
