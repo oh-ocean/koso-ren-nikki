@@ -290,57 +290,6 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
                 </p>
               </div>
 
-              {hasData && activeTab === 'trend' && tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {tags.map(tag => {
-                    const ids = taskIdsForTag(tag);
-                    if (ids.length === 0) return null;
-                    const style = resolveTagStyle(tag);
-                    const isActive =
-                      ids.length === activeTaskIds.length && ids.every(id => activeTaskIds.includes(id));
-                    return (
-                      <button
-                        key={tag}
-                        onClick={() => applyTagFilter(tag)}
-                        aria-pressed={isActive}
-                        className="px-3 py-1.5 rounded-full text-xs font-bold transition-colors"
-                        style={
-                          isActive
-                            ? { backgroundColor: style.text, color: 'white' }
-                            : { backgroundColor: style.bg, color: style.text }
-                        }
-                      >
-                        #{tag}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-
-              {hasData && activeTab === 'trend' && taskIdsByFrequency.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {taskIdsByFrequency.map((id, index) => {
-                    const isSelected = activeTaskIds.includes(id);
-                    const color = resolveTaskColor(id, colorById, index);
-                    return (
-                      <button
-                        key={id}
-                        onClick={() => toggleTaskId(id)}
-                        aria-pressed={isSelected}
-                        className={`px-3 py-1.5 rounded-full text-sm font-bold border-2 transition-colors flex items-center gap-1.5 ${
-                          isSelected
-                            ? 'text-white border-transparent'
-                            : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300'
-                        }`}
-                        style={isSelected ? { backgroundColor: color } : undefined}
-                      >
-                        {nameById.get(id) ?? id}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-
               <div className="w-full h-[250px] min-h-[250px]">
                 {!hasData && (
                   <div className="w-full h-full flex justify-center items-center text-center text-slate-400 font-medium px-8">
@@ -416,7 +365,7 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
 
                 {hasData && activeTab === 'trend' && taskIdsByFrequency.length > 0 && activeTaskIds.length === 0 && (
                   <div className="w-full h-full flex justify-center items-center text-center text-slate-400 font-medium px-8">
-                    上のチップから比較したい課題を選んでください。
+                    下のチップから比較したい課題を選んでください。
                   </div>
                 )}
 
@@ -462,6 +411,57 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
                   </ResponsiveContainer>
                 )}
               </div>
+
+              {hasData && activeTab === 'trend' && tags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {tags.map(tag => {
+                    const ids = taskIdsForTag(tag);
+                    if (ids.length === 0) return null;
+                    const style = resolveTagStyle(tag);
+                    const isActive =
+                      ids.length === activeTaskIds.length && ids.every(id => activeTaskIds.includes(id));
+                    return (
+                      <button
+                        key={tag}
+                        onClick={() => applyTagFilter(tag)}
+                        aria-pressed={isActive}
+                        className="px-2.5 py-1 rounded-full text-xs font-bold transition-colors"
+                        style={
+                          isActive
+                            ? { backgroundColor: style.text, color: 'white' }
+                            : { backgroundColor: style.bg, color: style.text }
+                        }
+                      >
+                        #{tag}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {hasData && activeTab === 'trend' && taskIdsByFrequency.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  {taskIdsByFrequency.map((id, index) => {
+                    const isSelected = activeTaskIds.includes(id);
+                    const color = resolveTaskColor(id, colorById, index);
+                    return (
+                      <button
+                        key={id}
+                        onClick={() => toggleTaskId(id)}
+                        aria-pressed={isSelected}
+                        className={`px-2.5 py-1 rounded-full text-xs font-bold border-2 transition-colors flex items-center gap-1.5 ${
+                          isSelected
+                            ? 'text-white border-transparent'
+                            : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300'
+                        }`}
+                        style={isSelected ? { backgroundColor: color } : undefined}
+                      >
+                        {nameById.get(id) ?? id}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
 
               {hasData && activeTab === 'focus' && (
                 <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2">

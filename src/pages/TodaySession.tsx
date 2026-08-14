@@ -9,7 +9,7 @@ import {
   Target,
 } from 'lucide-react';
 import type { BoardDraft, Condition, Goal, TaskDraft, TaskResult, SessionDraft } from '../types';
-import { waveOptions, windOptions, WaveSizeIcon } from '../lib/conditionOptions';
+import { waveOptions, windOptions, WaveBodyGauge } from '../lib/conditionOptions';
 import { todayISODate, formatDateLong } from '../lib/date';
 import { resolveTagStyle } from '../lib/tagColors';
 
@@ -181,8 +181,10 @@ const TodaySession = ({
                 <div>
                   <p className="text-sm font-bold text-slate-500 mb-3 ml-1 uppercase tracking-wider">Wave Size</p>
                   <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
-                    <div className="flex flex-col items-center justify-end h-[70px] mb-3 text-[#1C2C45]">
-                      <WaveSizeIcon level={waveLevel} />
+                    <div className="flex justify-center mb-2">
+                      <div className="w-[140px]">
+                        <WaveBodyGauge level={waveLevel} />
+                      </div>
                     </div>
                     <p className="text-center text-lg font-bold text-slate-900 mb-4">
                       {waveOptions[waveLevel]?.label}
