@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Waves, Wind } from 'lucide-react';
+import { Wind } from 'lucide-react';
 
 export interface ConditionOption {
   id: string;
@@ -37,28 +37,21 @@ export const BigWaveIcon = ({ size = 32 }: { size?: number }) => (
   </svg>
 );
 
-export const TyphoonIcon = ({ size = 28 }: { size?: number }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2.2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M12 12c0-3.5 2.2-5.5 5-5.5s4.2 1.8 4.2 3.8-2 3.2-4.2 3.2" />
-    <path d="M12 12c0 3.5-2.2 5.5-5 5.5s-4.2-1.8-4.2-3.8 2-3.2 4.2-3.2" />
-    <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" />
-  </svg>
-);
+export const WAVE_LEVEL_COUNT = 6;
+
+export const WaveSizeIcon = ({ level, size }: { level: number; size?: number }) => {
+  const clamped = Math.max(0, Math.min(WAVE_LEVEL_COUNT - 1, level));
+  const resolvedSize = size ?? 24 + clamped * 9;
+  return clamped === 0 ? <FlatWaveIcon size={resolvedSize} /> : <BigWaveIcon size={resolvedSize} />;
+};
 
 export const waveOptions: ConditionOption[] = [
-  { id: 'knee', icon: <FlatWaveIcon size={26} />, label: 'Knee' },
-  { id: 'waist', icon: <Waves size={28} />, label: 'Waist' },
-  { id: 'head', icon: <BigWaveIcon size={30} />, label: 'Head' },
-  { id: 'typhoon', icon: <TyphoonIcon size={28} />, label: 'Typhoon' },
+  { id: 'flat', icon: <WaveSizeIcon level={0} />, label: 'フラット〜すね' },
+  { id: 'knee', icon: <WaveSizeIcon level={1} />, label: 'ヒザ〜もも' },
+  { id: 'waist', icon: <WaveSizeIcon level={2} />, label: '腰〜はら' },
+  { id: 'chest', icon: <WaveSizeIcon level={3} />, label: 'むね〜かた' },
+  { id: 'head', icon: <WaveSizeIcon level={4} />, label: 'アタマ〜アタマ半' },
+  { id: 'double', icon: <WaveSizeIcon level={5} />, label: 'ダブル以上' },
 ];
 
 export const windOptions: ConditionOption[] = [

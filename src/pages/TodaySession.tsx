@@ -9,7 +9,7 @@ import {
   Target,
 } from 'lucide-react';
 import type { BoardDraft, Condition, Goal, TaskDraft, TaskResult, SessionDraft } from '../types';
-import { waveOptions, windOptions } from '../lib/conditionOptions';
+import { waveOptions, windOptions, WaveSizeIcon } from '../lib/conditionOptions';
 import { todayISODate, formatDateLong } from '../lib/date';
 
 interface TodaySessionProps {
@@ -51,6 +51,7 @@ const TodaySession = ({
   const [locationDraft, setLocationDraft] = useState(location);
 
   const [waveSize, setWaveSize] = useState(initialCondition?.wave ?? 'waist');
+  const waveLevel = Math.max(0, waveOptions.findIndex(option => option.id === waveSize));
   const [windDirection, setWindDirection] = useState(initialCondition?.wind ?? 'offshore');
   const [boardOptions] = useState<BoardDraft[]>(() => {
     const favorites = boardCatalog.filter(b => b.isFavorite);
@@ -178,22 +179,27 @@ const TodaySession = ({
               <div className="space-y-6">
                 <div>
                   <p className="text-sm font-bold text-slate-500 mb-3 ml-1 uppercase tracking-wider">Wave Size</p>
-                  <div className="flex bg-white rounded-2xl p-1.5 shadow-sm border border-slate-100">
-                    {waveOptions.map(option => (
-                      <button
-                        key={option.id}
-                        onClick={() => setWaveSize(option.id)}
-                        aria-label={option.label}
-                        aria-pressed={waveSize === option.id}
-                        className={`flex-1 h-16 rounded-xl flex justify-center items-center transition-all duration-300 ${
-                          waveSize === option.id
-                            ? 'bg-[#1C2C45] text-white shadow-md transform scale-[1.02]'
-                            : 'text-slate-400 hover:bg-slate-50'
-                        }`}
-                      >
-                        {option.icon}
-                      </button>
-                    ))}
+                  <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+                    <div className="flex flex-col items-center justify-end h-[70px] mb-3 text-[#1C2C45]">
+                      <WaveSizeIcon level={waveLevel} />
+                    </div>
+                    <p className="text-center text-lg font-bold text-slate-900 mb-4">
+                      {waveOptions[waveLevel]?.label}
+                    </p>
+                    <input
+                      type="range"
+                      min={0}
+                      max={waveOptions.length - 1}
+                      step={1}
+                      value={waveLevel}
+                      onChange={e => setWaveSize(waveOptions[Number(e.target.value)].id)}
+                      aria-label="Wave Size"
+                      className="w-full h-2 rounded-full accent-[#1C2C45] cursor-pointer"
+                    />
+                    <div className="flex justify-between mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      <span>フラット</span>
+                      <span>ダブル以上</span>
+                    </div>
                   </div>
                 </div>
 
