@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Link2 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import type { SessionRecord, TaskDraft } from '../types';
 import { formatDateLong } from '../lib/date';
@@ -19,7 +19,9 @@ const TaskHistory = ({ task, sessions, onBack }: TaskHistoryProps) => {
     return sessions
       .flatMap(s => {
         const match = s.tasks.find(t => t.id === task.id);
-        return match ? [{ date: s.date, score: match.score, memo: match.memo }] : [];
+        return match
+          ? [{ date: s.date, score: match.score, memo: match.memo, videoUrl: match.videoUrl }]
+          : [];
       })
       .sort((a, b) => b.date.localeCompare(a.date));
   }, [sessions, task.id]);
@@ -109,6 +111,17 @@ const TaskHistory = ({ task, sessions, onBack }: TaskHistoryProps) => {
                     </div>
                     {entry.memo && (
                       <p className="text-base text-slate-700 leading-relaxed whitespace-pre-wrap">{entry.memo}</p>
+                    )}
+                    {entry.videoUrl && (
+                      <a
+                        href={entry.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 mt-2 text-sm font-bold text-[#1C2C45] hover:underline"
+                      >
+                        <Link2 size={14} />
+                        動画・写真を見る
+                      </a>
                     )}
                   </div>
                 ))}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, Edit3, MapPin, Pencil, PlusCircle, Sun, Trash2 } from 'lucide-react';
+import { ChevronLeft, Edit3, Link2, MapPin, Pencil, PlusCircle, Sun, Trash2 } from 'lucide-react';
 import type { BoardDraft, SessionRecord, TaskDraft } from '../types';
 import { waveOptions, windOptions, findOption } from '../lib/conditionOptions';
 import { formatDateLong } from '../lib/date';
@@ -129,6 +129,17 @@ const SessionCard = ({ session, boardCatalog, taskCatalog, onEdit, onDelete }: S
                 </div>
               </div>
               {task.memo && <p className="text-sm text-slate-500 leading-relaxed">{task.memo}</p>}
+              {task.videoUrl && (
+                <a
+                  href={task.videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm font-bold text-[#1C2C45] hover:underline"
+                >
+                  <Link2 size={14} />
+                  動画・写真を見る
+                </a>
+              )}
             </div>
           ))}
         </div>

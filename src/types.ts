@@ -17,6 +17,7 @@ export interface TaskResult {
   name: string;
   score: number;
   memo?: string;
+  videoUrl?: string;
 }
 
 export interface SessionDraft {

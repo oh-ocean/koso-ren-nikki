@@ -113,6 +113,9 @@ function App() {
         initialTaskMemos={
           editingSession ? Object.fromEntries(editingSession.tasks.map(t => [t.id, t.memo ?? ''])) : undefined
         }
+        initialTaskVideoUrls={
+          editingSession ? Object.fromEntries(editingSession.tasks.map(t => [t.id, t.videoUrl ?? ''])) : undefined
+        }
         initialOverallScore={editingSession?.overallScore}
         initialMemo={editingSession?.memo}
         onSave={result => {

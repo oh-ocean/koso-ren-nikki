@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, MapPin, Calendar, CheckCircle2, Edit3, Sun } from 'lucide-react';
+import { X, MapPin, Calendar, CheckCircle2, Edit3, Sun, Link2 } from 'lucide-react';
 import type { SessionDraft, TaskResult } from '../types';
 import { formatDateShort } from '../lib/date';
 import { taskScoreColor, stokeScoreColor, TASK_FROM_HEX, STOKE_FROM_HEX } from '../lib/scoreColor';
@@ -85,6 +85,7 @@ interface SessionReviewProps {
   onBack: () => void;
   initialTaskScores?: Record<string, number>;
   initialTaskMemos?: Record<string, string>;
+  initialTaskVideoUrls?: Record<string, string>;
   initialOverallScore?: number;
   initialMemo?: string;
   isEditing?: boolean;
@@ -96,6 +97,7 @@ const SessionReview = ({
   onBack,
   initialTaskScores,
   initialTaskMemos,
+  initialTaskVideoUrls,
   initialOverallScore,
   initialMemo,
   isEditing = false,
@@ -105,6 +107,9 @@ const SessionReview = ({
   );
   const [taskMemos, setTaskMemos] = useState<Record<string, string>>(() =>
     Object.fromEntries(draft.tasks.map(task => [task.id, initialTaskMemos?.[task.id] ?? '']))
+  );
+  const [taskVideoUrls, setTaskVideoUrls] = useState<Record<string, string>>(() =>
+    Object.fromEntries(draft.tasks.map(task => [task.id, initialTaskVideoUrls?.[task.id] ?? '']))
   );
   const [overallScore, setOverallScore] = useState(initialOverallScore ?? 7);
   const [memo, setMemo] = useState(initialMemo ?? '');
@@ -119,12 +124,17 @@ const SessionReview = ({
     setTaskMemos(prev => ({ ...prev, [taskId]: value }));
   };
 
+  const setTaskVideoUrl = (taskId: string, value: string) => {
+    setTaskVideoUrls(prev => ({ ...prev, [taskId]: value }));
+  };
+
   const handleSave = () => {
     const tasks: TaskResult[] = draft.tasks.map(task => ({
       id: task.id,
       name: task.title,
       score: taskScores[task.id] ?? 5,
       memo: taskMemos[task.id]?.trim() || undefined,
+      videoUrl: taskVideoUrls[task.id]?.trim() || undefined,
     }));
     onSave({ tasks, overallScore, memo });
   };
@@ -180,8 +190,20 @@ const SessionReview = ({
                       onChange={e => setTaskMemo(task.id, e.target.value)}
                       placeholder={`${task.title}のメモ（任意）・次回に向けて`}
                       rows={2}
-                      className="w-full mb-4 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-base text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#1C2C45]/10 focus:border-[#1C2C45]/30 transition-all resize-none"
+                      className="w-full mb-3 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-base text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#1C2C45]/10 focus:border-[#1C2C45]/30 transition-all resize-none"
                     />
+                    <div className="flex items-center gap-2 mb-4 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 focus-within:ring-4 focus-within:ring-[#1C2C45]/10 focus-within:border-[#1C2C45]/30 transition-all">
+                      <Link2 size={18} className="text-slate-400 flex-shrink-0" />
+                      <input
+                        type="url"
+                        inputMode="url"
+                        value={taskVideoUrls[task.id] ?? ''}
+                        onChange={e => setTaskVideoUrl(task.id, e.target.value)}
+                        placeholder="動画・写真のリンク（任意）"
+                        aria-label={`${task.title}の動画・写真リンク`}
+                        className="w-full min-w-0 bg-transparent text-base text-slate-800 placeholder:text-slate-400 focus:outline-none"
+                      />
+                    </div>
                     {index < draft.tasks.length - 1 && <div className="w-full h-px bg-slate-100 mb-10"></div>}
                   </div>
                 ))}
