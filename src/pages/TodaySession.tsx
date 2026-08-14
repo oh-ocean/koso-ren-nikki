@@ -180,13 +180,11 @@ const TodaySession = ({
               <div className="space-y-6">
                 <div>
                   <p className="text-sm font-bold text-slate-500 mb-3 ml-1 uppercase tracking-wider">Wave Size</p>
-                  <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
-                    <div className="flex justify-center mb-2">
-                      <div className="w-[140px]">
-                        <WaveBodyGauge level={waveLevel} />
-                      </div>
+                  <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+                    <div className="rounded-xl bg-gradient-to-b from-[#EFF8FF] to-[#F8FBFF] border border-[#DCEEFC] overflow-hidden">
+                      <WaveBodyGauge level={waveLevel} />
                     </div>
-                    <p className="text-center text-lg font-bold text-slate-900 mb-4">
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1.5 ml-0.5">
                       {waveOptions[waveLevel]?.label}
                     </p>
                     <input
@@ -197,11 +195,11 @@ const TodaySession = ({
                       value={waveLevel}
                       onChange={e => setWaveSize(waveOptions[Number(e.target.value)].id)}
                       aria-label="Wave Size"
-                      className="w-full h-2 rounded-full accent-[#1C2C45] cursor-pointer"
+                      className="w-full h-2 rounded-full accent-[#1C2C45] cursor-pointer mt-2"
                     />
                     <div className="flex justify-between mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                      <span>フラット</span>
-                      <span>ダブル以上</span>
+                      <span>Flat</span>
+                      <span>Double+</span>
                     </div>
                   </div>
                 </div>

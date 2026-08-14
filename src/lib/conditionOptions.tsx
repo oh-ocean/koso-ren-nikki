@@ -45,8 +45,8 @@ export const WaveSizeIcon = ({ level, size }: { level: number; size?: number }) 
   return clamped === 0 ? <FlatWaveIcon size={resolvedSize} /> : <BigWaveIcon size={resolvedSize} />;
 };
 
-const WAVE_MARKER_Y = [175, 140, 103, 60, 24, -16];
-const WAVE_SCALE = [0.7, 0.8, 0.9, 1.0, 1.1, 1.2];
+const WAVE_MARKER_Y = [108, 88, 66, 44, 24, 8];
+const WAVE_SCALE = [0.35, 0.44, 0.53, 0.62, 0.71, 0.78];
 
 const SURF_WAVE_PATH =
   'M0,0 C4,-25 14,-46 32,-55 C46,-62 62,-58 66,-46 C69,-37 63,-28 53,-30 C48,-31 47,-37 51,-40 C53,-42 55,-45 52,-47 C46,-51 36,-44 33,-32 C30,-20 34,-10 24,-4 C16,0 6,0 0,0 Z';
@@ -57,16 +57,31 @@ export const WaveBodyGauge = ({ level }: { level: number }) => {
   const scale = WAVE_SCALE[clamped];
 
   return (
-    <svg viewBox="0 -100 150 300" width="100%" height="270">
-      <circle cx="90" cy="28" r="16" fill="#E2E8F0" />
-      <rect x="68" y="44" width="44" height="78" rx="20" fill="#E2E8F0" />
-      <line x1="70" y1="52" x2="56" y2="112" stroke="#E2E8F0" strokeWidth="10" strokeLinecap="round" />
-      <line x1="110" y1="52" x2="124" y2="112" stroke="#E2E8F0" strokeWidth="10" strokeLinecap="round" />
-      <rect x="72" y="118" width="16" height="70" rx="8" fill="#E2E8F0" />
-      <rect x="92" y="118" width="16" height="70" rx="8" fill="#E2E8F0" />
-      <line x1="38" y1="190" x2="142" y2="190" stroke="#CBD5E1" strokeWidth="2" />
+    <svg viewBox="0 -20 200 150" width="100%" height="130">
+      <circle cx="102" cy="16" r="7" fill="#FBBF24" />
+      {[0, 45, 90, 135, 180, 225, 270, 315].map(angle => (
+        <line
+          key={angle}
+          x1={102 + Math.cos((angle * Math.PI) / 180) * 10}
+          y1={16 + Math.sin((angle * Math.PI) / 180) * 10}
+          x2={102 + Math.cos((angle * Math.PI) / 180) * 13.5}
+          y2={16 + Math.sin((angle * Math.PI) / 180) * 13.5}
+          stroke="#FBBF24"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+      ))}
+
+      <circle cx="150" cy="22" r="10" fill="#E2E8F0" />
+      <rect x="136" y="34" width="28" height="50" rx="13" fill="#E2E8F0" />
+      <line x1="138" y1="38" x2="128" y2="72" stroke="#E2E8F0" strokeWidth="6" strokeLinecap="round" />
+      <line x1="162" y1="38" x2="172" y2="72" stroke="#E2E8F0" strokeWidth="6" strokeLinecap="round" />
+      <rect x="139" y="86" width="10" height="30" rx="5" fill="#E2E8F0" />
+      <rect x="151" y="86" width="10" height="30" rx="5" fill="#E2E8F0" />
+      <line x1="110" y1="118" x2="190" y2="118" stroke="#BFDBFE" strokeWidth="2" />
+
       <g style={{ transform: `translateY(${markerY}px)`, transition: 'transform 300ms ease-out' }}>
-        <line x1="34" y1="0" x2="66" y2="0" stroke="#CBD5E1" strokeWidth="2" strokeDasharray="3 3" />
+        <line x1="46" y1="0" x2="80" y2="0" stroke="#BFDBFE" strokeWidth="2" strokeDasharray="3 3" />
         <g transform={`translate(20, 0) scale(${scale}, ${scale * 0.55})`}>
           <path d={SURF_WAVE_PATH} fill="#1C2C45" />
         </g>
@@ -76,12 +91,12 @@ export const WaveBodyGauge = ({ level }: { level: number }) => {
 };
 
 export const waveOptions: ConditionOption[] = [
-  { id: 'flat', icon: <WaveSizeIcon level={0} />, label: 'フラット〜すね' },
-  { id: 'knee', icon: <WaveSizeIcon level={1} />, label: 'ヒザ〜もも' },
-  { id: 'waist', icon: <WaveSizeIcon level={2} />, label: '腰〜はら' },
-  { id: 'chest', icon: <WaveSizeIcon level={3} />, label: 'むね〜かた' },
-  { id: 'head', icon: <WaveSizeIcon level={4} />, label: 'アタマ〜アタマ半' },
-  { id: 'double', icon: <WaveSizeIcon level={5} />, label: 'ダブル以上' },
+  { id: 'flat', icon: <WaveSizeIcon level={0} />, label: 'Flat–Shin' },
+  { id: 'knee', icon: <WaveSizeIcon level={1} />, label: 'Knee–Thigh' },
+  { id: 'waist', icon: <WaveSizeIcon level={2} />, label: 'Waist–Belly' },
+  { id: 'chest', icon: <WaveSizeIcon level={3} />, label: 'Chest–Shoulder' },
+  { id: 'head', icon: <WaveSizeIcon level={4} />, label: 'Head–Head+' },
+  { id: 'double', icon: <WaveSizeIcon level={5} />, label: 'Double+' },
 ];
 
 export const windOptions: ConditionOption[] = [
