@@ -76,7 +76,7 @@ const Settings = ({ onBack, onOpenGoals, onOpenTaskManager, onOpenBoardManager, 
             <SettingsRow
               icon={<Download size={22} />}
               label="データをエクスポート"
-              description="記録をJSONファイルとして保存"
+              description="記録・ボード・課題・目標をJSONファイルとして保存"
               onClick={onExport}
             />
           </main>
