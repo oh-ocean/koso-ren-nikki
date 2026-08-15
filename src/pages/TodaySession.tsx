@@ -79,7 +79,7 @@ const TodaySession = ({
   return (
     <div className="min-h-screen w-full max-w-[480px] mx-auto bg-[#FAFAF8] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex flex-col relative">
 
-        <div className="flex-1 overflow-y-auto pb-64 no-scrollbar">
+        <div className="flex-1 min-h-0 overflow-y-auto pb-64 no-scrollbar">
           <header className="px-6 pt-2 pb-6 bg-[#1C2C45] text-white rounded-b-[2.5rem] shadow-md relative z-10">
             <button
               onClick={onOpenGoals}
@@ -326,7 +326,7 @@ const TodaySession = ({
           </main>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 z-20">
+        <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] z-20">
           <div className="px-6 pt-12 pb-4 bg-gradient-to-t from-[#FAFAF8] via-[#FAFAF8] to-transparent">
             <button
               onClick={handleGoSurf}
@@ -336,7 +336,13 @@ const TodaySession = ({
               <ChevronRight size={28} className="ml-2 opacity-80" />
             </button>
           </div>
-          <BottomNav current="today" onDashboard={onOpenDashboard} onToday={() => {}} onSettings={onOpenSettings} />
+          <BottomNav
+            current="today"
+            standalone={false}
+            onDashboard={onOpenDashboard}
+            onToday={() => {}}
+            onSettings={onOpenSettings}
+          />
         </div>
     </div>
   );

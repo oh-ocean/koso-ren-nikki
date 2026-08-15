@@ -104,8 +104,8 @@ function App() {
     setScreen('goals');
   };
 
-  const openTaskManager = () => {
-    setSubScreenReturnTo('today');
+  const openTaskManager = (returnTo: Screen = 'today') => {
+    setSubScreenReturnTo(returnTo);
     setScreen('taskManager');
   };
 
@@ -218,6 +218,7 @@ function App() {
         onSelectDate={handleSelectDate}
         onOpenSettings={goToSettingsFresh}
         onViewTaskHistory={task => openTaskHistory(task, 'dashboard')}
+        onOpenTaskManager={() => openTaskManager('dashboard')}
       />
     );
   }

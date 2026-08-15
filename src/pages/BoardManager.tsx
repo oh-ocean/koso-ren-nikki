@@ -208,7 +208,7 @@ const BoardManager = ({
 
   return (
     <div className="min-h-screen w-full max-w-[480px] mx-auto bg-[#FAFAF8] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex flex-col relative">
-      <div className="flex-1 overflow-y-auto pb-32 no-scrollbar relative">
+      <div className="flex-1 min-h-0 overflow-y-auto pb-32 no-scrollbar relative">
         <header className="px-6 pt-4 pb-6 flex items-center justify-between sticky top-0 bg-[#FAFAF8]/90 backdrop-blur-md z-40">
           <button
             onClick={onBack}

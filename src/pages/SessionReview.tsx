@@ -142,7 +142,7 @@ const SessionReview = ({
   return (
     <div className="min-h-screen w-full max-w-[480px] mx-auto bg-[#FAFAF8] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex flex-col relative">
 
-        <div className="flex-1 overflow-y-auto pb-36 no-scrollbar relative">
+        <div className="flex-1 min-h-0 overflow-y-auto pb-36 no-scrollbar relative">
           <header className="px-6 pt-4 pb-8 flex items-center justify-between sticky top-0 bg-[#FAFAF8]/90 backdrop-blur-md z-40">
             <button
               onClick={onBack}
@@ -239,7 +239,7 @@ const SessionReview = ({
           </main>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#FAFAF8] via-[#FAFAF8] to-transparent pt-12 pb-8 z-30">
+        <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] p-6 bg-gradient-to-t from-[#FAFAF8] via-[#FAFAF8] to-transparent pt-12 pb-8 z-30">
           <button
             onClick={handleSave}
             className="w-full bg-[#1C2C45] text-white font-bold text-xl h-[72px] rounded-[2rem] shadow-[0_12px_30px_-10px_rgba(28,44,69,0.5)] flex justify-center items-center hover:bg-[#2A4062] transition-colors active:scale-[0.98] transform"

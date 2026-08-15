@@ -3,6 +3,7 @@ import {
   ChevronLeft,
   ChevronRight,
   History,
+  ListChecks,
   PieChart as PieChartIcon,
   Sun,
   TrendingUp,
@@ -137,6 +138,7 @@ interface DashboardProps {
   onSelectDate: (date: string) => void;
   onOpenSettings: () => void;
   onViewTaskHistory: (task: TaskDraft) => void;
+  onOpenTaskManager: () => void;
 }
 
 const DashboardApp = ({
@@ -146,6 +148,7 @@ const DashboardApp = ({
   onSelectDate,
   onOpenSettings,
   onViewTaskHistory,
+  onOpenTaskManager,
 }: DashboardProps) => {
   const [activeTab, setActiveTab] = useState<'stoke' | 'focus' | 'trend'>('stoke');
   const [selectedTaskIds, setSelectedTaskIds] = useState<string[] | null>(null);
@@ -257,7 +260,7 @@ const DashboardApp = ({
           <p className="text-base font-medium text-slate-500 mt-1">Track your progress</p>
         </header>
 
-        <div className="flex-1 overflow-y-auto pb-32 no-scrollbar px-6 space-y-8">
+        <div className="flex-1 min-h-0 overflow-y-auto pb-32 no-scrollbar px-6 space-y-8">
           <Calendar sessions={sessions} onSelectDate={onSelectDate} />
 
           <section className="space-y-6">
@@ -283,17 +286,28 @@ const DashboardApp = ({
             </div>
 
             <div className="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100 mt-2">
-              <div className="mb-6">
-                <h3 className="text-xl font-bold text-slate-900">
-                  {activeTab === 'stoke' && 'Session Stoke'}
-                  {activeTab === 'focus' && 'Practice Distribution'}
-                  {activeTab === 'trend' && 'Focus Task Trend'}
-                </h3>
-                <p className="text-sm font-medium text-slate-400">
-                  {activeTab === 'stoke' && 'How much you enjoyed it, most recent sessions'}
-                  {activeTab === 'focus' && 'Where you spent your time'}
-                  {activeTab === 'trend' && 'Score history per task, your call which to compare'}
-                </p>
+              <div className="mb-6 flex items-start justify-between gap-3">
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900">
+                    {activeTab === 'stoke' && 'Session Stoke'}
+                    {activeTab === 'focus' && 'Practice Distribution'}
+                    {activeTab === 'trend' && 'Focus Task Trend'}
+                  </h3>
+                  <p className="text-sm font-medium text-slate-400">
+                    {activeTab === 'stoke' && 'How much you enjoyed it, most recent sessions'}
+                    {activeTab === 'focus' && 'Where you spent your time'}
+                    {activeTab === 'trend' && 'Score history per task, your call which to compare'}
+                  </p>
+                </div>
+                {activeTab === 'focus' && (
+                  <button
+                    onClick={onOpenTaskManager}
+                    aria-label="Focus Tasksを全て見る"
+                    className="w-8 h-8 rounded-full flex justify-center items-center bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors flex-shrink-0"
+                  >
+                    <ListChecks size={15} />
+                  </button>
+                )}
               </div>
 
               <div className="w-full h-[250px] min-h-[250px]">
