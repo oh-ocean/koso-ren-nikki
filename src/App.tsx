@@ -15,6 +15,7 @@ import { useTaskCatalog } from './hooks/useTaskCatalog';
 import { useBoardCatalog } from './hooks/useBoardCatalog';
 import { todayISODate } from './lib/date';
 import type { SessionDraft, SessionRecord, TaskDraft } from './types';
+import type { ImportPayload } from './pages/Settings';
 
 const SPLASH_LAST_SHOWN_KEY = 'kosoren.lastSplashDate';
 
@@ -160,6 +161,15 @@ function App() {
     URL.revokeObjectURL(url);
   };
 
+  const handleImport = (payload: ImportPayload) => {
+    if (payload.sessions) window.localStorage.setItem('kosoren.sessions', JSON.stringify(payload.sessions));
+    if (payload.taskCatalog) window.localStorage.setItem('kosoren.taskCatalog', JSON.stringify(payload.taskCatalog));
+    if (payload.boardCatalog)
+      window.localStorage.setItem('kosoren.boardCatalog', JSON.stringify(payload.boardCatalog));
+    if (payload.goals) window.localStorage.setItem('kosoren.goals', JSON.stringify(payload.goals));
+    window.location.reload();
+  };
+
   if (showSplash) {
     return <SplashScreen fading={splashFading} />;
   }
@@ -270,6 +280,7 @@ function App() {
           setScreen('boardManager');
         }}
         onExport={handleExport}
+        onImport={handleImport}
         onOpenDashboard={goToDashboard}
         onOpenToday={goToTodayFresh}
       />
