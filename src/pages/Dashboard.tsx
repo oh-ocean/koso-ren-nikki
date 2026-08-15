@@ -2,12 +2,10 @@ import { useMemo, useState } from 'react';
 import {
   ChevronLeft,
   ChevronRight,
-  Activity,
+  History,
   PieChart as PieChartIcon,
-  Settings as SettingsIcon,
   Sun,
   TrendingUp,
-  Waves,
 } from 'lucide-react';
 import {
   BarChart,
@@ -28,8 +26,7 @@ import { isoDate } from '../lib/date';
 import { STOKE_SOLID } from '../lib/scoreColor';
 import { buildTaskColorMap, resolveTaskColor } from '../lib/taskColors';
 import { resolveTagStyle } from '../lib/tagColors';
-
-const COLORS = ['#1C2C45', '#3A5075', '#5C749E', '#829BC8', '#A9BEDD'];
+import BottomNav from '../components/BottomNav';
 
 interface CalendarProps {
   sessions: SessionRecord[];
@@ -139,9 +136,17 @@ interface DashboardProps {
   onNavigateToday: () => void;
   onSelectDate: (date: string) => void;
   onOpenSettings: () => void;
+  onViewTaskHistory: (task: TaskDraft) => void;
 }
 
-const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, onOpenSettings }: DashboardProps) => {
+const DashboardApp = ({
+  sessions,
+  taskCatalog,
+  onNavigateToday,
+  onSelectDate,
+  onOpenSettings,
+  onViewTaskHistory,
+}: DashboardProps) => {
   const [activeTab, setActiveTab] = useState<'stoke' | 'focus' | 'trend'>('stoke');
   const [selectedTaskIds, setSelectedTaskIds] = useState<string[] | null>(null);
 
@@ -152,6 +157,7 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
   ];
 
   const colorById = useMemo(() => buildTaskColorMap(taskCatalog), [taskCatalog]);
+  const findTask = (id: string) => taskCatalog.find(t => t.id === id);
 
   // Task display names live in the catalog, keyed by id; a task's title can
   // change (typo fixes, rewording) without losing continuity with past
@@ -444,6 +450,7 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
                   {taskIdsByFrequency.map((id, index) => {
                     const isSelected = activeTaskIds.includes(id);
                     const color = resolveTaskColor(id, colorById, index);
+                    const task = findTask(id);
                     return (
                       <button
                         key={id}
@@ -457,6 +464,16 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
                         style={isSelected ? { backgroundColor: color } : undefined}
                       >
                         {nameById.get(id) ?? id}
+                        {task && (
+                          <History
+                            size={12}
+                            className="opacity-60 hover:opacity-100"
+                            onClick={e => {
+                              e.stopPropagation();
+                              onViewTaskHistory(task);
+                            }}
+                          />
+                        )}
                       </button>
                     );
                   })}
@@ -465,51 +482,38 @@ const DashboardApp = ({ sessions, taskCatalog, onNavigateToday, onSelectDate, on
 
               {hasData && activeTab === 'focus' && (
                 <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
-                  {pieChartData.map((entry, index) => (
-                    <div key={entry.id} className="flex items-center gap-2">
+                  {pieChartData.map((entry, index) => {
+                    const task = findTask(entry.id);
+                    return (
                       <div
-                        className="w-3 h-3 rounded-full"
-                        style={{ backgroundColor: resolveTaskColor(entry.id, colorById, index) }}
-                      ></div>
-                      <span className="text-sm font-bold text-slate-600">{entry.name}</span>
-                    </div>
-                  ))}
+                        key={entry.id}
+                        role={task ? 'button' : undefined}
+                        tabIndex={task ? 0 : undefined}
+                        onClick={task ? () => onViewTaskHistory(task) : undefined}
+                        onKeyDown={
+                          task
+                            ? e => {
+                                if (e.key === 'Enter' || e.key === ' ') onViewTaskHistory(task);
+                              }
+                            : undefined
+                        }
+                        className={`flex items-center gap-2 ${task ? 'cursor-pointer hover:opacity-70' : ''}`}
+                      >
+                        <div
+                          className="w-3 h-3 rounded-full flex-shrink-0"
+                          style={{ backgroundColor: resolveTaskColor(entry.id, colorById, index) }}
+                        ></div>
+                        <span className="text-sm font-bold text-slate-600">{entry.name}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
           </section>
         </div>
 
-        <div
-          className="absolute bottom-0 left-0 right-0 bg-[#FAFAF8]/95 backdrop-blur-md border-t border-slate-200 px-6 pt-4 z-30"
-          style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
-        >
-          <div className="flex justify-around items-center">
-            <button
-              disabled
-              aria-current="page"
-              aria-label="Dashboard（現在の画面）"
-              className="flex flex-col items-center gap-1 text-[#1C2C45] font-bold disabled:cursor-default"
-            >
-              <Activity size={28} />
-              <div className="w-1.5 h-1.5 rounded-full bg-[#1C2C45] mt-1"></div>
-            </button>
-            <button
-              onClick={onNavigateToday}
-              aria-label="新しいセッションを記録"
-              className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-900 transition-colors"
-            >
-              <Waves size={32} />
-            </button>
-            <button
-              onClick={onOpenSettings}
-              aria-label="設定"
-              className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-900 transition-colors"
-            >
-              <SettingsIcon size={28} />
-            </button>
-          </div>
-        </div>
+        <BottomNav current="dashboard" onDashboard={() => {}} onToday={onNavigateToday} onSettings={onOpenSettings} />
     </div>
   );
 };

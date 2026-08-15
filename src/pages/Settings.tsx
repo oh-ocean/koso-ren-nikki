@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight, Download, ListChecks, Target, Waves } from 'lucide-react';
+import BottomNav from '../components/BottomNav';
 
 interface SettingsProps {
   onBack: () => void;
@@ -6,6 +7,8 @@ interface SettingsProps {
   onOpenTaskManager: () => void;
   onOpenBoardManager: () => void;
   onExport: () => void;
+  onOpenDashboard: () => void;
+  onOpenToday: () => void;
 }
 
 const SettingsRow = ({
@@ -34,7 +37,15 @@ const SettingsRow = ({
   </button>
 );
 
-const Settings = ({ onBack, onOpenGoals, onOpenTaskManager, onOpenBoardManager, onExport }: SettingsProps) => {
+const Settings = ({
+  onBack,
+  onOpenGoals,
+  onOpenTaskManager,
+  onOpenBoardManager,
+  onExport,
+  onOpenDashboard,
+  onOpenToday,
+}: SettingsProps) => {
   return (
     <div className="min-h-screen w-full max-w-[480px] mx-auto bg-[#FAFAF8] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex flex-col relative">
 
@@ -81,6 +92,7 @@ const Settings = ({ onBack, onOpenGoals, onOpenTaskManager, onOpenBoardManager, 
             />
           </main>
         </div>
+        <BottomNav current="settings" onDashboard={onOpenDashboard} onToday={onOpenToday} onSettings={() => {}} />
     </div>
   );
 };

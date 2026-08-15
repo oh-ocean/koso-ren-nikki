@@ -5,14 +5,18 @@ import type { SessionRecord, TaskDraft } from '../types';
 import { formatDateLong } from '../lib/date';
 import { taskScoreColor } from '../lib/scoreColor';
 import { TASK_COLOR_PALETTE } from '../lib/taskColors';
+import BottomNav from '../components/BottomNav';
 
 interface TaskHistoryProps {
   task: TaskDraft;
   sessions: SessionRecord[];
   onBack: () => void;
+  onOpenDashboard: () => void;
+  onOpenToday: () => void;
+  onOpenSettings: () => void;
 }
 
-const TaskHistory = ({ task, sessions, onBack }: TaskHistoryProps) => {
+const TaskHistory = ({ task, sessions, onBack, onOpenDashboard, onOpenToday, onOpenSettings }: TaskHistoryProps) => {
   const color = task.color ?? TASK_COLOR_PALETTE[0];
 
   const entries = useMemo(() => {
@@ -129,6 +133,7 @@ const TaskHistory = ({ task, sessions, onBack }: TaskHistoryProps) => {
             )}
           </main>
         </div>
+        <BottomNav onDashboard={onOpenDashboard} onToday={onOpenToday} onSettings={onOpenSettings} />
     </div>
   );
 };

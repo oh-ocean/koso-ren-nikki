@@ -4,6 +4,7 @@ import type { BoardDraft, SessionRecord, TaskDraft } from '../types';
 import { waveOptions, windOptions, findOption } from '../lib/conditionOptions';
 import { formatDateLong } from '../lib/date';
 import { taskScoreColor, stokeScoreColor } from '../lib/scoreColor';
+import BottomNav from '../components/BottomNav';
 
 interface SessionDetailProps {
   date: string;
@@ -14,6 +15,9 @@ interface SessionDetailProps {
   onLogAnother: () => void;
   onEdit: (session: SessionRecord) => void;
   onDelete: (sessionId: string) => void;
+  onOpenDashboard: () => void;
+  onOpenToday: () => void;
+  onOpenSettings: () => void;
 }
 
 const ConditionPill = ({ icon, label }: { icon?: React.ReactNode; label: string }) => (
@@ -167,6 +171,9 @@ const SessionDetail = ({
   onLogAnother,
   onEdit,
   onDelete,
+  onOpenDashboard,
+  onOpenToday,
+  onOpenSettings,
 }: SessionDetailProps) => {
   return (
     <div className="min-h-screen w-full max-w-[480px] mx-auto bg-[#FAFAF8] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex flex-col relative">
@@ -223,6 +230,7 @@ const SessionDetail = ({
             )}
           </main>
         </div>
+        <BottomNav onDashboard={onOpenDashboard} onToday={onOpenToday} onSettings={onOpenSettings} />
     </div>
   );
 };

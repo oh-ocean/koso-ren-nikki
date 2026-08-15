@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronDown, ChevronUp, Pencil, PlusCircle, Star, Trash2 } from 'lucide-react';
 import type { BoardDraft } from '../types';
+import BottomNav from '../components/BottomNav';
 
 interface BoardManagerProps {
   catalog: BoardDraft[];
@@ -11,6 +12,9 @@ interface BoardManagerProps {
   onDelete: (id: string) => void;
   onMove: (id: string, direction: 'up' | 'down') => void;
   onToggleFavorite: (id: string) => void;
+  onOpenDashboard: () => void;
+  onOpenToday: () => void;
+  onOpenSettings: () => void;
 }
 
 interface BoardRowProps {
@@ -183,6 +187,9 @@ const BoardManager = ({
   onDelete,
   onMove,
   onToggleFavorite,
+  onOpenDashboard,
+  onOpenToday,
+  onOpenSettings,
 }: BoardManagerProps) => {
   const [isAdding, setIsAdding] = useState(false);
   const [newName, setNewName] = useState('');
@@ -297,6 +304,7 @@ const BoardManager = ({
           )}
         </main>
       </div>
+      <BottomNav onDashboard={onOpenDashboard} onToday={onOpenToday} onSettings={onOpenSettings} />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronLeft, CheckCircle2, Pencil, Pin, PlusCircle, Target, Trash2 } from 'lucide-react';
 import type { Goal } from '../types';
+import BottomNav from '../components/BottomNav';
 
 interface GoalManagerProps {
   goals: Goal[];
@@ -10,6 +11,9 @@ interface GoalManagerProps {
   onTogglePin: (id: string) => void;
   onToggleAchieved: (id: string) => void;
   onDelete: (id: string) => void;
+  onOpenDashboard: () => void;
+  onOpenToday: () => void;
+  onOpenSettings: () => void;
 }
 
 interface GoalRowProps {
@@ -160,7 +164,18 @@ const GoalRow = ({ goal, onEditTitle, onTogglePin, onToggleAchieved, onDelete }:
   );
 };
 
-const GoalManager = ({ goals, onBack, onAdd, onEditTitle, onTogglePin, onToggleAchieved, onDelete }: GoalManagerProps) => {
+const GoalManager = ({
+  goals,
+  onBack,
+  onAdd,
+  onEditTitle,
+  onTogglePin,
+  onToggleAchieved,
+  onDelete,
+  onOpenDashboard,
+  onOpenToday,
+  onOpenSettings,
+}: GoalManagerProps) => {
   const [isAdding, setIsAdding] = useState(false);
   const [newTitle, setNewTitle] = useState('');
 
@@ -276,6 +291,7 @@ const GoalManager = ({ goals, onBack, onAdd, onEditTitle, onTogglePin, onToggleA
             )}
           </main>
         </div>
+        <BottomNav onDashboard={onOpenDashboard} onToday={onOpenToday} onSettings={onOpenSettings} />
     </div>
   );
 };

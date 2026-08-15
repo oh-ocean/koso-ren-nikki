@@ -2,20 +2,21 @@ import { useState } from 'react';
 import {
   CheckCircle2,
   MapPin,
-  Calendar,
   ChevronRight,
   ListChecks,
   Pencil,
   Target,
 } from 'lucide-react';
-import type { BoardDraft, Condition, Goal, TaskDraft, TaskResult, SessionDraft } from '../types';
+import type { BoardDraft, Condition, Goal, TaskDraft, SessionDraft } from '../types';
 import { waveOptions, windOptions, WaveBodyGauge } from '../lib/conditionOptions';
 import { todayISODate, formatDateLong } from '../lib/date';
 import { resolveTagStyle } from '../lib/tagColors';
+import BottomNav from '../components/BottomNav';
 
 interface TodaySessionProps {
   onStart: (draft: SessionDraft) => void;
   onOpenDashboard: () => void;
+  onOpenSettings: () => void;
   onOpenGoals: () => void;
   onOpenTaskManager: () => void;
   onOpenBoardManager: () => void;
@@ -23,15 +24,12 @@ interface TodaySessionProps {
   taskCatalog: TaskDraft[];
   boardCatalog: BoardDraft[];
   initialDate?: string;
-  initialLocation?: string;
-  initialCondition?: Condition;
-  initialTasks?: TaskResult[];
-  isEditing?: boolean;
 }
 
 const TodaySession = ({
   onStart,
   onOpenDashboard,
+  onOpenSettings,
   onOpenGoals,
   onOpenTaskManager,
   onOpenBoardManager,
@@ -39,39 +37,21 @@ const TodaySession = ({
   taskCatalog,
   boardCatalog,
   initialDate,
-  initialLocation,
-  initialCondition,
-  initialTasks,
-  isEditing = false,
 }: TodaySessionProps) => {
   const sessionDate = initialDate ?? todayISODate();
   const isBackfilling = sessionDate !== todayISODate();
 
-  const [location, setLocation] = useState(initialLocation ?? 'Zushi, Kanagawa');
+  const [location, setLocation] = useState('Zushi, Kanagawa');
   const [isEditingLocation, setIsEditingLocation] = useState(false);
   const [locationDraft, setLocationDraft] = useState(location);
 
-  const [waveSize, setWaveSize] = useState(initialCondition?.wave ?? 'waist');
+  const [waveSize, setWaveSize] = useState('waist');
   const waveLevel = Math.max(0, waveOptions.findIndex(option => option.id === waveSize));
-  const [windDirection, setWindDirection] = useState(initialCondition?.wind ?? 'offshore');
-  const [boardOptions] = useState<BoardDraft[]>(() => {
-    const favorites = boardCatalog.filter(b => b.isFavorite);
-    if (!initialCondition?.board || favorites.some(b => b.id === initialCondition.board)) return favorites;
-    const matched = boardCatalog.find(b => b.id === initialCondition.board);
-    return matched ? [...favorites, matched] : favorites;
-  });
-  const [boardType, setBoardType] = useState(initialCondition?.board ?? boardOptions[0]?.id ?? '');
-  const [taskOptions] = useState<TaskDraft[]>(() => {
-    if (!initialTasks || initialTasks.length === 0) return taskCatalog;
-    const merged = [...taskCatalog];
-    initialTasks.forEach(task => {
-      if (!merged.some(t => t.id === task.id)) {
-        merged.push({ id: task.id, title: task.name, description: '' });
-      }
-    });
-    return merged;
-  });
-  const [selectedTasks, setSelectedTasks] = useState<string[]>(() => initialTasks?.map(t => t.id) ?? []);
+  const [windDirection, setWindDirection] = useState('offshore');
+  const boardOptions = boardCatalog.filter(b => b.isFavorite);
+  const [boardType, setBoardType] = useState(boardOptions[0]?.id ?? '');
+  const taskOptions = taskCatalog;
+  const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
 
   const startEditLocation = () => {
     setLocationDraft(location);
@@ -99,61 +79,11 @@ const TodaySession = ({
   return (
     <div className="min-h-screen w-full max-w-[480px] mx-auto bg-[#FAFAF8] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex flex-col relative">
 
-        <div className="flex-1 overflow-y-auto pb-32 no-scrollbar">
+        <div className="flex-1 overflow-y-auto pb-64 no-scrollbar">
           <header className="px-6 pt-2 pb-6 bg-[#1C2C45] text-white rounded-b-[2.5rem] shadow-md relative z-10">
-            <div className="flex justify-between items-start mb-6">
-              <div className="flex-1 min-w-0 mr-3">
-                <h1 className="text-3xl font-bold tracking-tight mb-1">Today's Session</h1>
-                {(isBackfilling || isEditing) && (
-                  <span className="inline-block mb-2 px-3 py-1 rounded-full bg-white/15 text-sm font-bold text-white">
-                    {isEditing ? `${formatDateLong(sessionDate)}の記録を編集中` : `${formatDateLong(sessionDate)}の記録`}
-                  </span>
-                )}
-                {isEditingLocation ? (
-                  <div className="flex items-center bg-white/15 border border-white/30 rounded-full pl-3 pr-2.5 py-1.5">
-                    <MapPin size={16} className="mr-1.5 flex-shrink-0 text-white" />
-                    <input
-                      autoFocus
-                      type="text"
-                      value={locationDraft}
-                      onChange={e => setLocationDraft(e.target.value)}
-                      onBlur={saveLocation}
-                      onKeyDown={e => {
-                        if (e.key === 'Enter') e.currentTarget.blur();
-                        if (e.key === 'Escape') {
-                          setLocationDraft(location);
-                          setIsEditingLocation(false);
-                        }
-                      }}
-                      placeholder="ロケーションを入力"
-                      aria-label="ロケーションを入力"
-                      className="min-w-0 flex-1 bg-transparent text-white placeholder:text-white/50 text-base font-bold focus:outline-none"
-                    />
-                  </div>
-                ) : (
-                  <button
-                    onClick={startEditLocation}
-                    aria-label="ロケーションを編集"
-                    className="inline-flex items-center bg-white/15 border border-white/25 rounded-full pl-3 pr-2.5 py-1.5 text-white font-bold text-base hover:bg-white/25 transition-colors max-w-full"
-                  >
-                    <MapPin size={16} className="mr-1.5 flex-shrink-0" />
-                    <span className="truncate">{location}</span>
-                    <Pencil size={13} className="ml-1.5 opacity-70 flex-shrink-0" />
-                  </button>
-                )}
-              </div>
-              <button
-                onClick={onOpenDashboard}
-                aria-label="Open dashboard"
-                className="w-12 h-12 bg-white/10 rounded-full flex justify-center items-center backdrop-blur-sm hover:bg-white/20 transition-colors active:scale-95 flex-shrink-0"
-              >
-                <Calendar size={24} className="text-white" />
-              </button>
-            </div>
-
             <button
               onClick={onOpenGoals}
-              className="w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 flex items-center shadow-inner hover:bg-white/15 transition-colors text-left"
+              className="w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 flex items-center shadow-inner hover:bg-white/15 transition-colors text-left mb-6"
             >
               <div className="w-12 h-12 bg-white text-[#1C2C45] rounded-xl flex justify-center items-center mr-4 shadow-sm flex-shrink-0">
                 <Target size={22} />
@@ -168,6 +98,47 @@ const TodaySession = ({
               </div>
               <ChevronRight size={20} className="text-white/50 flex-shrink-0 ml-2" />
             </button>
+
+            <div className="min-w-0">
+              <h1 className="text-3xl font-bold tracking-tight mb-1">Today's Session</h1>
+              {isBackfilling && (
+                <span className="inline-block mb-2 px-3 py-1 rounded-full bg-white/15 text-sm font-bold text-white">
+                  {formatDateLong(sessionDate)}の記録
+                </span>
+              )}
+              {isEditingLocation ? (
+                <div className="flex items-center bg-white/15 border border-white/30 rounded-full pl-3 pr-2.5 py-1.5">
+                  <MapPin size={16} className="mr-1.5 flex-shrink-0 text-white" />
+                  <input
+                    autoFocus
+                    type="text"
+                    value={locationDraft}
+                    onChange={e => setLocationDraft(e.target.value)}
+                    onBlur={saveLocation}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') e.currentTarget.blur();
+                      if (e.key === 'Escape') {
+                        setLocationDraft(location);
+                        setIsEditingLocation(false);
+                      }
+                    }}
+                    placeholder="ロケーションを入力"
+                    aria-label="ロケーションを入力"
+                    className="min-w-0 flex-1 bg-transparent text-white placeholder:text-white/50 text-base font-bold focus:outline-none"
+                  />
+                </div>
+              ) : (
+                <button
+                  onClick={startEditLocation}
+                  aria-label="ロケーションを編集"
+                  className="inline-flex items-center bg-white/15 border border-white/25 rounded-full pl-3 pr-2.5 py-1.5 text-white font-bold text-base hover:bg-white/25 transition-colors max-w-full"
+                >
+                  <MapPin size={16} className="mr-1.5 flex-shrink-0" />
+                  <span className="truncate">{location}</span>
+                  <Pencil size={13} className="ml-1.5 opacity-70 flex-shrink-0" />
+                </button>
+              )}
+            </div>
           </header>
 
           <main className="px-6 py-8 space-y-10">
@@ -355,14 +326,17 @@ const TodaySession = ({
           </main>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#FAFAF8] via-[#FAFAF8] to-transparent pt-12 pb-8 z-20">
-          <button
-            onClick={handleGoSurf}
-            className="w-full bg-[#1C2C45] text-white font-bold text-xl py-5 rounded-[1.5rem] shadow-[0_10px_30px_-10px_rgba(28,44,69,0.5)] flex justify-center items-center hover:bg-[#2A4062] transition-colors active:scale-95 transform"
-          >
-            {isEditing ? '内容を確認する' : 'GO SURF!'}
-            <ChevronRight size={28} className="ml-2 opacity-80" />
-          </button>
+        <div className="absolute bottom-0 left-0 right-0 z-20">
+          <div className="px-6 pt-12 pb-4 bg-gradient-to-t from-[#FAFAF8] via-[#FAFAF8] to-transparent">
+            <button
+              onClick={handleGoSurf}
+              className="w-full bg-[#D97706] text-white font-bold text-xl py-5 rounded-[1.5rem] shadow-[0_10px_30px_-10px_rgba(217,119,6,0.5)] flex justify-center items-center hover:bg-[#C2660A] transition-colors active:scale-95 transform"
+            >
+              GO SURF!
+              <ChevronRight size={28} className="ml-2 opacity-80" />
+            </button>
+          </div>
+          <BottomNav current="today" onDashboard={onOpenDashboard} onToday={() => {}} onSettings={onOpenSettings} />
         </div>
     </div>
   );

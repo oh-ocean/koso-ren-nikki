@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronDown, ChevronRight, ChevronUp, Check, Pencil, PlusC
 import type { TaskDraft } from '../types';
 import { TASK_COLOR_PALETTE } from '../lib/taskColors';
 import { resolveTagStyle } from '../lib/tagColors';
+import BottomNav from '../components/BottomNav';
 
 interface TaskCatalogManagerProps {
   catalog: TaskDraft[];
@@ -12,6 +13,9 @@ interface TaskCatalogManagerProps {
   onDelete: (id: string) => void;
   onMove: (id: string, direction: 'up' | 'down') => void;
   onViewHistory: (task: TaskDraft) => void;
+  onOpenDashboard: () => void;
+  onOpenToday: () => void;
+  onOpenSettings: () => void;
 }
 
 const TagPill = ({ tag }: { tag: string }) => {
@@ -213,7 +217,18 @@ const TaskRow = ({ task, index, count, onEdit, onDelete, onMove, onViewHistory }
   );
 };
 
-const TaskCatalogManager = ({ catalog, onBack, onAdd, onEdit, onDelete, onMove, onViewHistory }: TaskCatalogManagerProps) => {
+const TaskCatalogManager = ({
+  catalog,
+  onBack,
+  onAdd,
+  onEdit,
+  onDelete,
+  onMove,
+  onViewHistory,
+  onOpenDashboard,
+  onOpenToday,
+  onOpenSettings,
+}: TaskCatalogManagerProps) => {
   const [isAdding, setIsAdding] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [newDescription, setNewDescription] = useState('');
@@ -334,6 +349,7 @@ const TaskCatalogManager = ({ catalog, onBack, onAdd, onEdit, onDelete, onMove, 
             )}
           </main>
         </div>
+        <BottomNav onDashboard={onOpenDashboard} onToday={onOpenToday} onSettings={onOpenSettings} />
     </div>
   );
 };

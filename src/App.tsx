@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TodaySession from './pages/TodaySession';
 import SessionReview from './pages/SessionReview';
 import Dashboard from './pages/Dashboard';
@@ -46,10 +46,30 @@ function App() {
     maxFavorites,
   } = useBoardCatalog();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [screen]);
+
   const goToTodayFresh = () => {
     setPresetDate(null);
     setEditingSession(null);
     setScreen('today');
+  };
+
+  const goToDashboard = () => {
+    setEditingSession(null);
+    setPresetDate(null);
+    setScreen('dashboard');
+  };
+
+  const goToSettingsFresh = () => {
+    setScreen('settings');
+  };
+
+  const openTaskHistory = (task: TaskDraft, returnTo: Screen) => {
+    setHistoryTask(task);
+    setSubScreenReturnTo(returnTo);
+    setScreen('taskHistory');
   };
 
   const handleSelectDate = (date: string) => {
@@ -66,8 +86,13 @@ function App() {
 
   const handleEditSession = (session: SessionRecord) => {
     setEditingSession(session);
-    setPresetDate(session.date);
-    setScreen('today');
+    setDraft({
+      date: session.date,
+      location: session.location,
+      condition: session.condition,
+      tasks: session.tasks.map(t => ({ id: t.id, title: t.name, description: '' })),
+    });
+    setScreen('review');
   };
 
   const handleDeleteSession = (sessionId: string) => {
@@ -113,7 +138,18 @@ function App() {
     return (
       <SessionReview
         draft={draft}
-        onBack={() => setScreen('today')}
+        onBack={() => {
+          if (editingSession) {
+            const backDate = editingSession.date;
+            setDraft(null);
+            setEditingSession(null);
+            setDetailDate(backDate);
+            setScreen('detail');
+          } else {
+            setDraft(null);
+            setScreen('today');
+          }
+        }}
         isEditing={!!editingSession}
         initialTaskScores={
           editingSession ? Object.fromEntries(editingSession.tasks.map(t => [t.id, t.score])) : undefined
@@ -166,6 +202,9 @@ function App() {
         }}
         onEdit={handleEditSession}
         onDelete={handleDeleteSession}
+        onOpenDashboard={goToDashboard}
+        onOpenToday={goToTodayFresh}
+        onOpenSettings={goToSettingsFresh}
       />
     );
   }
@@ -177,7 +216,8 @@ function App() {
         taskCatalog={catalog}
         onNavigateToday={goToTodayFresh}
         onSelectDate={handleSelectDate}
-        onOpenSettings={() => setScreen('settings')}
+        onOpenSettings={goToSettingsFresh}
+        onViewTaskHistory={task => openTaskHistory(task, 'dashboard')}
       />
     );
   }
@@ -199,6 +239,8 @@ function App() {
           setScreen('boardManager');
         }}
         onExport={handleExport}
+        onOpenDashboard={goToDashboard}
+        onOpenToday={goToTodayFresh}
       />
     );
   }
@@ -213,6 +255,9 @@ function App() {
         onTogglePin={togglePin}
         onToggleAchieved={toggleAchieved}
         onDelete={deleteGoal}
+        onOpenDashboard={goToDashboard}
+        onOpenToday={goToTodayFresh}
+        onOpenSettings={goToSettingsFresh}
       />
     );
   }
@@ -226,10 +271,10 @@ function App() {
         onEdit={updateTask}
         onDelete={deleteTask}
         onMove={moveTask}
-        onViewHistory={task => {
-          setHistoryTask(task);
-          setScreen('taskHistory');
-        }}
+        onViewHistory={task => openTaskHistory(task, 'taskManager')}
+        onOpenDashboard={goToDashboard}
+        onOpenToday={goToTodayFresh}
+        onOpenSettings={goToSettingsFresh}
       />
     );
   }
@@ -239,7 +284,10 @@ function App() {
       <TaskHistory
         task={historyTask}
         sessions={sessions}
-        onBack={() => setScreen('taskManager')}
+        onBack={() => setScreen(subScreenReturnTo)}
+        onOpenDashboard={goToDashboard}
+        onOpenToday={goToTodayFresh}
+        onOpenSettings={goToSettingsFresh}
       />
     );
   }
@@ -255,6 +303,9 @@ function App() {
         onDelete={deleteBoard}
         onMove={moveBoard}
         onToggleFavorite={toggleFavorite}
+        onOpenDashboard={goToDashboard}
+        onOpenToday={goToTodayFresh}
+        onOpenSettings={goToSettingsFresh}
       />
     );
   }
@@ -262,10 +313,6 @@ function App() {
   return (
     <TodaySession
       initialDate={presetDate ?? undefined}
-      initialLocation={editingSession?.location}
-      initialCondition={editingSession?.condition}
-      initialTasks={editingSession?.tasks}
-      isEditing={!!editingSession}
       pinnedGoal={pinnedGoal}
       taskCatalog={catalog}
       boardCatalog={boardCatalog}
@@ -273,11 +320,8 @@ function App() {
         setDraft(sessionDraft);
         setScreen('review');
       }}
-      onOpenDashboard={() => {
-        setEditingSession(null);
-        setPresetDate(null);
-        setScreen('dashboard');
-      }}
+      onOpenDashboard={goToDashboard}
+      onOpenSettings={goToSettingsFresh}
       onOpenGoals={openGoals}
       onOpenTaskManager={openTaskManager}
       onOpenBoardManager={openBoardManager}
