@@ -8,11 +8,23 @@ import TaskCatalogManager from './pages/TaskCatalogManager';
 import TaskHistory from './pages/TaskHistory';
 import BoardManager from './pages/BoardManager';
 import Settings from './pages/Settings';
+import SplashScreen from './components/SplashScreen';
 import { useSessions } from './hooks/useSessions';
 import { useGoals } from './hooks/useGoals';
 import { useTaskCatalog } from './hooks/useTaskCatalog';
 import { useBoardCatalog } from './hooks/useBoardCatalog';
+import { todayISODate } from './lib/date';
 import type { SessionDraft, SessionRecord, TaskDraft } from './types';
+
+const SPLASH_LAST_SHOWN_KEY = 'kosoren.lastSplashDate';
+
+function shouldShowSplashToday(): boolean {
+  try {
+    return window.localStorage.getItem(SPLASH_LAST_SHOWN_KEY) !== todayISODate();
+  } catch {
+    return false;
+  }
+}
 
 type Screen =
   | 'today'
@@ -45,6 +57,20 @@ function App() {
     toggleFavorite,
     maxFavorites,
   } = useBoardCatalog();
+
+  const [showSplash, setShowSplash] = useState(shouldShowSplashToday);
+  const [splashFading, setSplashFading] = useState(false);
+
+  useEffect(() => {
+    if (!showSplash) return;
+    window.localStorage.setItem(SPLASH_LAST_SHOWN_KEY, todayISODate());
+    const fadeTimer = setTimeout(() => setSplashFading(true), 1100);
+    const removeTimer = setTimeout(() => setShowSplash(false), 1500);
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(removeTimer);
+    };
+  }, [showSplash]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -133,6 +159,10 @@ function App() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
+
+  if (showSplash) {
+    return <SplashScreen fading={splashFading} />;
+  }
 
   if (screen === 'review' && draft) {
     return (

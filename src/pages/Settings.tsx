@@ -1,5 +1,8 @@
-import { ChevronLeft, ChevronRight, Download, ListChecks, Target, Waves } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, ListChecks, MessageSquareText, Target, Waves } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
+
+const FEEDBACK_FORM_URL =
+  'https://docs.google.com/forms/d/e/1FAIpQLSdDA1UAUgs4Q5ohRUZglWl12AdaCAV_bU41ebHVCj-X3yIzTQ/viewform?usp=dialog';
 
 interface SettingsProps {
   onBack: () => void;
@@ -89,6 +92,12 @@ const Settings = ({
               label="データをエクスポート"
               description="記録・ボード・課題・目標をJSONファイルとして保存"
               onClick={onExport}
+            />
+            <SettingsRow
+              icon={<MessageSquareText size={22} />}
+              label="フィードバックを送る"
+              description="ご意見・ご要望をお聞かせください（Googleフォーム）"
+              onClick={() => window.open(FEEDBACK_FORM_URL, '_blank', 'noopener,noreferrer')}
             />
           </main>
         </div>

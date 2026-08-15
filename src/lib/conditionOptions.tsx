@@ -49,7 +49,7 @@ const WAVE_BASE_Y = 108;
 const WAVE_SCALE_X = [0.38, 0.48, 0.6, 0.75, 0.92, 1.1];
 const WAVE_SCALE_Y = [0.19, 0.36, 0.58, 1.06, 1.48, 1.9];
 
-const SURF_WAVE_PATH =
+export const SURF_WAVE_PATH =
   'M0,0 C4,-25 14,-46 32,-55 C46,-62 62,-58 66,-46 C69,-37 63,-28 53,-30 C48,-31 47,-37 51,-40 C53,-42 55,-45 52,-47 C46,-51 36,-44 33,-32 C30,-20 34,-10 24,-4 C16,0 6,0 0,0 Z';
 
 export const WaveBodyGauge = ({ level }: { level: number }) => {
