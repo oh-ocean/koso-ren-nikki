@@ -64,8 +64,8 @@ function App() {
   useEffect(() => {
     if (!showSplash) return;
     window.localStorage.setItem(SPLASH_LAST_SHOWN_KEY, todayISODate());
-    const fadeTimer = setTimeout(() => setSplashFading(true), 1100);
-    const removeTimer = setTimeout(() => setShowSplash(false), 1500);
+    const fadeTimer = setTimeout(() => setSplashFading(true), 3000);
+    const removeTimer = setTimeout(() => setShowSplash(false), 3700);
     return () => {
       clearTimeout(fadeTimer);
       clearTimeout(removeTimer);
