@@ -41,7 +41,7 @@ const TodaySession = ({
   const sessionDate = initialDate ?? todayISODate();
   const isBackfilling = sessionDate !== todayISODate();
 
-  const [location, setLocation] = useState('Zushi, Kanagawa');
+  const [location, setLocation] = useState('Enter surf point');
   const [isEditingLocation, setIsEditingLocation] = useState(false);
   const [locationDraft, setLocationDraft] = useState(location);
 
