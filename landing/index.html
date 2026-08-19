@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SURFOCUS（サーフォーカス）| ひとりで続ける、サーフィンの記録・目標管理アプリ</title>
+<meta name="description" content="SURFOCUSは、コソ練を続けるサーファーのための記録・目標管理アプリ。コンディションの記録、伸ばしたい技術の管理、練習の振り返りまで。アカウント登録不要、データは端末内に保存されます。">
+<link rel="canonical" href="https://surfocus.app/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SURFOCUS">
+<meta property="og:title" content="SURFOCUS | ひとりで続ける、サーフィンの記録・目標管理アプリ">
+<meta property="og:description" content="コソ練を続けるサーファーのための記録・目標管理アプリ。アカウント登録不要、データは端末内に保存されます。">
+<meta property="og:url" content="https://surfocus.app/">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SURFOCUS",
+  "alternateName": "サーフォーカス",
+  "url": "https://surfocus.app/",
+  "applicationCategory": "SportsApplication",
+  "operatingSystem": "Web",
+  "description": "コソ練を続けるサーファーのための記録・目標管理アプリ。コンディションの記録、伸ばしたい技術の管理、練習の振り返りができる。アカウント登録不要、データは端末内に保存。",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "JPY"
+  },
+  "datePublished": "2026-08"
+}
+</script>
+
+<style>
+  :root{
+    --navy: #12172a;
+    --navy-soft: #1c2338;
+    --orange: #d9730d;
+    --orange-soft: #f0964a;
+    --cream: #faf9f6;
+    --ink: #1f2430;
+    --muted: #6b7280;
+    --line: #e8e6df;
+    --radius: 20px;
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  img{ max-width:100%; display:block; }
+
+  .wrap{ max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  /* Hero */
+  .hero{
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-soft) 100%);
+    color: #f4f3ee;
+    padding: 64px 0 88px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:12px;
+    font-weight:800;
+    font-size: clamp(26px, 3.4vw, 34px);
+    letter-spacing: -0.01em;
+  }
+  .brand-dot{
+    width:13px; height:13px; border-radius:50%;
+    background: var(--orange);
+    box-shadow: 0 0 0 5px rgba(217,115,13,0.25);
+    flex-shrink: 0;
+  }
+  .badge{
+    display:inline-block;
+    margin-top: 40px;
+    padding: 6px 14px;
+    border: 1px solid rgba(244,243,238,0.35);
+    border-radius: 999px;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: #e4e2da;
+  }
+  .hero h1{
+    font-size: clamp(32px, 5vw, 48px);
+    line-height: 1.4;
+    margin: 24px 0 16px;
+    font-weight: 800;
+  }
+  .hero p.lead{
+    font-size: 17px;
+    color: #cfcdc3;
+    max-width: 46em;
+    margin: 0 0 36px;
+  }
+  .cta{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    background: var(--orange);
+    color: #fff;
+    text-decoration:none;
+    font-weight: 700;
+    padding: 15px 28px;
+    border-radius: 14px;
+    font-size: 16px;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .cta:hover{ background: var(--orange-soft); transform: translateY(-1px); }
+  .cta-sub{
+    margin-top:14px;
+    font-size: 13px;
+    color: #9a988e;
+  }
+
+  .hero-grid{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap: 40px;
+  }
+  .hero-copy{ flex: 1 1 auto; min-width: 0; }
+  .hero-qr{
+    flex: 0 0 auto;
+    background: #fff;
+    border-radius: 18px;
+    padding: 18px 18px 14px;
+    text-align: center;
+    box-shadow: 0 16px 34px rgba(0,0,0,0.28);
+  }
+  .hero-qr img{ width: 128px; height: 128px; border-radius: 6px; }
+  .hero-qr .qr-cap{
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 0.02em;
+  }
+
+  /* Sections */
+  section{ padding: 72px 0; }
+  .eyebrow{
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+  h2{
+    font-size: clamp(24px, 3.4vw, 32px);
+    margin: 0 0 12px;
+    font-weight: 800;
+  }
+  .section-lead{
+    color: var(--muted);
+    max-width: 42em;
+    margin: 0 0 40px;
+    font-size: 16px;
+  }
+
+  /* Steps */
+  .steps{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .step{
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+  }
+  .step-num{
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--orange);
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+  }
+  .step h3{
+    font-size: 18px;
+    margin: 0 0 10px;
+    font-weight: 700;
+  }
+  .step p{
+    font-size: 14.5px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* Privacy band */
+  .band{
+    background: var(--navy);
+    color: #f4f3ee;
+    border-radius: 24px;
+  }
+  .band .wrap{ padding: 56px 40px; }
+  .band h2{ color: #fff; }
+  .band .section-lead{ color: #c9c7bd; }
+  .privacy-points{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 8px;
+  }
+  .pp{
+    border-top: 1px solid rgba(244,243,238,0.18);
+    padding-top: 16px;
+    font-size: 14.5px;
+    color: #d8d6cc;
+  }
+  .pp b{ display:block; color:#fff; font-size:15px; margin-bottom:6px; }
+
+  /* Story teaser */
+  .story{
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    padding: 40px;
+    background: #fff;
+  }
+  .story .eyebrow{ color: var(--muted); }
+  .story h2{ margin-bottom: 14px; }
+  .story p{ color: var(--muted); max-width: 42em; }
+  .soon{
+    display:inline-block;
+    margin-top: 18px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--orange);
+  }
+
+  /* Footer */
+  footer{
+    padding: 40px 0 60px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+  footer .foot-row{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+  }
+  footer a.foot-cta{ color: var(--ink); font-weight:700; text-decoration:none; }
+  footer a.foot-cta:hover{ text-decoration:underline; }
+  footer .copyright{
+    margin-top: 16px;
+    font-size: 12px;
+    color: #9a978c;
+  }
+
+  @media (max-width: 760px){
+    .steps{ grid-template-columns: 1fr; }
+    .privacy-points{ grid-template-columns: 1fr; }
+    .band .wrap{ padding: 40px 24px; }
+    section{ padding: 56px 0; }
+    .hero-grid{ flex-direction: column; align-items: flex-start; }
+    .hero-qr{ display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="brand"><span class="brand-dot"></span>SURFOCUS</div>
+        <span class="badge">2026.08 Since</span>
+        <h1>サーフィンのコソ練を、<br>ちゃんと積み上げる。</h1>
+        <p class="lead">
+          SURFOCUSは、ひとりで練習を続けるサーファーのための記録・目標管理アプリです。
+          今日のコンディションも、伸ばしたい技術も、静かに記録していくだけ。
+          積み重ねた分だけ、自分の変化が見えるようになります。
+        </p>
+        <a class="cta" href="https://app.surfocus.app/">アプリを開く →</a>
+        <div class="cta-sub">アカウント登録不要・今すぐ使えます</div>
+      </div>
+      <div class="hero-qr">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAAEiCAIAAADS3EjhAAAFB0lEQVR4nO3dsbEbNxRAUX+PO3CiHtx/KepBiWtYpYowY+FfP2D/OTm5uyTvIOAb4ON5nj+A0p/TNwDvJzPIyQxyMoOczCAnM8jJDHIyg5zMICczyMkMcjKDnMwgJzPIyQxyMoOczCAnM8jJDHJ/7bz472//fNZ9HOLfH9+jd15/VjvX3fkWpp73RjufldUMcjKDnMwgJzPIyQxyMoOczCAnM8jJDHJbUyBr3YTBjp3phDMnOda6u9p55/f9NtasZpCTGeRkBjmZQU5mkJMZ5GQGOZlBTmaQC6dA1s6ce9hx454cX20aY+p5rWaQkxnkZAY5mUFOZpCTGeRkBjmZQU5mkBubAuFXO7Ma3Wv5LFYzyMkMcjKDnMwgJzPIyQxyMoOczCAnM8iZAvkPpiYqzIjczmoGOZlBTmaQkxnkZAY5mUFOZpCTGeRkBrmxKZAzzyLZsfNEZ57b8tWu27GaQU5mkJMZ5GQGOZlBTmaQkxnkZAY5mUEunAJ5304SZ+7J0c1MdNd9329jzWoGOZlBTmaQkxnkZAY5mUFOZpCTGeRkBrmP53mm7+EaU7MLZ85bvG/Hjo7VDHIyg5zMICczyMkMcjKDnMwgJzPIyQxyW3uBnHmOyVp3z1OzGlNzHjvX/WpzLVYzyMkMcjKDnMwgJzPIyQxyMoOczCAnM8htTYGceQbKjWevrN14Mks3QXIjqxnkZAY5mUFOZpCTGeRkBjmZQU5mkJMZ5LamQHZMzVucOV+ydubkyo3Pu35t90lazSAnM8jJDHIyg5zMICczyMkMcjKDnMwgNzYFMrVXxJl7VJw5fdKZ2lVl6rOymkFOZpCTGeRkBjmZQU5mkJMZ5GQGOZlB7tC9QHacuXPG2pmzGp2db2HqO9phNYOczCAnM8jJDHIyg5zMICczyMkMcjKD3NYUyNTpKms37pxx5vNOnerSmZoBsppBTmaQkxnkZAY5mUFOZpCTGeRkBjmZQW5sL5C1qRmRztRUxJl7rqx10yc71915Z6sZ5GQGOZlBTmaQkxnkZAY5mUFOZpCTGeTGpkCmpiK6/R6m9tVYO/MEnLVu/5KpX53VDHIyg5zMICczyMkMcjKDnMwgJzPIyQxyH8/z/PaLpyYMzvynf+3Mu7rR1ElDO6xmkJMZ5GQGOZlBTmaQkxnkZAY5mUFOZpDbmgL5am6cetl557Ubn3eK1QxyMoOczCAnM8jJDHIyg5zMICczyMkMclsnwrxvB4v1hMGZ8xZnvvONkxzdPVvNICczyMkMcjKDnMwgJzPIyQxyMoOczCC3NQWyduM//Z0zJzm6T8O3/yurGeRkBjmZQU5mkJMZ5GQGOZlBTmaQkxnkwimQtffNH3RPdOaeKzfe1dRvw2oGOZlBTmaQkxnkZAY5mUFOZpCTGeRkBrmxKZD36Xb72LnuWjczMTWNMbXnyprVDHIyg5zMICczyMkMcjKDnMwgJzPIyQxypkA+zdRExZm6OY+p03N2WM0gJzPIyQxyMoOczCAnM8jJDHIyg5zMIDc2BTJ1NkfnfU905rzFjZ+z1QxyMoOczCAnM8jJDHIyg5zMICczyMkMcuEUyI07WKzt7PZx5tyDU2z+H1YzyMkMcjKDnMwgJzPIyQxyMoOczCAnM8h9PM8zfQ/wclYzyMkMcjKDnMwgJzPIyQxyMoOczCAnM8jJDHIyg5zMICczyMkMcjKDnMwgJzPIyQxyMoPcT+ZidRr+tiiCAAAAAElFTkSuQmCC" alt="SURFOCUSアプリを開くQRコード" width="128" height="128">
+        <div class="qr-cap">スマホで読み取って開く</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="how">
+  <div class="wrap">
+    <p class="eyebrow">How it works</p>
+    <h2>使い方</h2>
+    <p class="section-lead">むずかしい設定はありません。3つのステップで、練習の記録が積み上がっていきます。</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>今日のコンディションを記録</h3>
+        <p>波のサイズ、風向き、使うボードを選ぶだけ。「GO SURF!」でその日のセッションを記録できます。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>伸ばしたい技術を設定</h3>
+        <p>テイクオフ、ボトムターン、パドリングなど、自分だけの「Focus Tasks」を設定。気づいたコツもメモに残せます。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>振り返って、次に活かす</h3>
+        <p>セッション後の満足度や課題ごとのスコアをダッシュボードで確認。練習の配分や成長の推移が一目でわかります。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap band">
+    <div class="wrap">
+      <p class="eyebrow">Privacy first</p>
+      <h2>誰にも見せない、自分だけの記録。</h2>
+      <p class="section-lead">SNSで発信するためのアプリではありません。淡々と、自分のペースで積み上げるためのものです。</p>
+      <div class="privacy-points">
+        <div class="pp"><b>アカウント登録不要</b>今すぐ、ログインなしで使い始められます。</div>
+        <div class="pp"><b>データは端末内に保存</b>記録が外部のサーバーに送信されることはありません。</div>
+        <div class="pp"><b>いつでもバックアップ</b>記録・課題・目標をJSON形式で書き出し、機種変更時も復元できます。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="story">
+  <div class="wrap">
+    <div class="story">
+      <p class="eyebrow">Story</p>
+      <h2>なぜSURFOCUSを作ったのか</h2>
+      <p>開発の背景や、ここに至るまで考えていたことは、近いうちに記事としてまとめる予定です。まずは実際にアプリを使ってみてください。</p>
+      <span class="soon">近日公開</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div>SURFOCUS — 2026年8月 公開</div>
+      <a class="foot-cta" href="https://app.surfocus.app/">アプリを開く →</a>
+    </div>
+    <div class="copyright">© 2026 OH! OCEAN. All rights reserved.</div>
+  </div>
+</footer>
+
+</body>
+</html>
