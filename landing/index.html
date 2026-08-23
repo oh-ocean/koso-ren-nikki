@@ -76,11 +76,17 @@
     color: #f4f3ee;
     padding: 64px 0 88px;
   }
+  .hero-nav{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom: 40px;
+  }
   .brand{
     display:flex; align-items:center; gap:12px;
     font-weight:800;
-    font-size: clamp(26px, 3.4vw, 34px);
+    font-size: clamp(22px, 3vw, 28px);
     letter-spacing: -0.01em;
+    text-decoration:none;
+    color: #f4f3ee;
   }
   .brand-dot{
     width:13px; height:13px; border-radius:50%;
@@ -88,6 +94,13 @@
     box-shadow: 0 0 0 5px rgba(217,115,13,0.25);
     flex-shrink: 0;
   }
+  .nav-link{
+    font-size: 14px;
+    font-weight: 700;
+    color: #cfcdc3;
+    text-decoration:none;
+  }
+  .nav-link:hover{ color: #f4f3ee; }
   .badge{
     display:inline-block;
     margin-top: 40px;
@@ -229,6 +242,37 @@
   }
   .pp b{ display:block; color:#fff; font-size:15px; margin-bottom:6px; }
 
+  /* Blog teaser */
+  .post-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .post-card{
+    display:block;
+    background:#fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow:hidden;
+    text-decoration:none;
+    color: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .post-card:hover{ transform: translateY(-2px); box-shadow: 0 16px 34px rgba(0,0,0,0.08); }
+  .post-card img{ width:100%; height: 160px; object-fit: cover; }
+  .post-card-body{ padding: 20px 22px 24px; }
+  .post-date{ font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .post-card h3{ font-size: 16.5px; margin: 0 0 10px; font-weight: 700; }
+  .post-card p{ font-size: 13.5px; color: var(--muted); margin:0; }
+  .blog-teaser-footer{ margin-top: 28px; }
+  .blog-teaser-footer a{
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    text-decoration:none;
+  }
+  .blog-teaser-footer a:hover{ text-decoration:underline; }
+
   /* Story teaser */
   .story{
     border: 1px dashed var(--line);
@@ -267,6 +311,7 @@
 
   @media (max-width: 760px){
     .steps{ grid-template-columns: 1fr; }
+    .post-grid{ grid-template-columns: 1fr; }
     .privacy-points{ grid-template-columns: 1fr; }
     .band .wrap{ padding: 40px 24px; }
     section{ padding: 56px 0; }
@@ -281,7 +326,10 @@
   <div class="wrap">
     <div class="hero-grid">
       <div class="hero-copy">
-        <div class="brand"><span class="brand-dot"></span>SURFOCUS</div>
+        <div class="hero-nav">
+          <a class="brand" href="/"><span class="brand-dot"></span>SURFOCUS</a>
+          <a class="nav-link" href="/blog/">ブログ</a>
+        </div>
         <span class="badge">2026.08 Since</span>
         <h1>サーフィンのコソ練を、<br>ちゃんと積み上げる。</h1>
         <p class="lead">
@@ -336,6 +384,29 @@
         <div class="pp"><b>データは端末内に保存</b>記録が外部のサーバーに送信されることはありません。</div>
         <div class="pp"><b>いつでもバックアップ</b>記録・課題・目標をJSON形式で書き出し、機種変更時も復元できます。</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="blog-teaser">
+  <div class="wrap">
+    <p class="eyebrow">Blog</p>
+    <h2>最新の記事</h2>
+    <p class="section-lead">サーフィンの一人練習(コソ練)にまつわる考え方や、上達のコツを綴っています。</p>
+    <div class="post-grid">
+<!-- BLOG_TEASER_CARDS_START -->
+      <a class="post-card" href="https://surfocus.app/blog/kosoren-mokuhyo-to-kiroku/">
+        <img src="/images/blog/jameson-heath-fyr7vyHo_l4-unsplash.jpg" alt="一人でサーフィン練習の様子" loading="lazy">
+        <div class="post-card-body">
+          <div class="post-date">2026年8月23日</div>
+          <h3>サーフィン一人練習（コソ練）で上達するための目標設定と記録のコツ</h3>
+          <p>サーフィンの一人練習（コソ練）で上達しない原因は、練習量ではなく目標の解像度かもしれません。海に入る前の1分間の使い方と記録の習慣を、SURFOCUS開発者自身の実体験から解説します。</p>
+        </div>
+      </a>
+<!-- BLOG_TEASER_CARDS_END -->
+    </div>
+    <div class="blog-teaser-footer">
+      <a href="/blog/">ブログ一覧を見る →</a>
     </div>
   </div>
 </section>

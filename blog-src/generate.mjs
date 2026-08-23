@@ -424,6 +424,34 @@ ${entries}
 `;
 }
 
+function renderLpTeaserCards(posts) {
+  return posts.slice(0, 3).map(p => `      <a class="post-card" href="${SITE_URL}/blog/${p.slug}/">
+        <img src="${p.eyecatchImage}" alt="${escapeHtml(p.eyecatchAlt)}" loading="lazy">
+        <div class="post-card-body">
+          <div class="post-date">${formatDateJa(p.datePublished)}</div>
+          <h3>${escapeHtml(p.heading)}</h3>
+          <p>${escapeHtml(p.description)}</p>
+        </div>
+      </a>`).join('\n');
+}
+
+function updateLpBlogTeaser(posts) {
+  const lpPath = path.join(LANDING_DIR, 'index.html');
+  const html = readFileSync(lpPath, 'utf-8');
+  const startMarker = '<!-- BLOG_TEASER_CARDS_START -->';
+  const endMarker = '<!-- BLOG_TEASER_CARDS_END -->';
+  const startIdx = html.indexOf(startMarker);
+  const endIdx = html.indexOf(endMarker);
+  if (startIdx === -1 || endIdx === -1) {
+    console.warn('Blog teaser markers not found in landing/index.html; skipping LP update.');
+    return;
+  }
+  const before = html.slice(0, startIdx + startMarker.length);
+  const after = html.slice(endIdx);
+  const cards = renderLpTeaserCards(posts);
+  writeFileSync(lpPath, `${before}\n${cards}\n${after}`);
+}
+
 function main() {
   const posts = loadPosts();
 
@@ -437,10 +465,11 @@ function main() {
   }
 
   writeFileSync(path.join(LANDING_DIR, 'sitemap.xml'), renderSitemap(posts));
+  updateLpBlogTeaser(posts);
 
   console.log(`Generated ${posts.length} post(s):`);
   for (const p of posts) console.log(`  - /blog/${p.slug}/`);
-  console.log('Generated /blog/index.html and /sitemap.xml');
+  console.log('Generated /blog/index.html, /sitemap.xml, and updated LP blog teaser');
 }
 
 main();
