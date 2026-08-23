@@ -190,33 +190,45 @@
   }
 
   /* Steps */
-  .steps{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+  .feature-rows{
+    display: flex;
+    flex-direction: column;
+    gap: 72px;
+    margin-top: 48px;
   }
-  .step{
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 28px 24px;
+  .feature-row{
+    display: flex;
+    align-items: center;
+    gap: 64px;
   }
-  .step-num{
-    font-size: 13px;
+  .feature-row--reverse{ flex-direction: row-reverse; }
+  .feature-shot{
+    flex: 0 0 320px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 24px 48px rgba(18,23,42,0.18);
+  }
+  .feature-shot img{ width: 100%; display: block; }
+  .feature-copy{ flex: 1 1 auto; min-width: 0; }
+  .feature-num{
+    font-size: 14px;
     font-weight: 800;
     color: var(--orange);
-    letter-spacing: 0.06em;
-    margin-bottom: 14px;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
   }
-  .step h3{
-    font-size: 18px;
-    margin: 0 0 10px;
-    font-weight: 700;
+  .feature-copy h3{
+    font-size: clamp(20px, 2.6vw, 26px);
+    margin: 0 0 14px;
+    font-weight: 800;
+    color: var(--navy);
   }
-  .step p{
-    font-size: 14.5px;
+  .feature-copy p{
+    font-size: 16px;
     color: var(--muted);
     margin: 0;
+    max-width: 38em;
   }
 
   /* Privacy band */
@@ -310,13 +322,21 @@
   }
 
   @media (max-width: 760px){
-    .steps{ grid-template-columns: 1fr; }
     .post-grid{ grid-template-columns: 1fr; }
     .privacy-points{ grid-template-columns: 1fr; }
     .band .wrap{ padding: 40px 24px; }
     section{ padding: 56px 0; }
     .hero-grid{ flex-direction: column; align-items: flex-start; }
     .hero-qr{ display: none; }
+    .feature-rows{ gap: 48px; }
+    .feature-row, .feature-row--reverse{
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 28px;
+    }
+    .feature-shot{ flex-basis: auto; width: 220px; }
+    .feature-copy p{ margin: 0 auto; }
   }
 </style>
 </head>
@@ -353,21 +373,36 @@
     <p class="eyebrow">How it works</p>
     <h2>使い方</h2>
     <p class="section-lead">むずかしい設定はありません。3つのステップで、練習の記録が積み上がっていきます。</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">01</div>
-        <h3>今日のコンディションを記録</h3>
-        <p>波のサイズ、風向き、使うボードを選ぶだけ。「GO SURF!」でその日のセッションを記録できます。</p>
+    <div class="feature-rows">
+      <div class="feature-row">
+        <div class="feature-shot">
+          <img src="/images/steps/step01_conditions.png" alt="サーフィンのコンディション（波のサイズ・風向き）を記録する画面" loading="lazy">
+        </div>
+        <div class="feature-copy">
+          <div class="feature-num">STEP 01</div>
+          <h3>今日のコンディションを記録</h3>
+          <p>波のサイズ、風向き、使うボードを選ぶだけ。「GO SURF!」でその日のセッションを記録できます。</p>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <h3>伸ばしたい技術を設定</h3>
-        <p>テイクオフ、ボトムターン、パドリングなど、自分だけの「Focus Tasks」を設定。気づいたコツもメモに残せます。</p>
+      <div class="feature-row feature-row--reverse">
+        <div class="feature-shot">
+          <img src="/images/steps/step02_focus_tasks.png" alt="上達させたい技術（Focus Tasks）を設定する画面" loading="lazy">
+        </div>
+        <div class="feature-copy">
+          <div class="feature-num">STEP 02</div>
+          <h3>伸ばしたい技術を設定</h3>
+          <p>テイクオフ、ボトムターン、パドリングなど、自分だけの「Focus Tasks」を設定。気づいたコツもメモに残せます。</p>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <h3>振り返って、次に活かす</h3>
-        <p>セッション後の満足度や課題ごとのスコアをダッシュボードで確認。練習の配分や成長の推移が一目でわかります。</p>
+      <div class="feature-row">
+        <div class="feature-shot">
+          <img src="/images/steps/step03_trend.png" alt="練習の記録をグラフで振り返る画面" loading="lazy">
+        </div>
+        <div class="feature-copy">
+          <div class="feature-num">STEP 03</div>
+          <h3>振り返って、次に活かす</h3>
+          <p>セッション後の満足度や課題ごとのスコアをダッシュボードで確認。練習の配分や成長の推移が一目でわかります。</p>
+        </div>
       </div>
     </div>
   </div>
