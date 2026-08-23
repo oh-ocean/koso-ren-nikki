@@ -409,6 +409,7 @@ ${footer()}
 function renderSitemap(posts) {
   const urls = [
     { loc: `${SITE_URL}/`, priority: '1.0' },
+    { loc: `${SITE_URL}/en/`, priority: '0.9' },
     { loc: `${SITE_URL}/blog/`, priority: '0.8' },
     ...posts.map(p => ({ loc: `${SITE_URL}/blog/${p.slug}/`, priority: '0.7', lastmod: p.datePublished })),
   ];
