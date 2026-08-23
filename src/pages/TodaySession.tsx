@@ -194,6 +194,9 @@ const TodaySession = ({
                       </button>
                     ))}
                   </div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1.5 ml-0.5">
+                    {windOptions.find(option => option.id === windDirection)?.label}
+                  </p>
                 </div>
 
                 <div>

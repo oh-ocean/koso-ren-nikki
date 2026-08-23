@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Wind } from 'lucide-react';
+import { WindArrowDown } from 'lucide-react';
 
 export interface ConditionOption {
   id: string;
@@ -101,10 +101,10 @@ export const waveOptions: ConditionOption[] = [
 ];
 
 export const windOptions: ConditionOption[] = [
-  { id: 'onshore', icon: <Wind size={24} />, label: 'Onshore' },
-  { id: 'sideshore-left', icon: <Wind size={24} className="rotate-90" />, label: 'Sideshore Left' },
-  { id: 'sideshore-right', icon: <Wind size={24} className="-rotate-90" />, label: 'Sideshore Right' },
-  { id: 'offshore', icon: <Wind size={24} className="rotate-180" />, label: 'Offshore' },
+  { id: 'sideshore-left', icon: <WindArrowDown size={24} className="rotate-90" />, label: 'Side Shore Left' },
+  { id: 'offshore', icon: <WindArrowDown size={24} className="rotate-180" />, label: 'Off Shore' },
+  { id: 'onshore', icon: <WindArrowDown size={24} />, label: 'On Shore' },
+  { id: 'sideshore-right', icon: <WindArrowDown size={24} className="-rotate-90" />, label: 'Side Shore Right' },
 ];
 
 export function findOption(options: ConditionOption[], id: string): ConditionOption | undefined {
