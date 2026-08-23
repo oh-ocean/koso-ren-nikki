@@ -102,8 +102,8 @@ export const waveOptions: ConditionOption[] = [
 
 export const windOptions: ConditionOption[] = [
   { id: 'sideshore-left', icon: <Wind size={24} />, label: 'Side Shore Left' },
-  { id: 'offshore', icon: <Wind size={24} className="rotate-90" />, label: 'Off Shore' },
-  { id: 'onshore', icon: <Wind size={24} className="-rotate-90" />, label: 'On Shore' },
+  { id: 'offshore', icon: <Wind size={24} className="-rotate-90" />, label: 'Off Shore' },
+  { id: 'onshore', icon: <Wind size={24} className="rotate-90" />, label: 'On Shore' },
   { id: 'sideshore-right', icon: <Wind size={24} className="rotate-180" />, label: 'Side Shore Right' },
 ];
 
