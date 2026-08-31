@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>テイクオフ練習で学んだ「割り切れなさ」との付き合い方｜SURFOCUS</title>
+<meta name="description" content="仕事のタスク管理術を、サーフィンのテイクオフ練習に持ち込んだら、まったく通用しなかった話。分解できない練習とどう付き合っているかを、SURFOCUS開発者自身の実体験から解説します。">
+<link rel="canonical" href="https://surfocus.app/blog/wakerarenasa-to-no-tsukiaikata/">
+<link rel="icon" type="image/png" href="/favicon.png">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="SURFOCUS">
+<meta property="og:title" content="分解すればうまくなる、と思っていた。サーフィンで学んだ「割り切れなさ」との付き合い方">
+<meta property="og:description" content="タスク管理術がサーフィンの練習には全然効かなかった、という失敗談から見えてきたこと。">
+<meta property="og:url" content="https://surfocus.app/blog/wakerarenasa-to-no-tsukiaikata/">
+<meta property="og:image" content="https://surfocus.app/images/blog/gian-luca-pilia-KxQYNqp329Y-unsplash.jpg">
+<meta property="article:published_time" content="2026-08-31">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "分解すればうまくなる、と思っていた。サーフィンの練習で学んだ「割り切れなさ」との付き合い方",
+  "description": "仕事のタスク管理術を、サーフィンのテイクオフ練習に持ち込んだら、まったく通用しなかった話。分解できない練習とどう付き合っているかを、SURFOCUS開発者自身の実体験から解説します。",
+  "image": "https://surfocus.app/images/blog/gian-luca-pilia-KxQYNqp329Y-unsplash.jpg",
+  "datePublished": "2026-08-31",
+  "author": {
+    "@type": "Organization",
+    "name": "OH! OCEAN"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SURFOCUS"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://surfocus.app/blog/wakerarenasa-to-no-tsukiaikata/"
+  }
+}
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-13NN0GFJT8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-13NN0GFJT8');
+</script>
+
+<style>
+  :root{
+    --navy: #12172a;
+    --navy-soft: #1c2338;
+    --orange: #d9730d;
+    --orange-soft: #f0964a;
+    --cream: #faf9f6;
+    --ink: #1f2430;
+    --muted: #6b7280;
+    --line: #e8e6df;
+    --radius: 20px;
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  img{ max-width:100%; display:block; }
+  .wrap{ max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  nav.topbar{
+    background: var(--navy);
+    color: #f4f3ee;
+    padding: 22px 0;
+  }
+  nav.topbar .wrap{ display:flex; align-items:center; justify-content:space-between; }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-weight:800;
+    font-size: 20px;
+    text-decoration:none;
+    color:#f4f3ee;
+    letter-spacing: -0.01em;
+  }
+  .brand-dot{
+    width:11px; height:11px; border-radius:50%;
+    background: var(--orange);
+    box-shadow: 0 0 0 4px rgba(217,115,13,0.25);
+    flex-shrink: 0;
+  }
+  .nav-cta{
+    display:inline-flex; align-items:center; gap:6px;
+    background: var(--orange);
+    color:#fff; text-decoration:none; font-weight:700;
+    padding: 9px 18px; border-radius: 999px; font-size: 14px;
+  }
+
+  section{ padding: 56px 0; }
+  .eyebrow{
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+  h1{
+    font-size: clamp(28px, 4.4vw, 40px);
+    line-height: 1.4;
+    margin: 8px 0 16px;
+    font-weight: 800;
+    color: var(--navy);
+  }
+  .section-lead{
+    color: var(--muted);
+    max-width: 42em;
+    margin: 0 0 8px;
+    font-size: 16px;
+  }
+
+  /* Post cards (index) */
+  .post-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 32px;
+  }
+  .post-card{
+    display:block;
+    background:#fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow:hidden;
+    text-decoration:none;
+    color: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .post-card:hover{ transform: translateY(-2px); box-shadow: 0 16px 34px rgba(0,0,0,0.08); }
+  .post-card img{ width:100%; height: 200px; object-fit: cover; }
+  .post-card-body{ padding: 22px 24px 26px; }
+  .post-date{ font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
+  .post-card h2{ font-size: 18px; margin: 0 0 10px; font-weight: 700; color: var(--navy); }
+  .post-card p{ font-size: 14px; color: var(--muted); margin:0; }
+
+  /* Article page */
+  .article-meta{ font-size: 13.5px; color: var(--muted); margin-bottom: 28px; }
+  .eyecatch{
+    border-radius: var(--radius);
+    margin-bottom: 40px;
+  }
+  article h2{
+    font-size: 22px;
+    color: var(--navy);
+    margin: 40px 0 16px;
+    font-weight: 800;
+  }
+  article p{ font-size: 16px; color: var(--ink); margin: 0 0 20px; }
+
+  .band{
+    background: var(--navy);
+    color: #f4f3ee;
+    border-radius: 24px;
+    padding: 44px 40px;
+    text-align:center;
+    margin-top: 48px;
+  }
+  .band h2{ color:#fff; margin: 0 0 12px; font-size: 22px; }
+  .band p{ color: #c9c7bd; margin: 0 0 24px; }
+  .cta{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    background: var(--orange);
+    color: #fff;
+    text-decoration:none;
+    font-weight: 700;
+    padding: 14px 26px;
+    border-radius: 14px;
+    font-size: 15px;
+  }
+  .cta:hover{ background: var(--orange-soft); }
+
+  .back-link{
+    display:inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    text-decoration:none;
+    margin-bottom: 24px;
+  }
+  .back-link:hover{ color: var(--ink); }
+
+  footer{
+    padding: 40px 0 60px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+  footer .foot-row{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+  }
+  footer a.foot-cta{ color: var(--ink); font-weight:700; text-decoration:none; }
+  footer a.foot-cta:hover{ text-decoration:underline; }
+  footer .copyright{
+    margin-top: 16px;
+    font-size: 12px;
+    color: #9a978c;
+  }
+
+  @media (max-width: 760px){
+    .post-grid{ grid-template-columns: 1fr; }
+    section{ padding: 40px 0; }
+    .band{ padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;">
+    <a class="brand" href="https://surfocus.app/"><span class="brand-dot"></span>SURFOCUS</a>
+    <a class="nav-cta" href="https://app.surfocus.app/">アプリを開く →</a>
+  </div>
+</nav>
+<div class="wrap">
+  <section>
+    <a class="back-link" href="https://surfocus.app/blog/">← ブログ一覧に戻る</a>
+    <p class="eyebrow">Blog</p>
+    <h1>分解すればうまくなる、と思っていた。サーフィンの練習で学んだ「割り切れなさ」との付き合い方</h1>
+    <p class="article-meta">2026年8月31日 · OH! OCEAN</p>
+    <img class="eyecatch" src="/images/blog/gian-luca-pilia-KxQYNqp329Y-unsplash.jpg" alt="サーフボードの上からパドリングする一人称視点の風景">
+    <article>
+<p>SURFOCUSというアプリを作っている者です。サーフィンのコーチでも指導者でもなく、普段は企画など制作界隈の仕事をしながら、時間を作って一人で海に入る、いちコソ練サーファーをしています。この記事は、仕事で当たり前に使っていたやり方を練習に持ち込んで、見事にうまくいかなかった話です。うまくいった話より、こういう失敗談の方が、案外参考になることもあるかなと思って書いています。</p>
+<h2>タスクを分解すれば、前に進めるはずだった</h2>
+<p>仕事では、大きな案件ほど、大項目・中項目・小項目とタスクを分解して管理してきました。何が終わっていて、何が残っているかを可視化して、必要なところに力をかける。プロジェクトを前に進めるための、いつものやり方です。</p>
+<p>サーフィンに復帰したとき、これがそのまま使えると思いました。上達も結局はプロジェクトのようなもので、大きな目標を小さなタスクに分解すれば、一つずつ潰していける。特にテイクオフは自分の弱点だと分かっていたので、これを分解して、順番に強化していこうと考えたのです。仕事のプロジェクトを何本も走らせてきた経験からすれば、ごく自然な発想でした。</p>
+<h2>分解してみたら、全然終わらなかった</h2>
+<p>実際にやってみると、テイクオフという一つの動作の中に、波の見方、波選び、パドルの姿勢、波を迎えにいくタイミング、ピークとの距離の測り方、といった要素がいくらでも出てきます。一つを強化しようとすると、それに絡む項目がまた見つかる。波の見方を良くしようとすれば、そもそも波を見るためのポジショニングが関わってくる。ポジショニングを良くしようとすれば、今度はパドルの持久力という壁にぶつかる。</p>
+<p>仕事のタスクなら、ここで「これは今回のスコープ外」と線を引けます。でもサーフィンの練習は、そう都合よく切り分けられません。切り分けようとすればするほど、リストは長くなっていく。終わらない。ただそれだけが、分かりました。</p>
+<h2>要素同士が、グラデーションでつながっている</h2>
+<p>しばらくして気づいたのは、これらの要素が、独立したチェック項目としては存在していない、ということでした。仕事のタスクは、基本的には一つ一つが独立していて、順番に終わらせていけます。でもテイクオフに関わる要素は、それぞれがグラデーションで重なり合っていて、境界線がありません。波の見方が少し変われば、パドルの姿勢も変わってしまう。パドルの姿勢が変われば、今度は波を迎えにいくタイミングまで狂う。どこか一つだけを固定して、残りを分解して片づける、ということができない構造でした。</p>
+<p>正直、最初は「自分のやり方が甘いのかな」と思っていました。もっと細かく分解すれば、いつか終わるはずだと。ある日、「今日はパドルの姿勢だけに集中する」と決めて海に入りました。板の上で何度も繰り返し確認しながら。なのに、気づけば波の見方のことばかり考えている。一つに絞ったつもりが、絞りきれない。分解は、幻想だったのかもしれません。そのとき初めて、そもそも終わらせようとすること自体が、この練習の性質に合っていなかったんだと考え直しました。</p>
+<h2>一つずつ試して、また試すしかない</h2>
+<p>今は、分解して片づける、というやり方は手放しています。代わりにやっているのは、一トピックずつ試して、しばらく継続してみて、また試して、変化を振り返る、というシンプルな繰り返しです。今日はパドルの姿勢に意識を向ける。次の何回かは、それを続けながら波の見方にも目を向けてみる。うまくいかなければ、また戻ればいい。きれいに完了していく感覚はありませんが、代わりに、少しずつ全体がなじんでいく感覚があります。</p>
+<p>タスクリストのようにチェックを付けていく達成感はありません。でも、この分解できない過程自体が、大変さであると同時に、面白さでもあるなと今は感じています。仕事で信じていたやり方がそのまま通用しなかったのは、正直拍子抜けでした。ただ、通用しない理由が分かったことの方が、むしろ収穫だったかもしれません。</p>
+<h2>記録は、分解の代わりになる</h2>
+<p>分解できないなら、せめて記録は残しておきたい、というのが今のやり方です。何に意識を向けた日だったか、それがどう変化したかを、短くてもいいので残しておく。あとで見返すと、独立したタスクの消化リストではなく、要素同士が少しずつ絡み合いながら変化してきた軌跡のようなものが見えてきます。</p>
+<p>SURFOCUSは、そうした分解しきれない練習の記録を、無理にきれいなチェックリストにせず、そのまま残しておける場所として作りました。項目を完了させることを目的にしていないので、今日は波の見方に寄り道した、という日があってもそのまま記録できます。まず一つ、記録してみてほしいです。それだけでいいので。</p>
+    </article>
+    <div class="band">
+      <h2>今日の練習を、次につなげる。</h2>
+      <p>SURFOCUSは、コソ練を続けるサーファーのための記録・目標管理アプリです。</p>
+      <a class="cta" href="https://app.surfocus.app/">アプリを開く →</a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div>SURFOCUS — 2026年8月 公開　·　<a class="foot-cta" href="https://surfocus.app/blog/">ブログ</a></div>
+      <a class="foot-cta" href="https://app.surfocus.app/">アプリを開く →</a>
+    </div>
+    <div class="copyright">© 2026 OH! OCEAN. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>
