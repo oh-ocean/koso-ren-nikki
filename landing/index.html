@@ -99,6 +99,7 @@
     flex-shrink: 0;
   }
   .nav-links{ display:flex; align-items:center; gap: 20px; }
+  .nav-label-short{ display:none; }
   .nav-link{
     font-size: 14px;
     font-weight: 700;
@@ -328,6 +329,9 @@
   }
 
   @media (max-width: 760px){
+    .nav-links{ gap: 12px; }
+    .nav-label-full{ display:none; }
+    .nav-label-short{ display:inline; }
     .post-grid{ grid-template-columns: 1fr; }
     .privacy-points{ grid-template-columns: 1fr; }
     .band .wrap{ padding: 40px 24px; }
@@ -353,6 +357,7 @@
     <div class="hero-nav">
       <a class="brand" href="/"><span class="brand-dot"></span>SURFOCUS</a>
       <div class="nav-links">
+        <a class="nav-link" href="/about/"><span class="nav-label-full">SURFOCUSとは</span><span class="nav-label-short">About</span></a>
         <a class="nav-link" href="/blog/">ブログ</a>
         <a class="nav-link" href="/en/">EN</a>
       </div>
@@ -413,6 +418,9 @@
           <p>セッション後の満足度や課題ごとのスコアをダッシュボードで確認。練習の配分や成長の推移が一目でわかります。</p>
         </div>
       </div>
+    </div>
+    <div class="blog-teaser-footer">
+      <a href="/about/">できること・できないこと・向いている人を詳しく見る →</a>
     </div>
   </div>
 </section>
