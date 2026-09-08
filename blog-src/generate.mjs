@@ -284,7 +284,7 @@ function footer() {
   return `<footer>
   <div class="wrap">
     <div class="foot-row">
-      <div>SURFOCUS — 2026年8月 公開　·　<a class="foot-cta" href="${SITE_URL}/blog/">ブログ</a></div>
+      <div>SURFOCUS — 2026年8月 公開　·　<a class="foot-cta" href="${SITE_URL}/about/">SURFOCUSとは</a>　·　<a class="foot-cta" href="${SITE_URL}/blog/">ブログ</a></div>
       <a class="foot-cta" href="https://app.surfocus.app/">アプリを開く →</a>
     </div>
     <div class="copyright">© 2026 OH! OCEAN. All rights reserved.</div>
@@ -410,6 +410,7 @@ function renderSitemap(posts) {
   const urls = [
     { loc: `${SITE_URL}/`, priority: '1.0' },
     { loc: `${SITE_URL}/en/`, priority: '0.9' },
+    { loc: `${SITE_URL}/about/`, priority: '0.8' },
     { loc: `${SITE_URL}/blog/`, priority: '0.8' },
     ...posts.map(p => ({ loc: `${SITE_URL}/blog/${p.slug}/`, priority: '0.7', lastmod: p.datePublished })),
   ];

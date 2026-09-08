@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SURFOCUSとは｜できること・向いている人・使い方</title>
+<meta name="description" content="SURFOCUSは、一人で練習する「コソ練」サーファーのための無料記録アプリです。できること・できないこと、向いている人・向いていない人、他のアプリとの違いをまとめています。">
+<link rel="canonical" href="https://surfocus.app/about/">
+<link rel="icon" type="image/png" href="/favicon.png">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-13NN0GFJT8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-13NN0GFJT8');
+</script>
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SURFOCUS">
+<meta property="og:title" content="SURFOCUSとは｜できること・向いている人・使い方">
+<meta property="og:description" content="SURFOCUSは、一人で練習する「コソ練」サーファーのための無料記録アプリです。できること・できないこと、向いている人・向いていない人、他のアプリとの違いをまとめています。">
+<meta property="og:url" content="https://surfocus.app/about/">
+<meta property="og:locale" content="ja_JP">
+
+<style>
+  :root{
+    --navy: #12172a;
+    --navy-soft: #1c2338;
+    --orange: #d9730d;
+    --orange-soft: #f0964a;
+    --cream: #faf9f6;
+    --ink: #1f2430;
+    --muted: #6b7280;
+    --line: #e8e6df;
+    --radius: 20px;
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  img{ max-width:100%; display:block; }
+  .wrap{ max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  nav.topbar{
+    background: var(--navy);
+    color: #f4f3ee;
+    padding: 22px 0;
+  }
+  nav.topbar .wrap{ max-width: 960px; display:flex; align-items:center; justify-content:space-between; }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-weight:800;
+    font-size: 20px;
+    text-decoration:none;
+    color:#f4f3ee;
+    letter-spacing: -0.01em;
+  }
+  .brand-dot{
+    width:11px; height:11px; border-radius:50%;
+    background: var(--orange);
+    box-shadow: 0 0 0 4px rgba(217,115,13,0.25);
+    flex-shrink: 0;
+  }
+  .nav-cta{
+    display:inline-flex; align-items:center; gap:6px;
+    background: var(--orange);
+    color:#fff; text-decoration:none; font-weight:700;
+    padding: 9px 18px; border-radius: 999px; font-size: 14px;
+  }
+
+  .page-header{ padding: 56px 0 8px; }
+  .eyebrow{
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+  h1{
+    font-size: clamp(28px, 4.4vw, 38px);
+    line-height: 1.4;
+    margin: 0 0 12px;
+    font-weight: 800;
+    color: var(--navy);
+  }
+  .lead{
+    font-size: 17px;
+    color: var(--muted);
+    margin: 0 0 8px;
+  }
+
+  section{ padding: 40px 0; border-top: 1px solid var(--line); }
+  section:first-of-type{ border-top: none; }
+  h2{
+    font-size: 22px;
+    margin: 0 0 20px;
+    font-weight: 800;
+    color: var(--navy);
+  }
+  p{ font-size: 16px; }
+
+  .plain-list{ margin: 0; padding-left: 1.3em; }
+  .plain-list li{ margin-bottom: 10px; font-size: 16px; }
+  .plain-list li:last-child{ margin-bottom: 0; }
+
+  .fact-list{ margin: 0; padding: 0; }
+  .fact-list div{
+    display:flex; gap: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px;
+  }
+  .fact-list div:last-child{ border-bottom: none; }
+  .fact-list dt{ flex: 0 0 140px; font-weight: 700; color: var(--navy); }
+  .fact-list dd{ margin: 0; color: var(--ink); }
+  .fact-list a{ color: var(--navy); font-weight: 700; text-decoration: underline; }
+
+  .table-scroll{ overflow-x: auto; }
+  table{ width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
+  th, td{ text-align: left; padding: 12px 14px; border: 1px solid var(--line); }
+  th{ background: #fff; color: var(--navy); font-weight: 700; }
+  td{ background: #fff; color: var(--muted); }
+  .table-note{ font-size: 13px; color: var(--muted); margin-top: 12px; }
+
+  .shot-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .shot-card{
+    margin: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 16px 32px rgba(18,23,42,0.14);
+    background: #fff;
+  }
+  .shot-card img{
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .shot-caption{
+    padding: 10px 14px 14px;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .blog-links{ margin: 0; padding-left: 1.3em; }
+  .blog-links li{ margin-bottom: 8px; }
+  .blog-links a{ color: var(--navy); font-weight: 700; text-decoration: underline; }
+
+  .cta{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    background: var(--orange);
+    color: #fff;
+    text-decoration:none;
+    font-weight: 700;
+    padding: 14px 26px;
+    border-radius: 14px;
+    font-size: 15px;
+  }
+  .cta:hover{ background: var(--orange-soft); }
+  .cta-outline{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    background: transparent;
+    color: var(--navy);
+    text-decoration:none;
+    font-weight: 700;
+    padding: 13px 25px;
+    border-radius: 14px;
+    font-size: 15px;
+    border: 2px solid var(--navy);
+  }
+  .cta-outline:hover{ background: rgba(18,23,42,0.06); }
+
+  /* Media section — visually distinct */
+  #media{
+    background: #f2ede2;
+    border-top: 3px solid var(--orange);
+    border-bottom: 3px solid var(--orange);
+    padding: 48px 0;
+    margin-top: 8px;
+  }
+  #media .eyebrow{ color: var(--navy); }
+  #media .media-note{
+    font-size: 13.5px;
+    color: var(--muted);
+    margin: -8px 0 24px;
+  }
+  #media ul{ margin: 16px 0 28px; padding-left: 1.3em; }
+  #media li{ font-size: 15px; margin-bottom: 6px; }
+
+  footer{
+    padding: 40px 0 60px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+  footer .wrap{ max-width: 960px; }
+  footer .foot-row{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+  }
+  footer a.foot-cta{ color: var(--ink); font-weight:700; text-decoration:none; }
+  footer a.foot-cta:hover{ text-decoration:underline; }
+  footer .copyright{
+    margin-top: 16px;
+    font-size: 12px;
+    color: #9a978c;
+  }
+
+  @media (max-width: 640px){
+    .shot-grid{ grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .shot-caption{ font-size: 12px; padding: 8px 8px 12px; }
+    .fact-list div{ flex-direction: column; gap: 4px; }
+    .fact-list dt{ flex-basis: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="brand-dot"></span>SURFOCUS</a>
+    <a class="nav-cta" href="https://app.surfocus.app/">アプリを開く →</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="page-header">
+    <p class="eyebrow">About</p>
+    <h1>SURFOCUSとは</h1>
+    <p class="lead"><strong>一人で練習する「コソ練」サーファーのための、無料の記録アプリ</strong></p>
+    <p>SURFOCUSについて、できること・向いている人・他のアプリとの違いなど、詳しい内容をまとめました。</p>
+  </header>
+
+  <section id="factsheet">
+    <h2>ファクトシート</h2>
+    <div class="fact-list">
+      <div><dt>サービス名</dt><dd>SURFOCUS（サーフォーカス）</dd></div>
+      <div><dt>運営</dt><dd>OH! OCEAN</dd></div>
+      <div><dt>サービスサイト</dt><dd><a href="https://surfocus.app/">https://surfocus.app/</a></dd></div>
+      <div><dt>アプリ本体</dt><dd><a href="https://app.surfocus.app/">https://app.surfocus.app/</a></dd></div>
+      <div><dt>価格</dt><dd>無料</dd></div>
+      <div><dt>ログイン</dt><dd>不要（データは端末内保存のみ）</dd></div>
+      <div><dt>対応環境</dt><dd>Web / PWA対応（スマートフォンのホーム画面にインストール可能）</dd></div>
+      <div><dt>カテゴリ</dt><dd>サーフィン練習の記録・目標管理アプリ</dd></div>
+    </div>
+  </section>
+
+  <section id="can-do">
+    <h2>できること</h2>
+    <p>画面を見ながら直感的に操作できます。具体的にできることは以下の通りです。</p>
+    <ul class="plain-list">
+      <li>練習前に、その日取り組みたいことを目標として設定できる</li>
+      <li>練習後に、振り返りを記録として残せる</li>
+      <li>技術ごとの取り組み状況をスコアで管理できる（Focus Tasks機能）</li>
+      <li>気づいたことをその場で一言メモに残せる（動画・写真のリンクの記録も可能）</li>
+      <li>記録を積み重ねることで、自分の変化や傾向を後から振り返られる</li>
+      <li>ログイン不要、データは端末内保存のみで、今すぐ無料で使い始められる</li>
+    </ul>
+  </section>
+
+  <section id="cannot-do">
+    <h2>できないこと</h2>
+    <ul class="plain-list">
+      <li>リアルタイムの波・海況予報は提供していません（波情報アプリとの併用を前提にしています）</li>
+      <li>他のユーザーと記録を共有したり交流したりする、SNS的な機能はありません</li>
+      <li>「これをすれば上達する」という具体的な技術指導・コーチングは行っていません</li>
+      <li>アカウント登録やクラウド同期はないため、自動で記録が引き継がれることはありません。ただし記録はJSON形式でエクスポート／インポートできるので、機種変更やブラウザの履歴・データを消去する前には、エクスポートで手動バックアップをしておくことをおすすめします</li>
+    </ul>
+  </section>
+
+  <section id="good-fit">
+    <h2>向いている人</h2>
+    <ul class="plain-list">
+      <li>一人で黙々と練習する「コソ練」サーファー</li>
+      <li>練習を記録しながら、自分のペースで振り返りたい人</li>
+      <li>他人との比較よりも、自分自身の積み重ねを大事にしたい人</li>
+    </ul>
+  </section>
+
+  <section id="not-fit">
+    <h2>向いていない人</h2>
+    <ul class="plain-list">
+      <li>リアルタイムの波予報をアプリ一つで確認したい人</li>
+      <li>他のサーファーとの交流やコミュニティ機能を求めている人</li>
+      <li>コーチのような具体的な技術指導を求めている人</li>
+    </ul>
+  </section>
+
+  <section id="comparison">
+    <h2>類似アプリとの比較</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>SURFOCUS</th>
+            <th>波予報アプリ</th>
+            <th>SNS型記録アプリ</th>
+            <th>汎用フィットネス記録アプリ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>主な用途</td>
+            <td>練習前後の目標設定・振り返り</td>
+            <td>波・海況の予報確認</td>
+            <td>記録の共有・交流</td>
+            <td>運動全般の記録</td>
+          </tr>
+          <tr>
+            <td>ログイン</td>
+            <td>不要</td>
+            <td>サービスによる</td>
+            <td>必須が多い</td>
+            <td>必須が多い</td>
+          </tr>
+          <tr>
+            <td>データ保存</td>
+            <td>端末内のみ</td>
+            <td>ー</td>
+            <td>クラウド（共有前提）</td>
+            <td>クラウド</td>
+          </tr>
+          <tr>
+            <td>サーフィン特化</td>
+            <td>◯（コソ練前提）</td>
+            <td>◯</td>
+            <td>△（競技混在）</td>
+            <td>×（サーフィン非対応）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">※表内の「波予報アプリ」「SNS型記録アプリ」「汎用フィットネス記録アプリ」は、いずれも特定の製品・サービスを指すものではなく、一般的なカテゴリとしての傾向を示したものです。</p>
+  </section>
+
+  <section id="screenshots">
+    <h2>スクリーンショット</h2>
+    <div class="shot-grid">
+      <figure class="shot-card">
+        <img src="/images/about/01-conditions.jpg" alt="サーフィンのコンディション（波のサイズ・風向き）を記録する画面" loading="lazy">
+        <figcaption class="shot-caption">入水前に、その日の海況をメモしておく</figcaption>
+      </figure>
+      <figure class="shot-card">
+        <img src="/images/about/02-focus-setup.jpg" alt="その日取り組むFocus Tasksを選ぶ画面" loading="lazy">
+        <figcaption class="shot-caption">その日取り組みたいことを、練習前に決めておく</figcaption>
+      </figure>
+      <figure class="shot-card">
+        <img src="/images/about/03-reflection.jpg" alt="入水後の振り返りを記録する画面" loading="lazy">
+        <figcaption class="shot-caption">海から上がったら、その日の振り返りを記録する</figcaption>
+      </figure>
+      <figure class="shot-card">
+        <img src="/images/about/04-focus-distribution.jpg" alt="Focus Tasksごとの取り組み状況を俯瞰で確認する画面" loading="lazy">
+        <figcaption class="shot-caption">技術ごとの取り組み状況を、スコアで管理する</figcaption>
+      </figure>
+      <figure class="shot-card">
+        <img src="/images/about/05-focus-history.jpg" alt="一つのFocus Taskについて、時系列のコメントを振り返る画面" loading="lazy">
+        <figcaption class="shot-caption">一つの技術について、コメントの積み重ねを振り返る</figcaption>
+      </figure>
+      <figure class="shot-card">
+        <img src="/images/about/06-trend.jpg" alt="練習の記録をグラフで振り返る画面" loading="lazy">
+        <figcaption class="shot-caption">記録を重ねて、自分の変化や傾向を振り返る</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="background">
+    <h2>開発の背景</h2>
+    <p>SURFOCUSは、普段は企画など制作界隈の仕事をしながら、時間を作って一人で海に入る「コソ練」サーファーが、自分自身の練習のために作ったアプリです。仕事で培った目標設定・振り返りの考え方をサーフィンの練習に持ち込んで、うまくいったこと・うまくいかなかったことを、開発者自身がBlogで綴っています。</p>
+    <ul class="blog-links">
+      <li><a href="https://surfocus.app/blog/kosoren-mokuhyo-to-kiroku/">サーフィン一人練習（コソ練）で上達するための目標設定と記録のコツ</a></li>
+      <li><a href="https://surfocus.app/blog/nobinayami-dekita-koto-wo-tou/">波のせいにしても、しなくても。サーフィンの伸び悩みと向き合う「当事者意識」</a></li>
+      <li><a href="https://surfocus.app/blog/wakerarenasa-to-no-tsukiaikata/">分解すればうまくなる、と思っていた。サーフィンの練習で学んだ「割り切れなさ」との付き合い方</a></li>
+    </ul>
+  </section>
+</div>
+
+<section id="media">
+  <div class="wrap">
+    <p class="eyebrow">Media / Press</p>
+    <h2>取材・掲載をご検討の方へ</h2>
+    <p class="media-note">※このセクションは、メディア・ブログ等でのご紹介を検討されている方向けです。一般ユーザーの方には関係ありません。</p>
+    <p>取材・記事でのご紹介にあたり、自由にお使いいただける素材一式をご用意しています。</p>
+    <ul>
+      <li>スクリーンショット一式（上記と同じもの、画像単体ファイル）</li>
+      <li>ロゴ・アイコン</li>
+      <li>コピペ用の紹介文（3段階の長さ）</li>
+      <li>ファクトシート（テキストファイル）</li>
+    </ul>
+    <a class="cta-outline" href="/press-kit.zip" download>プレスキットをダウンロード（ZIP） ↓</a>
+  </div>
+</section>
+
+<div class="wrap">
+  <section id="contact">
+    <h2>お問い合わせ</h2>
+    <p>ご意見・ご質問、取材・掲載に関するご連絡は、以下のフォームからお願いします（フォーム内の自由記入欄に、ご用件をご記入ください）。</p>
+    <p style="font-size:13px; color:var(--muted);">※アプリ内の「フィードバックを送る」と同じフォームです。専用の問い合わせ用メールアドレスは後日用意予定で、その際はこの導線を差し替えます。</p>
+    <a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSdDA1UAUgs4Q5ohRUZglWl12AdaCAV_bU41ebHVCj-X3yIzTQ/viewform">お問い合わせはこちら →</a>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div>SURFOCUS — 2026年8月 公開　·　<a class="foot-cta" href="/blog/">ブログ</a></div>
+      <a class="foot-cta" href="https://app.surfocus.app/">アプリを開く →</a>
+    </div>
+    <div class="copyright">© 2026 OH! OCEAN. All rights reserved.</div>
+  </div>
+</footer>
+
+</body>
+</html>
