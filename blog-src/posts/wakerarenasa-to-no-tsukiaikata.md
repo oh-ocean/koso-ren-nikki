@@ -8,6 +8,7 @@ eyecatchImage: /images/blog/gian-luca-pilia-KxQYNqp329Y-unsplash.jpg
 eyecatchAlt: サーフボードの上からパドリングする一人称視点の風景
 datePublished: 2026-08-31
 author: OH! OCEAN
+featuredOnLp: true
 ---
 # 分解すればうまくなる、と思っていた。サーフィンの練習で学んだ「割り切れなさ」との付き合い方
 

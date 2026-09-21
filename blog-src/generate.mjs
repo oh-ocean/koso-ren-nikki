@@ -426,8 +426,18 @@ ${entries}
 `;
 }
 
+// LPのブログプレビュー枠(BLOG_TEASER_CARDS)は、2026-09時点で「最新3件を自動表示」
+// から「手動でキュレーションした3件を表示」に変更した。理由: 最新順だとテーマが
+// 偏った回(例: サーフィン検定のようなニッチな話題が連続する等)に、初見の訪問者へ
+// 「対象が狭いアプリ」という誤解を与えるリスクがあるため。
+//
+// 運用ルール: 新しい記事を書くたびに、その記事の frontmatter に
+// `featuredOnLp: true` を付けるかどうかを都度判断すること(自動では付与されない)。
+// フラグを付けた記事は datePublished 降順(loadPosts()で既にソート済み)のまま
+// このプレビュー枠に表示される。3件を超えてフラグを付けた場合は先頭3件のみ採用。
 function renderLpTeaserCards(posts) {
-  return posts.slice(0, 3).map(p => `      <a class="post-card" href="${SITE_URL}/blog/${p.slug}/">
+  const featured = posts.filter(p => p.featuredOnLp === 'true').slice(0, 3);
+  return featured.map(p => `      <a class="post-card" href="${SITE_URL}/blog/${p.slug}/">
         <img src="${p.eyecatchImage}" alt="${escapeHtml(p.eyecatchAlt)}" loading="lazy">
         <div class="post-card-body">
           <div class="post-date">${formatDateJa(p.datePublished)}</div>
@@ -450,6 +460,10 @@ function updateLpBlogTeaser(posts) {
   }
   const before = html.slice(0, startIdx + startMarker.length);
   const after = html.slice(endIdx);
+  const featuredCount = posts.filter(p => p.featuredOnLp === 'true').length;
+  if (featuredCount === 0) {
+    console.warn('No post has featuredOnLp: true; the LP blog teaser will be empty.');
+  }
   const cards = renderLpTeaserCards(posts);
   writeFileSync(lpPath, `${before}\n${cards}\n${after}`);
 }

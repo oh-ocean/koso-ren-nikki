@@ -8,6 +8,7 @@ eyecatchImage: /images/blog/viklundvisuals-PeZRZ9sMfsA-unsplash.jpg
 eyecatchAlt: 金色に光る海で、波に乗り飛沫を上げるサーファー
 datePublished: 2026-09-24
 author: OH! OCEAN
+featuredOnLp: true
 ---
 # その不満を、SURFOCUSにぶつけた。サーフィン検定２級の壁と、記録が教えてくれたこと
 

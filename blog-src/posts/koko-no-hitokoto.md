@@ -8,6 +8,7 @@ eyecatchImage: /images/blog/michael-olsen-xbRe2QwIi-8-unsplash.jpg
 eyecatchAlt: 波に乗るサーファーと、その隣で波を待つサーファーを捉えた空撮
 datePublished: 2026-09-13
 author: OH! OCEAN
+featuredOnLp: true
 ---
 # 波待ちの位置は、自分で探すものだと思っていた。サーフィンスクールで教わった「ここ」の効き目
 
