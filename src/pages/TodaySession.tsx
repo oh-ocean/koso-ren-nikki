@@ -24,6 +24,8 @@ interface TodaySessionProps {
   taskCatalog: TaskDraft[];
   boardCatalog: BoardDraft[];
   initialDate?: string;
+  showOnboarding?: boolean;
+  onDismissOnboarding?: () => void;
 }
 
 const TodaySession = ({
@@ -37,6 +39,8 @@ const TodaySession = ({
   taskCatalog,
   boardCatalog,
   initialDate,
+  showOnboarding = false,
+  onDismissOnboarding,
 }: TodaySessionProps) => {
   const sessionDate = initialDate ?? todayISODate();
   const isBackfilling = sessionDate !== todayISODate();
@@ -140,6 +144,15 @@ const TodaySession = ({
               )}
             </div>
           </header>
+
+          {showOnboarding && (
+            <div className="px-6 pt-4 -mb-2">
+              <div className="relative bg-[#1C2C45] text-white text-sm font-bold leading-relaxed rounded-2xl px-4 py-3 shadow-lg max-w-sm">
+                <span className="absolute -top-1.5 left-8 w-3 h-3 bg-[#1C2C45] rotate-45" />
+                まずは、目指したいことを1つ決めてみましょう
+              </div>
+            </div>
+          )}
 
           <main className="px-6 py-8 space-y-10">
             <section>
@@ -255,13 +268,26 @@ const TodaySession = ({
                   </span>
                   <button
                     onClick={onOpenTaskManager}
-                    aria-label="Focus Tasksを管理"
+                    aria-label="課題を管理"
                     className="w-8 h-8 rounded-full flex justify-center items-center bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors"
                   >
                     <ListChecks size={15} />
                   </button>
                 </div>
               </div>
+
+              {showOnboarding && (
+                <div className="relative bg-[#1C2C45] text-white text-sm font-bold leading-relaxed rounded-2xl px-4 py-3 shadow-lg mb-5">
+                  <span className="absolute -top-1.5 right-8 w-3 h-3 bg-[#1C2C45] rotate-45" />
+                  <p>伸ばしたい技術も、Focus Tasksとして登録できます</p>
+                  <button
+                    onClick={onDismissOnboarding}
+                    className="mt-3 px-4 py-1.5 rounded-full bg-white text-[#1C2C45] text-sm font-bold hover:bg-white/90 transition-colors"
+                  >
+                    わかった
+                  </button>
+                </div>
+              )}
 
               {taskOptions.length === 0 ? (
                 <div className="p-6 rounded-2xl border-2 border-dashed border-slate-300 text-center">

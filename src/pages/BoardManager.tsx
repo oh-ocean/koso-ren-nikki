@@ -228,7 +228,7 @@ const BoardManager = ({
           <div className="flex items-start gap-2 px-1 text-sm text-slate-500">
             <Star size={16} className="flex-shrink-0 mt-0.5 text-amber-400" fill="currentColor" />
             <p>
-              星をつけたボード(最大{maxFavorites}枚)がToday's Sessionの選択肢に表示されます。今
+              星をつけたボード(最大{maxFavorites}枚)が、セッション記録画面の選択肢に表示されます。今
               {favoriteCount}/{maxFavorites}枚選択中です。
             </p>
           </div>

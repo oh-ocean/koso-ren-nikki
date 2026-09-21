@@ -18,12 +18,21 @@ import type { SessionDraft, SessionRecord, TaskDraft } from './types';
 import type { ImportPayload } from './pages/Settings';
 
 const SPLASH_LAST_SHOWN_KEY = 'kosoren.lastSplashDate';
+const ONBOARDING_DISMISSED_KEY = 'kosoren.onboardingDismissed';
 
 function shouldShowSplashToday(): boolean {
   try {
     return window.localStorage.getItem(SPLASH_LAST_SHOWN_KEY) !== todayISODate();
   } catch {
     return false;
+  }
+}
+
+function loadOnboardingDismissed(): boolean {
+  try {
+    return window.localStorage.getItem(ONBOARDING_DISMISSED_KEY) === '1';
+  } catch {
+    return true;
   }
 }
 
@@ -72,6 +81,30 @@ function App() {
       clearTimeout(removeTimer);
     };
   }, [showSplash]);
+
+  // 初回オンボーディング: 大目標(Goals)が0件の間だけ表示する軽いコーチマーク。
+  // 注: Focus TasksはuseTaskCatalogがデフォルトサンプルを常に補充する仕様のため
+  // 「Focus Tasksも0件」を条件に含めると実質誰にも表示されなくなる。そのため
+  // 表示条件は大目標のみで判定し、Focus Tasksについては大目標のすぐ下に案内を出す形にしている。
+  // 一度閉じる、または大目標を1件でも作成したら、以降は端末内フラグで永続的に非表示にする。
+  const [onboardingDismissed, setOnboardingDismissed] = useState(loadOnboardingDismissed);
+
+  useEffect(() => {
+    if (!onboardingDismissed && goals.length > 0) {
+      setOnboardingDismissed(true);
+    }
+  }, [onboardingDismissed, goals.length]);
+
+  useEffect(() => {
+    if (!onboardingDismissed) return;
+    try {
+      window.localStorage.setItem(ONBOARDING_DISMISSED_KEY, '1');
+    } catch {
+      // 保存に失敗しても致命的ではないため無視する
+    }
+  }, [onboardingDismissed]);
+
+  const showOnboarding = !onboardingDismissed && goals.length === 0;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -358,6 +391,8 @@ function App() {
       pinnedGoal={pinnedGoal}
       taskCatalog={catalog}
       boardCatalog={boardCatalog}
+      showOnboarding={showOnboarding}
+      onDismissOnboarding={() => setOnboardingDismissed(true)}
       onStart={sessionDraft => {
         setDraft(sessionDraft);
         setScreen('review');

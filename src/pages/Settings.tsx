@@ -133,7 +133,7 @@ const Settings = ({
             />
             <SettingsRow
               icon={<ListChecks size={22} />}
-              label="Focus Tasksを管理"
+              label="課題を管理"
               description="課題の追加・削除・並び替え"
               onClick={onOpenTaskManager}
             />
