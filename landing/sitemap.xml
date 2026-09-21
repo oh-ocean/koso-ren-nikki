@@ -17,6 +17,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://surfocus.app/blog/nikyu-no-kabe-kouhen/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://surfocus.app/blog/nikyu-no-kabe-zenpen/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://surfocus.app/blog/koko-no-hitokoto/</loc>
     <lastmod>2026-09-13</lastmod>
     <priority>0.7</priority>
