@@ -187,15 +187,16 @@ const TaskRow = ({ task, index, count, onEdit, onDelete, onMove, onViewHistory }
         aria-hidden="true"
       />
 
-      <button onClick={() => onViewHistory(task)} className="flex-1 min-w-0 text-left group">
-        <div className="flex items-center gap-2 mb-1 flex-wrap">
-          <h3 className="text-lg font-bold text-slate-900 group-hover:underline">{task.title}</h3>
-          {task.tag && <TagPill tag={task.tag} />}
+      <button onClick={() => onViewHistory(task)} className="flex-1 min-w-0 flex items-center gap-2 text-left group">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
+            <h3 className="text-lg font-bold text-slate-900 group-hover:underline">{task.title}</h3>
+            {task.tag && <TagPill tag={task.tag} />}
+          </div>
+          {task.description && <p className="text-base text-slate-500 leading-relaxed">{task.description}</p>}
         </div>
-        {task.description && <p className="text-base text-slate-500 leading-relaxed">{task.description}</p>}
+        <ChevronRight size={18} className="text-slate-300 flex-shrink-0" aria-hidden="true" />
       </button>
-
-      <ChevronRight size={18} className="text-slate-300 flex-shrink-0 mt-3" aria-hidden="true" />
 
       <div className="flex items-center gap-1.5 flex-shrink-0">
         <button

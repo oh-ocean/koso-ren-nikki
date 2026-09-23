@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, Edit3, Link2, MapPin, Pencil, PlusCircle, Sun, Trash2 } from 'lucide-react';
+import { ChevronLeft, Edit3, Link2, MapPin, Pencil, PlusCircle, Sun, Trash2, Waves } from 'lucide-react';
 import type { BoardDraft, SessionRecord, TaskDraft } from '../types';
 import { waveOptions, windOptions, findOption } from '../lib/conditionOptions';
 import { formatDateLong } from '../lib/date';
@@ -196,15 +196,20 @@ const SessionDetail = ({
 
           <main className="px-6 py-4 space-y-6">
             {sessions.length === 0 ? (
-              <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 text-center space-y-4">
-                <p className="text-slate-500 font-medium">この日の記録はまだありません。</p>
-                <button
-                  onClick={onLogAnother}
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#1C2C45] text-white font-bold hover:bg-[#2A4062] transition-colors"
-                >
-                  <PlusCircle size={18} />
-                  記録を追加する
-                </button>
+              <div className="min-h-[50vh] flex items-center justify-center">
+                <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 text-center space-y-4 w-full">
+                  <div className="w-14 h-14 rounded-full bg-slate-50 text-slate-300 flex justify-center items-center mx-auto">
+                    <Waves size={26} />
+                  </div>
+                  <p className="text-slate-500 font-medium">この日の記録はまだありません。</p>
+                  <button
+                    onClick={onLogAnother}
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#1C2C45] text-white font-bold hover:bg-[#2A4062] transition-colors"
+                  >
+                    <PlusCircle size={18} />
+                    記録を追加する
+                  </button>
+                </div>
               </div>
             ) : (
               sessions.map(session => (

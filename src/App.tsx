@@ -106,6 +106,11 @@ function App() {
 
   const showOnboarding = !onboardingDismissed && goals.length === 0;
 
+  const handleAddTask = (title: string, description: string, color: string, tag: string) => {
+    addTask(title, description, color, tag);
+    setOnboardingDismissed(true);
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [screen]);
@@ -342,7 +347,7 @@ function App() {
       <TaskCatalogManager
         catalog={catalog}
         onBack={() => setScreen(subScreenReturnTo)}
-        onAdd={addTask}
+        onAdd={handleAddTask}
         onEdit={updateTask}
         onDelete={deleteTask}
         onMove={moveTask}

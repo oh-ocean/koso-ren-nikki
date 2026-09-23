@@ -211,66 +211,77 @@ const GoalManager = ({
 
           <main className="px-6 py-4 space-y-8">
             <section className="space-y-4">
-              {activeGoals.length === 0 && !isAdding && (
-                <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 text-center">
-                  <Target size={28} className="mx-auto mb-3 text-slate-300" />
-                  <p className="text-slate-500 font-medium">
-                    まだ目標がありません。
-                    <br />
-                    追加してピン留めするとバナーに表示されます。
-                  </p>
-                </div>
-              )}
-
-              {activeGoals.map(goal => (
-                <GoalRow
-                  key={goal.id}
-                  goal={goal}
-                  onEditTitle={onEditTitle}
-                  onTogglePin={onTogglePin}
-                  onToggleAchieved={onToggleAchieved}
-                  onDelete={onDelete}
-                />
-              ))}
-
-              {isAdding ? (
-                <div className="p-5 rounded-2xl border-2 border-slate-200 bg-white shadow-sm space-y-3">
-                  <input
-                    autoFocus
-                    type="text"
-                    value={newTitle}
-                    onChange={e => setNewTitle(e.target.value)}
-                    placeholder="目標（例：バックサイドを安定させる）"
-                    aria-label="新しい目標"
-                    className="w-full rounded-xl border border-slate-200 px-4 py-3 text-base font-bold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:ring-4 focus:ring-[#1C2C45]/10 focus:border-[#1C2C45]/30"
-                  />
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => {
-                        setIsAdding(false);
-                        setNewTitle('');
-                      }}
-                      className="flex-1 py-3 rounded-xl border-2 border-slate-200 text-slate-500 font-bold hover:bg-slate-50 transition-colors"
-                    >
-                      キャンセル
-                    </button>
-                    <button
-                      onClick={confirmAdd}
-                      disabled={!newTitle.trim()}
-                      className="flex-1 py-3 rounded-xl bg-[#1C2C45] text-white font-bold hover:bg-[#2A4062] transition-colors disabled:opacity-40 disabled:pointer-events-none"
-                    >
-                      追加する
-                    </button>
+              {activeGoals.length === 0 && !isAdding ? (
+                <div className="min-h-[45vh] flex flex-col items-center justify-center gap-6">
+                  <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 text-center w-full">
+                    <Target size={28} className="mx-auto mb-3 text-slate-300" />
+                    <p className="text-slate-500 font-medium">
+                      まだ目標がありません。
+                      <br />
+                      追加してピン留めするとバナーに表示されます。
+                    </p>
                   </div>
+                  <button
+                    onClick={() => setIsAdding(true)}
+                    className="w-full py-4 rounded-2xl border-2 border-dashed border-slate-300 text-slate-500 font-bold text-lg flex justify-center items-center gap-2 hover:bg-slate-50 hover:border-slate-400 transition-colors"
+                  >
+                    <PlusCircle size={20} />
+                    新しい目標を追加
+                  </button>
                 </div>
               ) : (
-                <button
-                  onClick={() => setIsAdding(true)}
-                  className="w-full py-4 rounded-2xl border-2 border-dashed border-slate-300 text-slate-500 font-bold text-lg flex justify-center items-center gap-2 hover:bg-slate-50 hover:border-slate-400 transition-colors"
-                >
-                  <PlusCircle size={20} />
-                  新しい目標を追加
-                </button>
+                <>
+                  {activeGoals.map(goal => (
+                    <GoalRow
+                      key={goal.id}
+                      goal={goal}
+                      onEditTitle={onEditTitle}
+                      onTogglePin={onTogglePin}
+                      onToggleAchieved={onToggleAchieved}
+                      onDelete={onDelete}
+                    />
+                  ))}
+
+                  {isAdding ? (
+                    <div className="p-5 rounded-2xl border-2 border-slate-200 bg-white shadow-sm space-y-3">
+                      <input
+                        autoFocus
+                        type="text"
+                        value={newTitle}
+                        onChange={e => setNewTitle(e.target.value)}
+                        placeholder="目標（例：バックサイドを安定させる）"
+                        aria-label="新しい目標"
+                        className="w-full rounded-xl border border-slate-200 px-4 py-3 text-base font-bold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:ring-4 focus:ring-[#1C2C45]/10 focus:border-[#1C2C45]/30"
+                      />
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => {
+                            setIsAdding(false);
+                            setNewTitle('');
+                          }}
+                          className="flex-1 py-3 rounded-xl border-2 border-slate-200 text-slate-500 font-bold hover:bg-slate-50 transition-colors"
+                        >
+                          キャンセル
+                        </button>
+                        <button
+                          onClick={confirmAdd}
+                          disabled={!newTitle.trim()}
+                          className="flex-1 py-3 rounded-xl bg-[#1C2C45] text-white font-bold hover:bg-[#2A4062] transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                        >
+                          追加する
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setIsAdding(true)}
+                      className="w-full py-4 rounded-2xl border-2 border-dashed border-slate-300 text-slate-500 font-bold text-lg flex justify-center items-center gap-2 hover:bg-slate-50 hover:border-slate-400 transition-colors"
+                    >
+                      <PlusCircle size={20} />
+                      新しい目標を追加
+                    </button>
+                  )}
+                </>
               )}
             </section>
 

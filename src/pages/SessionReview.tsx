@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { X, MapPin, Calendar, CheckCircle2, Edit3, Sun, Link2 } from 'lucide-react';
 import type { SessionDraft, TaskResult } from '../types';
 import { formatDateShort } from '../lib/date';
@@ -113,8 +113,30 @@ const SessionReview = ({
   );
   const [overallScore, setOverallScore] = useState(initialOverallScore ?? 7);
   const [memo, setMemo] = useState(initialMemo ?? '');
+  const [isSaving, setIsSaving] = useState(false);
+  const [savedVisible, setSavedVisible] = useState(false);
 
   const location = draft.location;
+
+  useEffect(() => {
+    if (!isSaving) return;
+    const frame = requestAnimationFrame(() => setSavedVisible(true));
+    const timer = setTimeout(() => {
+      const tasks: TaskResult[] = draft.tasks.map(task => ({
+        id: task.id,
+        name: task.title,
+        score: taskScores[task.id] ?? 5,
+        memo: taskMemos[task.id]?.trim() || undefined,
+        videoUrl: taskVideoUrls[task.id]?.trim() || undefined,
+      }));
+      onSave({ tasks, overallScore, memo });
+    }, 700);
+    return () => {
+      cancelAnimationFrame(frame);
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSaving]);
 
   const setTaskScore = (taskId: string, value: number) => {
     setTaskScores(prev => ({ ...prev, [taskId]: value }));
@@ -129,14 +151,7 @@ const SessionReview = ({
   };
 
   const handleSave = () => {
-    const tasks: TaskResult[] = draft.tasks.map(task => ({
-      id: task.id,
-      name: task.title,
-      score: taskScores[task.id] ?? 5,
-      memo: taskMemos[task.id]?.trim() || undefined,
-      videoUrl: taskVideoUrls[task.id]?.trim() || undefined,
-    }));
-    onSave({ tasks, overallScore, memo });
+    setIsSaving(true);
   };
 
   return (
@@ -242,11 +257,27 @@ const SessionReview = ({
         <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] p-6 bg-gradient-to-t from-[#FAFAF8] via-[#FAFAF8] to-transparent pt-12 pb-8 z-30">
           <button
             onClick={handleSave}
-            className="w-full bg-[#1C2C45] text-white font-bold text-xl h-[72px] rounded-[2rem] shadow-[0_12px_30px_-10px_rgba(28,44,69,0.5)] flex justify-center items-center hover:bg-[#2A4062] transition-colors active:scale-[0.98] transform"
+            disabled={isSaving}
+            className="w-full bg-[#1C2C45] text-white font-bold text-xl h-[72px] rounded-[2rem] shadow-[0_12px_30px_-10px_rgba(28,44,69,0.5)] flex justify-center items-center hover:bg-[#2A4062] transition-colors active:scale-[0.98] transform disabled:opacity-70"
           >
             {isEditing ? 'UPDATE SESSION' : 'SAVE SESSION'}
           </button>
         </div>
+
+        {isSaving && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#FAFAF8] w-full max-w-[480px] mx-auto left-1/2 -translate-x-1/2">
+            <div
+              className={`flex flex-col items-center transition-all duration-300 ease-out ${
+                savedVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+              }`}
+            >
+              <div className="w-20 h-20 bg-[#1C2C45] text-white rounded-full flex justify-center items-center shadow-lg mb-4">
+                <CheckCircle2 size={40} />
+              </div>
+              <p className="text-xl font-bold text-slate-900">Saved!</p>
+            </div>
+          </div>
+        )}
     </div>
   );
 };
