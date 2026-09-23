@@ -84,14 +84,16 @@ const TodaySession = ({
   useEffect(() => {
     if (!isLaunching) return;
     const frame = requestAnimationFrame(() => setLaunchVisible(true));
-    const timer = setTimeout(() => {
+    const fadeOutTimer = setTimeout(() => setLaunchVisible(false), 700);
+    const navigateTimer = setTimeout(() => {
       const condition: Condition = { wave: waveSize, wind: windDirection, board: boardType };
       const tasks = taskOptions.filter(task => selectedTasks.includes(task.id));
       onStart({ date: sessionDate, location, condition, tasks });
-    }, 1000);
+    }, 1100);
     return () => {
       cancelAnimationFrame(frame);
-      clearTimeout(timer);
+      clearTimeout(fadeOutTimer);
+      clearTimeout(navigateTimer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLaunching]);
@@ -392,9 +394,9 @@ const TodaySession = ({
         </div>
 
         {isLaunching && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1C2C45] w-full max-w-[480px] mx-auto left-1/2 -translate-x-1/2">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#FAFAF8] w-full max-w-[480px] mx-auto left-1/2 -translate-x-1/2">
             <p
-              className={`text-white text-2xl font-bold tracking-wide transition-opacity duration-500 ease-out ${
+              className={`text-[#1C2C45] text-2xl font-bold tracking-wide transition-opacity duration-[400ms] ease-out ${
                 launchVisible ? 'opacity-100' : 'opacity-0'
               }`}
             >
