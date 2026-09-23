@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   CheckCircle2,
   MapPin,
@@ -74,11 +74,27 @@ const TodaySession = ({
     );
   };
 
+  const [isLaunching, setIsLaunching] = useState(false);
+  const [launchVisible, setLaunchVisible] = useState(false);
+
   const handleGoSurf = () => {
-    const condition: Condition = { wave: waveSize, wind: windDirection, board: boardType };
-    const tasks = taskOptions.filter(task => selectedTasks.includes(task.id));
-    onStart({ date: sessionDate, location, condition, tasks });
+    setIsLaunching(true);
   };
+
+  useEffect(() => {
+    if (!isLaunching) return;
+    const frame = requestAnimationFrame(() => setLaunchVisible(true));
+    const timer = setTimeout(() => {
+      const condition: Condition = { wave: waveSize, wind: windDirection, board: boardType };
+      const tasks = taskOptions.filter(task => selectedTasks.includes(task.id));
+      onStart({ date: sessionDate, location, condition, tasks });
+    }, 1000);
+    return () => {
+      cancelAnimationFrame(frame);
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLaunching]);
 
   return (
     <div className="min-h-screen w-full max-w-[480px] mx-auto bg-[#FAFAF8] text-slate-800 font-sans selection:bg-[#1C2C45] selection:text-white flex flex-col relative">
@@ -359,7 +375,8 @@ const TodaySession = ({
           <div className="px-6 pt-12 pb-4 bg-gradient-to-t from-[#FAFAF8] via-[#FAFAF8] to-transparent">
             <button
               onClick={handleGoSurf}
-              className="w-full bg-[#D97706] text-white font-bold text-xl py-5 rounded-[1.5rem] shadow-[0_10px_30px_-10px_rgba(217,119,6,0.5)] flex justify-center items-center hover:bg-[#C2660A] transition-colors active:scale-95 transform"
+              disabled={isLaunching}
+              className="w-full bg-[#D97706] text-white font-bold text-xl py-5 rounded-[1.5rem] shadow-[0_10px_30px_-10px_rgba(217,119,6,0.5)] flex justify-center items-center hover:bg-[#C2660A] transition-colors active:scale-95 transform disabled:opacity-80"
             >
               GO SURF!
               <ChevronRight size={28} className="ml-2 opacity-80" />
@@ -373,6 +390,18 @@ const TodaySession = ({
             onSettings={onOpenSettings}
           />
         </div>
+
+        {isLaunching && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1C2C45] w-full max-w-[480px] mx-auto left-1/2 -translate-x-1/2">
+            <p
+              className={`text-white text-2xl font-bold tracking-wide transition-opacity duration-500 ease-out ${
+                launchVisible ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              Go well.
+            </p>
+          </div>
+        )}
     </div>
   );
 };
