@@ -84,12 +84,12 @@ const TodaySession = ({
   useEffect(() => {
     if (!isLaunching) return;
     const frame = requestAnimationFrame(() => setLaunchVisible(true));
-    const fadeOutTimer = setTimeout(() => setLaunchVisible(false), 700);
+    const fadeOutTimer = setTimeout(() => setLaunchVisible(false), 900);
     const navigateTimer = setTimeout(() => {
       const condition: Condition = { wave: waveSize, wind: windDirection, board: boardType };
       const tasks = taskOptions.filter(task => selectedTasks.includes(task.id));
       onStart({ date: sessionDate, location, condition, tasks });
-    }, 1100);
+    }, 1300);
     return () => {
       cancelAnimationFrame(frame);
       clearTimeout(fadeOutTimer);
