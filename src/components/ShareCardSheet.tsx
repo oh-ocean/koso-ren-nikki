@@ -58,6 +58,7 @@ const ShareCardSheet = ({ session, boardCatalog, taskCatalog, onClose }: ShareCa
   const canShareFile = canShareImageFile();
   const canCopy = canCopyImage();
   const filename = `surfocus-${session.date}.png`;
+  const sharePrimary = background === 'cream' && canShareFile;
 
   const canvas = useMemo(
     () =>
@@ -193,21 +194,31 @@ const ShareCardSheet = ({ session, boardCatalog, taskCatalog, onClose }: ShareCa
 
         <div className="space-y-3">
           <button
-            onClick={handleSave}
+            onClick={sharePrimary ? handleShare : handleSave}
             className="w-full bg-[#1C2C45] text-white font-bold text-lg py-4 rounded-2xl flex justify-center items-center gap-2 hover:bg-[#2A4062] transition-colors"
           >
-            <Download size={20} />
-            画像を保存
+            {sharePrimary ? <Share2 size={20} /> : <Download size={20} />}
+            {sharePrimary ? '共有する' : '画像を保存'}
           </button>
           <div className="flex gap-3">
-            {canShareFile && (
+            {sharePrimary ? (
               <button
-                onClick={handleShare}
+                onClick={handleSave}
                 className="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold flex justify-center items-center gap-2 hover:bg-slate-50 transition-colors"
               >
-                <Share2 size={18} />
-                共有
+                <Download size={18} />
+                保存
               </button>
+            ) : (
+              canShareFile && (
+                <button
+                  onClick={handleShare}
+                  className="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold flex justify-center items-center gap-2 hover:bg-slate-50 transition-colors"
+                >
+                  <Share2 size={18} />
+                  共有
+                </button>
+              )
             )}
             {canCopy && (
               <button
@@ -226,7 +237,9 @@ const ShareCardSheet = ({ session, boardCatalog, taskCatalog, onClose }: ShareCa
 
         <div className="text-xs text-slate-400 leading-relaxed space-y-1.5">
           <p>
-            動画や写真に重ねるには、「画像を保存」したあと、Instagramのストーリーズで動画・写真を選び、ステッカーのトレイから写真アイコンを選んで、保存した画像を貼り付けます。サイズと位置は貼ったあとに調整できます。
+            {background === 'cream'
+              ? '「共有」からInstagramを選ぶと、この画像がストーリーズの背景として開きます。'
+              : '動画や写真に重ねるには、「画像を保存」したあと、Instagramのストーリーズで動画・写真を選び、ステッカーのトレイから写真アイコンを選んで、保存した画像を貼り付けます。サイズと位置は貼ったあとに調整できます。'}
           </p>
           <p>画像はこの端末の中で作られ、サーバーには送信されません。</p>
         </div>
