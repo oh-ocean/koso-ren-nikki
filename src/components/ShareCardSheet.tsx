@@ -81,17 +81,20 @@ const ShareCardSheet = ({ session, boardCatalog, taskCatalog, onClose }: ShareCa
   );
   const previewUrl = useMemo(() => canvas.toDataURL('image/png'), [canvas]);
 
-  const handlePrimary = async () => {
+  const handleShare = async () => {
     try {
-      const blob = await canvasToBlob(canvas);
-      if (canShareFile) {
-        await shareImage(blob, filename);
-      } else {
-        downloadImage(blob, filename);
-        setStatus('画像を保存しました');
-      }
+      await shareImage(await canvasToBlob(canvas), filename);
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') return;
+      setStatus('うまく書き出せませんでした');
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      downloadImage(await canvasToBlob(canvas), filename);
+      setStatus('画像を保存しました');
+    } catch {
       setStatus('うまく書き出せませんでした');
     }
   };
@@ -99,7 +102,7 @@ const ShareCardSheet = ({ session, boardCatalog, taskCatalog, onClose }: ShareCa
   const handleCopy = async () => {
     try {
       await copyImage(await canvasToBlob(canvas));
-      setStatus('コピーしました。Instagramのストーリーズで貼り付けできます');
+      setStatus('コピーしました');
     } catch {
       setStatus('コピーできませんでした。保存してお使いください');
     }
@@ -190,29 +193,43 @@ const ShareCardSheet = ({ session, boardCatalog, taskCatalog, onClose }: ShareCa
 
         <div className="space-y-3">
           <button
-            onClick={handlePrimary}
+            onClick={handleSave}
             className="w-full bg-[#1C2C45] text-white font-bold text-lg py-4 rounded-2xl flex justify-center items-center gap-2 hover:bg-[#2A4062] transition-colors"
           >
-            {canShareFile ? <Share2 size={20} /> : <Download size={20} />}
-            {canShareFile ? '共有する' : '画像を保存'}
+            <Download size={20} />
+            画像を保存
           </button>
-          {canCopy && (
-            <button
-              onClick={handleCopy}
-              className="w-full py-3 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold flex justify-center items-center gap-2 hover:bg-slate-50 transition-colors"
-            >
-              <Copy size={18} />
-              画像をコピー
-            </button>
-          )}
+          <div className="flex gap-3">
+            {canShareFile && (
+              <button
+                onClick={handleShare}
+                className="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold flex justify-center items-center gap-2 hover:bg-slate-50 transition-colors"
+              >
+                <Share2 size={18} />
+                共有
+              </button>
+            )}
+            {canCopy && (
+              <button
+                onClick={handleCopy}
+                className="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold flex justify-center items-center gap-2 hover:bg-slate-50 transition-colors"
+              >
+                <Copy size={18} />
+                コピー
+              </button>
+            )}
+          </div>
           <p role="status" className="text-sm font-bold text-[#1C2C45] min-h-[1.25rem] text-center">
             {status}
           </p>
         </div>
 
-        <p className="text-xs text-slate-400 leading-relaxed">
-          画像はこの端末の中で作られ、サーバーには送信されません。透明の画像は、Instagramのストーリーズ編集でステッカーとして貼り付け、サイズと位置を調整できます。
-        </p>
+        <div className="text-xs text-slate-400 leading-relaxed space-y-1.5">
+          <p>
+            動画や写真に重ねるには、「画像を保存」したあと、Instagramのストーリーズで動画・写真を選び、ステッカーのトレイから写真アイコンを選んで、保存した画像を貼り付けます。サイズと位置は貼ったあとに調整できます。
+          </p>
+          <p>画像はこの端末の中で作られ、サーバーには送信されません。</p>
+        </div>
       </div>
     </div>
   );
