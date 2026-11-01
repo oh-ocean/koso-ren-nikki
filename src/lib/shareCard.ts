@@ -290,8 +290,8 @@ export function renderShareCard(input: ShareCardInput, opts: ShareCardOptions): 
     canvas.width = CW_TRANSPARENT;
     canvas.height = contentH + MARGIN * 2;
     ctx.translate(-(PAD - MARGIN), 0);
-    ctx.shadowColor = opts.textColor === 'white' ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.85)';
-    ctx.shadowBlur = 28;
+    ctx.shadowColor = opts.textColor === 'white' ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.6)';
+    ctx.shadowBlur = 20;
     layout(ctx, input, opts, MARGIN, true);
   }
   return canvas;
