@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { ChevronLeft, Edit3, Link2, MapPin, Pencil, PlusCircle, Sun, Trash2, Waves } from 'lucide-react';
+import { ChevronLeft, Edit3, Link2, MapPin, Pencil, PlusCircle, Share2, Sun, Trash2, Waves } from 'lucide-react';
 import type { BoardDraft, SessionRecord, TaskDraft } from '../types';
 import { waveOptions, windOptions, findOption } from '../lib/conditionOptions';
 import { formatDateLong } from '../lib/date';
 import { taskScoreColor, stokeScoreColor } from '../lib/scoreColor';
 import BottomNav from '../components/BottomNav';
+import ShareCardSheet from '../components/ShareCardSheet';
 
 interface SessionDetailProps {
   date: string;
@@ -37,6 +38,7 @@ interface SessionCardProps {
 
 const SessionCard = ({ session, boardCatalog, taskCatalog, onEdit, onDelete }: SessionCardProps) => {
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
   const wave = findOption(waveOptions, session.condition.wave);
   const wind = findOption(windOptions, session.condition.wind);
   const board = boardCatalog.find(b => b.id === session.condition.board);
@@ -55,6 +57,13 @@ const SessionCard = ({ session, boardCatalog, taskCatalog, onEdit, onDelete }: S
 
         {!isConfirmingDelete && (
           <div className="flex items-center gap-2 flex-shrink-0">
+            <button
+              onClick={() => setIsSharing(true)}
+              aria-label="このセッションをシェア用の画像にする"
+              className="w-9 h-9 rounded-full flex justify-center items-center bg-slate-50 text-slate-500 hover:bg-slate-100 transition-colors"
+            >
+              <Share2 size={15} />
+            </button>
             <button
               onClick={() => onEdit(session)}
               aria-label="このセッションを編集"
@@ -157,6 +166,15 @@ const SessionCard = ({ session, boardCatalog, taskCatalog, onEdit, onDelete }: S
           </div>
           <p className="text-base text-slate-700 leading-relaxed whitespace-pre-wrap">{session.memo}</p>
         </div>
+      )}
+
+      {isSharing && (
+        <ShareCardSheet
+          session={session}
+          boardCatalog={boardCatalog}
+          taskCatalog={taskCatalog}
+          onClose={() => setIsSharing(false)}
+        />
       )}
     </div>
   );
