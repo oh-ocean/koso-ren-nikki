@@ -117,13 +117,13 @@ const layout = (ctx: Ctx, input: ShareCardInput, opts: ShareCardOptions, oy: num
 
   y += 64;
   setFont(ctx, 42, 600);
-  text(ink, 0.75);
+  text(ink, cream ? 0.75 : 0.95);
   if (draw) drawSpaced(ctx, input.date.replace(/-/g, '.'), L, y, 4);
 
   if (input.location) {
     y += 58;
     setFont(ctx, 40, 600);
-    text(ink, 0.75);
+    text(ink, cream ? 0.75 : 0.95);
     if (draw) {
       ctx.textAlign = 'left';
       ctx.fillText(fitText(ctx, input.location, CW), L, y);
@@ -160,7 +160,7 @@ const layout = (ctx: Ctx, input: ShareCardInput, opts: ShareCardOptions, oy: num
     ctx.textAlign = 'left';
     ctx.fillText(scoreText, startX, y + 410);
     setFont(ctx, 110, 600);
-    text(cream ? '#94A3B8' : ink, cream ? 1 : 0.6);
+    text(cream ? '#94A3B8' : ink, cream ? 1 : 0.85);
     ctx.fillText('/10', startX + wn + 12, y + 410);
   }
   y += panelH + 70;
@@ -203,7 +203,7 @@ const layout = (ctx: Ctx, input: ShareCardInput, opts: ShareCardOptions, oy: num
   if (tasks.length > 0) {
     y += 38;
     setFont(ctx, 38, 800);
-    text(ink, 0.6);
+    text(ink, cream ? 0.6 : 0.95);
     if (draw) drawSpaced(ctx, 'FOCUS TASKS', L, y, 8);
     y += 30;
 
@@ -227,7 +227,7 @@ const layout = (ctx: Ctx, input: ShareCardInput, opts: ShareCardOptions, oy: num
         const barX = R - scoreW - barGap - barW;
         const color = cream ? taskScoreColor(task.score) : ink;
         roundRect(ctx, barX, y - 30, barW, 24, 12);
-        ctx.globalAlpha = cream ? 1 : 0.3;
+        ctx.globalAlpha = cream ? 1 : 0.4;
         ctx.fillStyle = cream ? '#E8EBEF' : ink;
         ctx.fill();
         roundRect(ctx, barX, y - 30, Math.max(24, (barW * task.score) / 10), 24, 12);
@@ -247,7 +247,7 @@ const layout = (ctx: Ctx, input: ShareCardInput, opts: ShareCardOptions, oy: num
   if (input.memo) {
     y += 64;
     setFont(ctx, 38, 800);
-    text(ink, 0.6);
+    text(ink, cream ? 0.6 : 0.95);
     if (draw) drawSpaced(ctx, 'NOTES', L, y + 38, 8);
     y += 38 + 24;
     setFont(ctx, 46, 600);
@@ -264,7 +264,7 @@ const layout = (ctx: Ctx, input: ShareCardInput, opts: ShareCardOptions, oy: num
 
   y += 80;
   setFont(ctx, 40, 700);
-  text(ink, 0.55);
+  text(ink, cream ? 0.55 : 0.85);
   if (draw) drawSpaced(ctx, 'surfocus.app', W / 2, y + 40, 8, 'center');
   y += 40;
 
@@ -290,8 +290,8 @@ export function renderShareCard(input: ShareCardInput, opts: ShareCardOptions): 
     canvas.width = CW_TRANSPARENT;
     canvas.height = contentH + MARGIN * 2;
     ctx.translate(-(PAD - MARGIN), 0);
-    ctx.shadowColor = opts.textColor === 'white' ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.6)';
-    ctx.shadowBlur = 20;
+    ctx.shadowColor = opts.textColor === 'white' ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.85)';
+    ctx.shadowBlur = 28;
     layout(ctx, input, opts, MARGIN, true);
   }
   return canvas;
